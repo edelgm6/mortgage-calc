@@ -50,30 +50,72 @@ class Investment:
 	
 	def getYearlyCashFlowsAndIRR(self):
 		cash_flows = []
-		IRRs = []
-		
-		cash_flows.append(self.getYearZeroCashFlow())
+		cash_flow_dict = {
+			'total': self.getYearZeroCashFlow(),
+			'mortgage': 0,
+			'taxes': 0,
+			'maintenance': 0,
+			'value': self.house.price,
+			'equity': self.mortgage.down_payment_amount,
+			'debt': self.mortgage.mortgage_amount,
+			'closing_costs': 0,
+			'net_proceeds': 0,
+			'irr': 'NA',
+			'year': 'Purchase'
+		}
+		cash_flows.append(cash_flow_dict)
 		
 		yearly_payment = self.mortgage.getYearlyPayment()
-		
 		value = self.house.price
 		debt = self.mortgage.mortgage_amount
+		cash_flow_stream = []
+		cash_flow_stream.append(self.getYearZeroCashFlow())
+		alternative_rent = self.alternative_rent
 		for i in range(1,31):
+			
+			###Clean this shit up, especially this issue with averaging some things 
+			##May need to average in the alternate rent.  Should be clustered to be cleaner
+			
 			mortgage_payment = yearly_payment
 			debt = debt + self.mortgage.getPrincipalPayment(i)
 			average_value = (value + value * (1+self.house.yearly_appreciation_rate)) / 2
 			maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
 			property_tax = self.house.yearly_property_tax_rate * average_value * -1
-			cash_flows.append(mortgage_payment + maintenance + property_tax)
+			alternative_rent = alternative_rent * (1+self.house.yearly_appreciation_rate)
+			
+			cash_flow = mortgage_payment + maintenance + property_tax + alternative_rent
+			cash_flow_stream.append(cash_flow)
+	
 			value = value * (1+self.house.yearly_appreciation_rate)
-			
+	
 			equity = value - debt
-			net_sale_proceeds = equity - value * self.closing_cost_as_percent_of_value
-			cash_flows_with_sale = cash_flows[:]
-			cash_flows_with_sale[i] = cash_flows[i] + net_sale_proceeds
-			IRRs.append(numpy.irr(cash_flows_with_sale))
+			closing_cost = value * self.closing_cost_as_percent_of_value
+			net_sale_proceeds = equity - closing_cost
+			cash_flows_with_sale = cash_flow_stream[:]
+			cash_flows_with_sale[i] = cash_flow_stream[i] + net_sale_proceeds
+			irr = numpy.irr(cash_flows_with_sale)
 			
-		return cash_flows, IRRs
+
+			
+			cash_flow_dict = {
+				'total': cash_flow,
+				'mortgage': mortgage_payment,
+				'other_costs': maintenance + property_tax,
+				'value': value,
+				'equity': equity,
+				'debt': debt,
+				'closing_costs': closing_cost,
+				'net_proceeds': net_sale_proceeds,
+				'irr': irr * 100,
+				'year': i,
+				'principal_payment': self.mortgage.getPrincipalPayment(i),
+				'debt_payment': mortgage_payment - self.mortgage.getPrincipalPayment(i),
+				'saved_rent': alternative_rent
+			}
+			
+			cash_flows.append(cash_flow_dict)
+			
+		return cash_flows
 			
 		
 	def getYearZeroCashFlow(self):

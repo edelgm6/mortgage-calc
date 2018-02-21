@@ -51,7 +51,6 @@ class InvestmentTestCase(TestCase):
 		
 		investment = Investment(house, mortgage, closing_cost_as_percent_of_value, alternative_rent)
 		
-		cash_flows, IRRs = investment.getYearlyCashFlowsAndIRR()
+		cash_flows = investment.getYearlyCashFlowsAndIRR()
 		
 		print(cash_flows)
-		print(IRRs)

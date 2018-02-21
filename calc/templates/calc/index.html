@@ -1,3 +1,7 @@
+
+{% load widget_tweaks %}
+{% load humanize %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -11,7 +15,72 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    <h1>Hello, world!</h1>
+
+	<div class="container">
+	<br><br>
+		<form method="post">
+    {% csrf_token %}		
+		{% for hidden in form.hidden_fields %}
+  			{{ hidden }}
+		{% endfor %}
+
+		{% for field in form.visible_fields %}
+		  <div class="form-group row">
+			<label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label" align="right">{{ field.label }}</label>
+			<div class="col-sm-4">
+			{{ field|add_class:'form-control' }}
+			{% for error in field.errors %}
+			  <span class="help-block">{{ error }}</span>
+			{% endfor %}
+			</div>
+		  </div>
+		{% endfor %}
+	
+	<div class="form-group row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-4">
+		
+      <button type="submit" class="btn btn-info">
+        Calculate
+      </button>
+			</div>
+    </div>
+  </form>
+	
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">Period</th>
+		<th scope="col">Principal Paid</th>
+		<th scope="col">Interest Paid</th>
+		<th scope="col">Other Costs</th>
+		<th scope="col">Avoided Rent</th>
+		<th scope="col">Total Spend</th>
+		<th scope="col">Home Value</th>
+		<th scope="col">Debt</th>
+		<th scope="col">Equity</th>
+      <th scope="col">IRR % (if sold)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for stream in cash_stream %}
+	  <tr>
+      	  <th scope="row">{{ stream.year }}</th>
+		  <td>{{ stream.principal_payment|floatformat:"0"|intcomma }}</td>
+		  <td>{{ stream.debt_payment|floatformat:"0"|intcomma }}</td>
+		  <td>{{ stream.other_costs|floatformat:"0"|intcomma }}</td>
+		  <td>{{ stream.saved_rent|floatformat:"0"|intcomma }}</td>
+		  <td>{{ stream.total|floatformat:"0"|intcomma }}</td>
+		  <td>{{ stream.value|floatformat:"0"|intcomma }}</td>
+		  <td>{{ stream.debt|floatformat:"0"|intcomma }}</td>
+		  <td>{{ stream.equity|floatformat:"0"|intcomma }}</td>
+          <td>{{ stream.irr|floatformat:2 }}</td>
+    </tr>
+	{% endfor %}
+  </tbody>
+</table>
+		
+  </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
