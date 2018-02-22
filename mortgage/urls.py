@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from calc.views import IndexView
+from calc.views import IndexView, InvestmentView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 	path('', IndexView.as_view()),
+	path('stream/', InvestmentView.as_view())
 ]

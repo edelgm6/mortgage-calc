@@ -48,16 +48,21 @@ class Investment:
 	def getValue(self, years_since_purchase):
 		return self.house.price * (1+self.house.yearly_appreciation_rate)**years_since_purchase
 	
+	def __convertToReadableString(self, number):
+		string = int(round(number))
+		return '{:0,.0f}'.format(number)
+	
 	def getYearlyCashFlowsAndIRR(self):
 		cash_flows = []
+		
 		cash_flow_dict = {
-			'total': self.getYearZeroCashFlow(),
+			'total': self.__convertToReadableString(self.getYearZeroCashFlow()),
 			'mortgage': 0,
 			'taxes': 0,
 			'maintenance': 0,
-			'value': self.house.price,
-			'equity': self.mortgage.down_payment_amount,
-			'debt': self.mortgage.mortgage_amount,
+			'value': self.__convertToReadableString(self.house.price),
+			'equity': self.__convertToReadableString(self.mortgage.down_payment_amount),
+			'debt': self.__convertToReadableString(self.mortgage.mortgage_amount),
 			'closing_costs': 0,
 			'net_proceeds': 0,
 			'irr': 'NA',
@@ -98,19 +103,19 @@ class Investment:
 
 			
 			cash_flow_dict = {
-				'total': cash_flow,
-				'mortgage': mortgage_payment,
-				'other_costs': maintenance + property_tax,
-				'value': value,
-				'equity': equity,
-				'debt': debt,
-				'closing_costs': closing_cost,
-				'net_proceeds': net_sale_proceeds,
-				'irr': irr * 100,
+				'total': self.__convertToReadableString(cash_flow),
+				'mortgage': self.__convertToReadableString(mortgage_payment),
+				'other_costs': self.__convertToReadableString(maintenance + property_tax),
+				'value': self.__convertToReadableString(value),
+				'equity': self.__convertToReadableString(equity),
+				'debt': self.__convertToReadableString(debt),
+				'closing_costs': self.__convertToReadableString(closing_cost),
+				'net_proceeds': self.__convertToReadableString(net_sale_proceeds),
+				'irr': str(round(irr * 100,2)) + '%',
 				'year': i,
-				'principal_payment': self.mortgage.getPrincipalPayment(i),
-				'debt_payment': mortgage_payment - self.mortgage.getPrincipalPayment(i),
-				'saved_rent': alternative_rent
+				'principal_payment': self.__convertToReadableString(self.mortgage.getPrincipalPayment(i)),
+				'debt_payment': self.__convertToReadableString(mortgage_payment - self.mortgage.getPrincipalPayment(i)),
+				'saved_rent': self.__convertToReadableString(alternative_rent)
 			}
 			
 			cash_flows.append(cash_flow_dict)
