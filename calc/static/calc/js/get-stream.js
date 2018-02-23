@@ -56,6 +56,7 @@ $('#calculate').click(function() {
 			});
 		});
 		$('#takeaways').fadeIn(1000);
+		$('#thead').fadeIn(1000);
 		$(".mortgage").each(function(index) {
 			$(this).delay(150 * index).fadeIn(1000);
 		});

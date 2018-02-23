@@ -139,7 +139,7 @@
 </div>
 		
 <table class="table table-sm">
-  <thead>
+  <thead id="thead" style="display:none;">
     <tr>
       <th scope="col">Period</th>
 		<th scope="col">Principal Paid</th>
@@ -154,20 +154,7 @@
     </tr>
   </thead>
   <tbody id="tbody" name="tbody">
-    {% for stream in cash_stream %}
-	  <tr name="whatever">
-      	  <th name="year" scope="row">{{ stream.year }}</th>
-		  <td name="principal-payment">{{ stream.principal_payment|floatformat:"0"|intcomma }}</td>
-		  <td name="debt-payment">{{ stream.debt_payment|floatformat:"0"|intcomma }}</td>
-		  <td name="other-costs">{{ stream.other_costs|floatformat:"0"|intcomma }}</td>
-		  <td name="saved-rent">{{ stream.saved_rent|floatformat:"0"|intcomma }}</td>
-		  <td name="total">{{ stream.total|floatformat:"0"|intcomma }}</td>
-		  <td name="value">{{ stream.value|floatformat:"0"|intcomma }}</td>
-		  <td name="debt">{{ stream.debt|floatformat:"0"|intcomma }}</td>
-		  <td name="equity">{{ stream.equity|floatformat:"0"|intcomma }}</td>
-          <td name="irr">{{ stream.irr|floatformat:2 }}</td>
-    </tr>
-	{% endfor %}
+
   </tbody>
 </table>
 		
