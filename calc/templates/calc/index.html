@@ -20,7 +20,7 @@
 	<div class="container">
 	<br><br>
 		<div class="row">
-		<div class="col-sm-6">
+		<div class="col-sm-4">
 		<form method="get">		
 		
 		  <div class="form-group row">
@@ -121,6 +121,20 @@
 		</div>
     </div>
   </form>
+</div>
+<div class="col-sm-8">
+	<div id="takeaways" class="row p-3 mb-2 bg-secondary text-white" style="display:none;">
+	<p><strong>Investment returns: </strong>The returns for this investment are below and take all cash flows (mortgage, maintenance, rent you don't have to pay, etc.) into account. As a reference, the long run annualized return of the S&P500 is ~9% with reinvested dividends.<br>	
+	<ul>Year 5: <span id="year_5_irr"></span><br>
+	Year 10: <span id="year_10_irr"></span><br>
+	Year 20: <span id="year_20_irr"></span><br>
+	Year 30: <span id="year_30_irr"></span></ul>
+	Note that, even if your return is higher than the stock market, a house has other issues, namely that 1) it's not diversified -- your fortunes are tied a single property in a single asset class versus a broad collection of stocks and 2) it's illiquid (try selling half of your house to free up some cash).</p>
+	<p>Year <span id="first_year_ppmt_greater_than_ipmt"></span> 
+		is the first year when your <strong>principal payment will be larger
+		than your interest payment.</strong> In other words, every year before that more 
+		of your mortgage payment goes to the bank than to the equity in your house.</p>
+	</div>
 </div>
 </div>
 		
