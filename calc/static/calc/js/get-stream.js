@@ -3,11 +3,12 @@ $('#calculate').click(function() {
 	
 	$('.mortgage').remove();
 	
-	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.05', yearly_appreciation: '.06', alternative_rent: '2000'}, function(data) {
+	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.05', yearly_appreciation: '.06', alternative_rent: '6000'}, function(data) {
 		var table_body = $('#tbody');
 		var response = data.cash_stream;
 		var first_year_ppmt_greater_than_ipmt = false;
 		var first_year_positive_cash_flow = false;
+		buildChart(response);
 		$.each(response, function(key,value) {
 			var $tr = $("<tr>", {'class': 'mortgage', 'style': 'display:none;'});
 			var $td_year = $("<td>", {'text': value.year});
@@ -80,3 +81,68 @@ $('#calculate').click(function() {
 
 	});
 });
+
+function buildChart(streams) {
+	
+	var labels = [];
+	var data = [];
+	
+	for (var i=1; i < streams.length; i++) {
+		labels.push(streams[i].year);
+		data.push(streams[i].irr.replace('%', ''));
+	}
+	
+	var ctx = $("#myChart");
+	var myChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: labels,
+			datasets: [{
+				label: 'IRR',
+				data: data,
+				borderColor: 'white',
+			}],
+		},
+		options: {
+			legend: {
+				display: false,
+			},
+			title: {
+				display: false,
+				text: 'Annualized return by year',
+				fontColor: 'white',
+			},
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Annualized return',
+						fontColor: 'white',
+					},
+					gridLines: {
+						color: 'white',
+					},
+					ticks: {
+						fontColor: 'white',
+						callback: function(value, index, values) {
+							return value + '%';
+						},
+					}
+				}],
+				xAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Years since purchase',
+						fontColor: 'white',
+					},
+					gridLines: {
+						color: 'transparent',
+					},
+					ticks: {
+						fontColor: 'white',
+					}
+				}],
+			},
+		},
+	});
+};
