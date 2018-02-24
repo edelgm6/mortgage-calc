@@ -174,7 +174,7 @@
 	<div id="takeaways" class="row p-3 mb-2 bg-secondary text-white" style="display:none;">
 		<div class="col-sm-12">
 		<p><strong>Investment returns: </strong>As a reference, the long run annualized return of the S&P500 is ~9% with reinvested dividends.<br>	
-		<canvas id="myChart"></canvas>
+		<canvas id="irrChart"></canvas>
 		These returns take all cash flows (mortgage, maintenance, rent you don't have to pay, etc.) into account. Even if your return is higher than the stock market, a house is 1) it's not diversified -- your fortunes are tied a single property in a single asset class and 2) it's illiquid (try selling half of your house to free up some cash!).</p>
 		
 		<p><strong>Paying yourself: </strong>Year <span id="first_year_ppmt_greater_than_ipmt"></span> 
@@ -220,6 +220,7 @@
 	
 	
 	<script src="{% static "calc/js/form-select.js" %}"></script>
+	<script src="{% static "calc/js/chart-options.js" %}"></script>
 	<script src="{% static "calc/js/get-stream.js" %}"></script>
 	  
   </body>

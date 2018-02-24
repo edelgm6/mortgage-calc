@@ -1,11 +1,11 @@
-var ctx = $("#myChart");
-	var myChart = new Chart(ctx, {
+var ctx = $("#irrChart");
+	var irrChart = new Chart(ctx, {
 		type: 'line',
 		data: {
-			labels: labels,
+			labels: [],
 			datasets: [{
 				label: 'IRR',
-				data: data,
+				data: [],
 				borderColor: 'white',
 			}],
 		},
