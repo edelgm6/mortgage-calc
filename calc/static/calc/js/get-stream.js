@@ -1,8 +1,13 @@
 $('#calculate').click(function() {
+	$('.overlay').show(); 
+	
+	$('.mortgage').remove();
+	
 	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.05', yearly_appreciation: '.06', alternative_rent: '2000'}, function(data) {
 		var table_body = $('#tbody');
 		var response = data.cash_stream;
 		var first_year_ppmt_greater_than_ipmt = false;
+		var first_year_positive_cash_flow = false;
 		$.each(response, function(key,value) {
 			var $tr = $("<tr>", {'class': 'mortgage', 'style': 'display:none;'});
 			var $td_year = $("<td>", {'text': value.year});
@@ -36,6 +41,14 @@ $('#calculate').click(function() {
 				};
 			};
 			
+			if (!first_year_positive_cash_flow && value.year != 'Purchase') {
+				var cash_flow = Number(value.total.replace(/,/g, ''));
+				if (cash_flow > 0) {
+					first_year_positive_cash_flow = true;
+					$('#first_year_positive_cash_flow').text(value.year);
+				};
+			};
+			
 			$(table_body).append(($tr)
 				.append(($td_year))
 				.append(($td_principal_payment))
@@ -55,10 +68,15 @@ $('#calculate').click(function() {
 				};
 			});
 		});
-		$('#takeaways').fadeIn(1000);
-		$('#thead').fadeIn(1000);
-		$(".mortgage").each(function(index) {
-			$(this).delay(150 * index).fadeIn(1000);
-		});
+		setTimeout(function(){
+			$('.overlay').hide();
+			$('#takeaways').fadeIn(1000);
+			$('#thead').fadeIn(1000);
+			$(".mortgage").each(function(index) {
+				$(this).delay(150 * index).fadeIn(1000);
+			});
+		},3000); 
+		
+
 	});
 });

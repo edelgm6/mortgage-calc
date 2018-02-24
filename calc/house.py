@@ -62,7 +62,7 @@ class Investment:
 			'maintenance': 0,
 			'value': self.__convertToReadableString(self.house.price),
 			'equity': self.__convertToReadableString(self.mortgage.down_payment_amount),
-			'debt': self.__convertToReadableString(self.mortgage.mortgage_amount),
+			'debt': self.__convertToReadableString(self.mortgage.mortgage_amount * -1),
 			'closing_costs': 0,
 			'net_proceeds': 0,
 			'irr': 'NA',
@@ -72,7 +72,7 @@ class Investment:
 		
 		yearly_payment = self.mortgage.getYearlyPayment()
 		value = self.house.price
-		debt = self.mortgage.mortgage_amount
+		debt = self.mortgage.mortgage_amount * -1
 		cash_flow_stream = []
 		cash_flow_stream.append(self.getYearZeroCashFlow())
 		alternative_rent = self.alternative_rent
@@ -82,7 +82,7 @@ class Investment:
 			##May need to average in the alternate rent.  Should be clustered to be cleaner
 			
 			mortgage_payment = yearly_payment
-			debt = debt + self.mortgage.getPrincipalPayment(i)
+			debt = debt - self.mortgage.getPrincipalPayment(i)
 			average_value = (value + value * (1+self.house.yearly_appreciation_rate)) / 2
 			maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
 			property_tax = self.house.yearly_property_tax_rate * average_value * -1
@@ -93,7 +93,7 @@ class Investment:
 	
 			value = value * (1+self.house.yearly_appreciation_rate)
 	
-			equity = value - debt
+			equity = value + debt
 			closing_cost = value * self.closing_cost_as_percent_of_value
 			net_sale_proceeds = equity - closing_cost
 			cash_flows_with_sale = cash_flow_stream[:]
