@@ -69,7 +69,7 @@ $('#calculate').click(function() {
 			});
 		});
 		setTimeout(function(){
-			$('.overlay').hide();
+			$('.overlay').removeAttr('style');
 			$('#takeaways').fadeIn(1000);
 			$('#thead').fadeIn(1000);
 			$(".mortgage").each(function(index) {
