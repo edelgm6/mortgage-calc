@@ -48,21 +48,6 @@
 			</div>
 			</div>
 			</div>
-			
-
-		  <div class="form-group row">
-			<label for="id_property_tax" class="col-sm-5 col-form-label">Property tax %</label>
-			<div class="col-sm-7">
-			<input type="number" name="property_tax" min="0" max="1" step="0.01" class="form-control" required id="id_property_tax" />			
-			</div>
-			<div class="col-sm-12">
-			  <div class="collapse" id="price-collapse" name="property_tax">
-			  <div class="card card-body">
-				  <p>Yearly property taxes as a percent of home price. This varies between state and municipality, but is typically 1-2% of the home value. </p>
-			  </div>
-			</div>
-			</div>
-		  </div>
 		
 		  <div class="form-group row">
 			<label for="id_down_payment" class="col-sm-5 col-form-label">Down payment %</label>
@@ -93,7 +78,7 @@
 		  </div>
 		
 		  <div class="form-group row">
-			<label for="id_yearly_appreciation" class="col-sm-5 col-form-label">Interest rate %</label>
+			<label for="id_yearly_appreciation" class="col-sm-5 col-form-label">Yearly appreciation %</label>
 			<div class="col-sm-7">
 			<input type="number" name="yearly_appreciation" min="0" max="1" step="0.01" class="form-control" required id="id_yearly_appreciation" />			
 			</div>
@@ -141,6 +126,22 @@
 			</div>	
 		  </div>
 	      </div>
+				  
+			
+
+		  <div class="form-group row">
+			<label for="id_property_tax" class="col-sm-5 col-form-label">Property tax %</label>
+			<div class="col-sm-7">
+			<input type="number" name="property_tax" min="0" max="1" step="0.01" class="form-control" required id="id_property_tax"  value=".015"/>			
+			</div>
+			<div class="col-sm-12">
+			  <div class="collapse" id="price-collapse" name="property_tax">
+			  <div class="card card-body">
+				  <p>Yearly property taxes as a percent of home price. This varies between state and municipality, but is typically 1-2% of the home value. </p>
+			  </div>
+			</div>
+			</div>
+		  </div>
 		
 		  <div class="form-group row">
 			<label for="id_maintenance_cost" class="col-sm-5 col-form-label">Maintenance cost %</label>
