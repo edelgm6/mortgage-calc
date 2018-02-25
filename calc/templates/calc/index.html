@@ -173,17 +173,17 @@
 <div class="col-sm-7">
 	<div id="takeaways" class="row p-3 mb-2 bg-secondary text-white" style="display:none;">
 		<div class="col-sm-12">
-		<p><strong>Investment returns: </strong>As a reference, the long run annualized return of the S&P500 is ~9% with reinvested dividends.<br>	
+		<p><strong>Investment returns (IRR): </strong>As a reference, the long run annualized return of the S&P500 is ~9% with reinvested dividends.</p><br>
 		<canvas id="irrChart"></canvas>
-		These returns take all cash flows (mortgage, maintenance, rent you don't have to pay, etc.) into account. Even if your return is higher than the stock market, a house is 1) it's not diversified -- your fortunes are tied a single property in a single asset class and 2) it's illiquid (try selling half of your house to free up some cash!).</p>
 		
 		<p><strong>Paying yourself: </strong>Year <span id="first_year_ppmt_greater_than_ipmt"></span> 
 		is the first year when your <strong>principal payment will be larger
-		than your interest payment.</strong> In other words, every year before more 
-		of your mortgage payment goes to the bank than to the equity in your house.</p>
+		than your interest payment.</strong></p>
+		<canvas id="pmtChart"></canvas>
 		
 		<p><strong>Saving money: </strong>Year <span id="first_year_positive_cash_flow"></span> 
 		is the first year when your <strong>house's mortgage and other costs are less expensive than the equivalent rent.</strong></p>
+		<canvas id="cashFlowChart"></canvas>
 	</div>
 </div>
 </div>

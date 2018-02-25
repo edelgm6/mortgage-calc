@@ -3,12 +3,14 @@ $('#calculate').click(function() {
 	
 	$('.mortgage').remove();
 	
-	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.05', yearly_appreciation: '.06', alternative_rent: '6000'}, function(data) {
+	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.04', yearly_appreciation: '.06', alternative_rent: '4000'}, function(data) {
 		var table_body = $('#tbody');
 		var response = data.cash_stream;
 		var first_year_ppmt_greater_than_ipmt = false;
 		var first_year_positive_cash_flow = false;
-		buildChart(response);
+		buildIRRChart(response);
+		buildPMTChart(response);
+		buildCashFlowChart(response);
 		$.each(response, function(key,value) {
 			var $tr = $("<tr>", {'class': 'mortgage', 'style': 'display:none;'});
 			var $td_year = $("<td>", {'text': value.year});
@@ -82,7 +84,7 @@ $('#calculate').click(function() {
 	});
 });
 
-function buildChart(streams) {
+function buildIRRChart(streams) {
 	
 	var labels = [];
 	var data = [];
@@ -90,8 +92,51 @@ function buildChart(streams) {
 	for (var i=1; i < streams.length; i++) {
 		labels.push(streams[i].year);
 		data.push(streams[i].irr.replace('%', ''));
-	}
+	};
 	
 	irrChart['data']['labels'] = labels;
 	irrChart['data']['datasets'][0]['data'] = data;
+};
+
+function buildCashFlowChart(streams) {
+	var labels = [];
+	var cash_flow = [];
+	var cum_cash_flow = [];
+	
+	var cum_flow = 0;
+	for (var i=0; i < streams.length; i++) {
+		labels.push(streams[i].year);
+		
+		var flow = Number(streams[i].total.replace(',', ''))
+		cash_flow.push(flow);
+		cum_cash_flow.push(flow + cum_flow);
+		console.log(flow);
+		console.log(flow+cum_flow);
+		cum_flow = cum_flow + flow;
+	};
+	
+	labels[0] = '0';
+	cashFlowChart['data']['labels'] = labels;
+	cashFlowChart['data']['datasets'][0]['data'] = cash_flow;
+	cashFlowChart['data']['datasets'][1]['data'] = cum_cash_flow;
+	
+};
+
+function buildPMTChart(streams) {
+	var labels = [];
+	var ipmt = [];
+	var ppmt = [];
+	
+	for (var i=1; i < streams.length; i++) {
+		labels.push(streams[i].year);
+		ipmt.push(streams[i].debt_payment.replace(',', '') * -1);
+		ppmt.push(streams[i].principal_payment.replace(',', '') * -1);
+	};
+	
+	console.log(ipmt);
+	
+	pmtChart['data']['labels'] = labels;
+	pmtChart['data']['datasets'][0]['data'] = ppmt;
+	pmtChart['data']['datasets'][1]['data'] = ipmt;
+	
 };
