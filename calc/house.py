@@ -90,7 +90,7 @@ class Investment:
 			maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
 			property_tax = self.house.yearly_property_tax_rate * average_value * -1
 			
-			cash_flow = mortgage_payment + maintenance + property_tax + alternative_rent
+			cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided
 			cash_flow_stream.append(cash_flow)
 		
 			# Increments current home value and cost of rent by the year appreciation rate
@@ -118,7 +118,7 @@ class Investment:
 				'year': i,
 				'principal_payment': self.__convertToReadableString(self.mortgage.getPrincipalPayment(i)),
 				'debt_payment': self.__convertToReadableString(mortgage_payment - self.mortgage.getPrincipalPayment(i)),
-				'saved_rent': self.__convertToReadableString(alternative_rent)
+				'saved_rent': self.__convertToReadableString(rent_avoided)
 			}
 			
 			cash_flows.append(cash_flow_dict)
@@ -128,8 +128,8 @@ class Investment:
 	# Returns total cash costs for purchase	
 	def getYearZeroCashFlow(self):
 		equity_check = self.starting_equity * -1
-		closing_costs = self.house.price * self.closing_cost_as_percent_of_value * -1
-		return equity_check + closing_costs
+		closing_cost = self.house.price * self.closing_cost_as_percent_of_value * -1
+		return equity_check + closing_cost
 	
 	def getAverageValueInYear(self, current_value):
 		beginning_of_year_value = current_value
@@ -138,8 +138,7 @@ class Investment:
 		return average_value_in_year
 	
 	def getSaleProceeds(self, current_value, current_equity):
-		closing_cost = current_value * self.closing_cost_as_percent_of_value
 		realtor_cost = current_value * self.realtor_cost
-		net_sale_proceeds = current_equity - closing_cost - realtor_cost
+		net_sale_proceeds = current_equity - realtor_cost
 		return net_sale_proceeds
 		
