@@ -28,18 +28,15 @@ class InvestmentView(View):
 			
 			closing_cost_as_percent_of_value = form.cleaned_data['closing_cost']
 			alternative_rent = form.cleaned_data['alternative_rent']
+			realtor_cost = form.cleaned_data['realtor_cost']
 			
-			investment = Investment(house, mortgage, closing_cost_as_percent_of_value, alternative_rent)
+			investment = Investment(house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost)
 			
 			cash_stream = investment.getYearlyCashFlowsAndIRR()
 			
 			context_dict = {
 				'cash_stream': cash_stream
 			}
-			
-			#print(cash_stream)
-			
-			print(JsonResponse(context_dict))
 			
 			return JsonResponse(context_dict)
 		

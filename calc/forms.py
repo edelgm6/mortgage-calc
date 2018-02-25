@@ -11,3 +11,4 @@ class InvestmentForm(forms.Form):
 	interest_rate = forms.DecimalField(max_value=1, min_value=0, max_digits=2, decimal_places=2)
 	yearly_appreciation = forms.DecimalField(max_value=1, min_value=0, max_digits=2, decimal_places=2)
 	alternative_rent = forms.IntegerField(min_value=0)
+	realtor_cost = forms.DecimalField(max_value=1, min_value=0, max_digits=2, decimal_places=2)

@@ -38,19 +38,22 @@ class Mortgage:
 		return numpy.ppmt(yearly_rate, year, years, mortgage_amount)
 	
 class Investment:
-	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent):
+	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost_as_percent_of_value):
 		self.house = house
 		self.mortgage = mortgage
 		self.closing_cost_as_percent_of_value = closing_cost_as_percent_of_value
 		self.starting_equity = self.mortgage.down_payment_amount
 		self.alternative_rent = alternative_rent
-		
+		self.realtor_cost = realtor_cost_as_percent_of_value
+	
+	# Gets value of home given current year
 	def getValue(self, years_since_purchase):
 		return self.house.price * (1+self.house.yearly_appreciation_rate)**years_since_purchase
 	
 	def __convertToReadableString(self, number):
 		string = int(round(number))
-		return '{:0,.0f}'.format(number)
+		return string
+	
 	
 	def getYearlyCashFlowsAndIRR(self):
 		cash_flows = []
@@ -70,8 +73,8 @@ class Investment:
 		}
 		cash_flows.append(cash_flow_dict)
 		
-		yearly_payment = self.mortgage.getYearlyPayment()
-		value = self.house.price
+		mortgage_payment = self.mortgage.getYearlyPayment()
+		current_value = self.house.price
 		debt = self.mortgage.mortgage_amount * -1
 		cash_flow_stream = []
 		cash_flow_stream.append(self.getYearZeroCashFlow())
@@ -81,37 +84,37 @@ class Investment:
 			###Clean this shit up, especially this issue with averaging some things 
 			##May need to average in the alternate rent.  Should be clustered to be cleaner
 			
-			mortgage_payment = yearly_payment
-			debt = debt - self.mortgage.getPrincipalPayment(i)
-			average_value = (value + value * (1+self.house.yearly_appreciation_rate)) / 2
+			# Calculates in-year costs based on average value throughout year
+			average_value = self.getAverageValueInYear(current_value)
+			rent_avoided = self.getAverageValueInYear(alternative_rent)
 			maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
 			property_tax = self.house.yearly_property_tax_rate * average_value * -1
-			alternative_rent = alternative_rent * (1+self.house.yearly_appreciation_rate)
 			
 			cash_flow = mortgage_payment + maintenance + property_tax + alternative_rent
 			cash_flow_stream.append(cash_flow)
-	
-			value = value * (1+self.house.yearly_appreciation_rate)
-	
-			equity = value + debt
-			closing_cost = value * self.closing_cost_as_percent_of_value
-			net_sale_proceeds = equity - closing_cost
+		
+			# Increments current home value and cost of rent by the year appreciation rate
+			current_value = current_value * (1+self.house.yearly_appreciation_rate)
+			alternative_rent = alternative_rent * (1+self.house.yearly_appreciation_rate)
+			
+			# Calculates balance sheet
+			debt = debt - self.mortgage.getPrincipalPayment(i)
+			equity = current_value + debt
+			
+			# Calculates IRR with separate cash flow array
 			cash_flows_with_sale = cash_flow_stream[:]
+			net_sale_proceeds = self.getSaleProceeds(current_value, equity)
 			cash_flows_with_sale[i] = cash_flow_stream[i] + net_sale_proceeds
 			irr = numpy.irr(cash_flows_with_sale)
-			
-
 			
 			cash_flow_dict = {
 				'total': self.__convertToReadableString(cash_flow),
 				'mortgage': self.__convertToReadableString(mortgage_payment),
 				'other_costs': self.__convertToReadableString(maintenance + property_tax),
-				'value': self.__convertToReadableString(value),
+				'value': self.__convertToReadableString(current_value),
 				'equity': self.__convertToReadableString(equity),
 				'debt': self.__convertToReadableString(debt),
-				'closing_costs': self.__convertToReadableString(closing_cost),
-				'net_proceeds': self.__convertToReadableString(net_sale_proceeds),
-				'irr': str(round(irr * 100,2)) + '%',
+				'irr': round(irr * 100,2),
 				'year': i,
 				'principal_payment': self.__convertToReadableString(self.mortgage.getPrincipalPayment(i)),
 				'debt_payment': self.__convertToReadableString(mortgage_payment - self.mortgage.getPrincipalPayment(i)),
@@ -122,9 +125,21 @@ class Investment:
 			
 		return cash_flows
 			
-		
+	# Returns total cash costs for purchase	
 	def getYearZeroCashFlow(self):
 		equity_check = self.starting_equity * -1
 		closing_costs = self.house.price * self.closing_cost_as_percent_of_value * -1
 		return equity_check + closing_costs
+	
+	def getAverageValueInYear(self, current_value):
+		beginning_of_year_value = current_value
+		end_of_year_value = current_value * (1+self.house.yearly_appreciation_rate)
+		average_value_in_year = (beginning_of_year_value + end_of_year_value) / 2
+		return average_value_in_year
+	
+	def getSaleProceeds(self, current_value, current_equity):
+		closing_cost = current_value * self.closing_cost_as_percent_of_value
+		realtor_cost = current_value * self.realtor_cost
+		net_sale_proceeds = current_equity - closing_cost - realtor_cost
+		return net_sale_proceeds
 		

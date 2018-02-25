@@ -3,7 +3,7 @@ $('#calculate').click(function() {
 	
 	$('.mortgage').remove();
 	
-	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.04', yearly_appreciation: '.06', alternative_rent: '4000'}, function(data) {
+	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.04', yearly_appreciation: '.06', alternative_rent: '4000', realtor_cost: '.06'}, function(data) {
 		var table_body = $('#tbody');
 		var response = data.cash_stream;
 		var first_year_ppmt_greater_than_ipmt = false;
@@ -14,15 +14,15 @@ $('#calculate').click(function() {
 		$.each(response, function(key,value) {
 			var $tr = $("<tr>", {'class': 'mortgage', 'style': 'display:none;'});
 			var $td_year = $("<td>", {'text': value.year});
-			var $td_principal_payment = $("<td>", {'text': value.principal_payment});
-			var $td_debt_payment = $("<td>", {'text': value.debt_payment});
-			var $td_other_costs = $("<td>", {'text': value.other_costs});
-			var $td_saved_rent = $("<td>", {'text': value.saved_rent});
-			var $td_total = $("<td>", {'text': value.total});
-			var $td_value = $("<td>", {'text': value.value});
-			var $td_debt = $("<td>", {'text': value.debt});
-			var $td_equity = $("<td>", {'text': value.equity});
-			var $td_irr = $("<td>", {'text': value.irr});
+			var $td_principal_payment = $("<td>", {'text': convertNumberToString(value.principal_payment)});
+			var $td_debt_payment = $("<td>", {'text': convertNumberToString(value.debt_payment)});
+			var $td_other_costs = $("<td>", {'text': convertNumberToString(value.other_costs)});
+			var $td_saved_rent = $("<td>", {'text': convertNumberToString(value.saved_rent)});
+			var $td_total = $("<td>", {'text': convertNumberToString(value.total)});
+			var $td_value = $("<td>", {'text': convertNumberToString(value.value)});
+			var $td_debt = $("<td>", {'text': convertNumberToString(value.debt)});
+			var $td_equity = $("<td>", {'text': convertNumberToString(value.equity)});
+			var $td_irr = $("<td>", {'text': value.irr + '%'});
 			
 			if (value.year == 5) {
 				$('#year_5_irr').text(value.irr);
@@ -35,8 +35,8 @@ $('#calculate').click(function() {
 			};
 			
 			if (!first_year_ppmt_greater_than_ipmt && value.year != 'Purchase') {
-				var ppmt = Number(value.principal_payment.replace(/,/g, ''));
-				var ipmt = Number(value.debt_payment.replace(/,/g, ''));
+				var ppmt = value.principal_payment;
+				var ipmt = value.debt_payment;
 				
 				if (ppmt < ipmt) {
 					first_year_ppmt_greater_than_ipmt = true;
@@ -45,7 +45,7 @@ $('#calculate').click(function() {
 			};
 			
 			if (!first_year_positive_cash_flow && value.year != 'Purchase') {
-				var cash_flow = Number(value.total.replace(/,/g, ''));
+				var cash_flow = value.total;
 				if (cash_flow > 0) {
 					first_year_positive_cash_flow = true;
 					$('#first_year_positive_cash_flow').text(value.year);
@@ -84,6 +84,17 @@ $('#calculate').click(function() {
 	});
 });
 
+function convertNumberToString(number) {
+	try {
+		var x = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		return x;
+	}
+	catch(err) {
+		console.log(err);
+		return number;
+	}
+};
+
 function buildIRRChart(streams) {
 	
 	var labels = [];
@@ -91,7 +102,7 @@ function buildIRRChart(streams) {
 	
 	for (var i=1; i < streams.length; i++) {
 		labels.push(streams[i].year);
-		data.push(streams[i].irr.replace('%', ''));
+		data.push(streams[i].irr);
 	};
 	
 	irrChart['data']['labels'] = labels;
@@ -107,7 +118,7 @@ function buildCashFlowChart(streams) {
 	for (var i=0; i < streams.length; i++) {
 		labels.push(streams[i].year);
 		
-		var flow = Number(streams[i].total.replace(',', ''))
+		var flow = streams[i].total
 		cash_flow.push(flow);
 		cum_cash_flow.push(flow + cum_flow);
 		console.log(flow);
@@ -129,11 +140,9 @@ function buildPMTChart(streams) {
 	
 	for (var i=1; i < streams.length; i++) {
 		labels.push(streams[i].year);
-		ipmt.push(streams[i].debt_payment.replace(',', '') * -1);
-		ppmt.push(streams[i].principal_payment.replace(',', '') * -1);
+		ipmt.push(streams[i].debt_payment * -1);
+		ppmt.push(streams[i].principal_payment * -1);
 	};
-	
-	console.log(ipmt);
 	
 	pmtChart['data']['labels'] = labels;
 	pmtChart['data']['datasets'][0]['data'] = ppmt;
