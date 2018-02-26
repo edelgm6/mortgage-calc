@@ -1,5 +1,5 @@
 $(document).ready( function() {
-	$("input.form-control").focusin( function() {
+	$(".form-control").focusin( function() {
 		var input_name = $(this).attr('name')
 		var collapsible = $("div[name=" + input_name + "]");
 		var expanded = $(collapsible).attr('class');
@@ -7,7 +7,7 @@ $(document).ready( function() {
 			$(collapsible).collapse('toggle');
 		}
     });
-	$("input.form-control").focusout( function() {
+	$(".form-control").focusout( function() {
 		var input_name = $(this).attr('name')
 		var collapsible = $("div[name=" + input_name + "]");
 		var expanded = $(collapsible).attr('class');

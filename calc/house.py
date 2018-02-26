@@ -1,4 +1,5 @@
 import numpy
+from decimal import Decimal
 
 class House:
 	def __init__(self, price, yearly_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value):
@@ -37,14 +38,24 @@ class Mortgage:
 		mortgage_amount = self.mortgage_amount
 		return numpy.ppmt(yearly_rate, year, years, mortgage_amount)
 	
+	def getInterestPayment(self, years_since_investment):
+		yearly_rate = self.yearly_interest_rate
+		years = self.term_in_years
+		year = years_since_investment
+		mortgage_amount = self.mortgage_amount
+		ipmt = numpy.ipmt(yearly_rate, year, years, mortgage_amount)
+		return numpy.asscalar(ipmt)
+	
 class Investment:
-	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost_as_percent_of_value):
+	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost_as_percent_of_value, federal_tax_rate, state_tax_rate):
 		self.house = house
 		self.mortgage = mortgage
 		self.closing_cost_as_percent_of_value = closing_cost_as_percent_of_value
 		self.starting_equity = self.mortgage.down_payment_amount
 		self.alternative_rent = alternative_rent
 		self.realtor_cost = realtor_cost_as_percent_of_value
+		self.federal_tax_rate = federal_tax_rate
+		self.state_tax_rate = state_tax_rate
 	
 	# Gets value of home given current year
 	def getValue(self, years_since_purchase):
@@ -53,7 +64,6 @@ class Investment:
 	def __convertToReadableString(self, number):
 		string = int(round(number))
 		return string
-	
 	
 	def getYearlyCashFlowsAndIRR(self):
 		cash_flows = []
@@ -90,7 +100,13 @@ class Investment:
 			maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
 			property_tax = self.house.yearly_property_tax_rate * average_value * -1
 			
-			cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided
+			# Calculates tax benefits
+			interest_payment = self.mortgage.getInterestPayment(i)
+			interest_writeoff = self.getInterestTaxBenefit(self.federal_tax_rate, self.state_tax_rate, debt, interest_payment)
+			property_tax_writeoff = self.getPropertyTaxBenefit(self.federal_tax_rate, property_tax)
+			tax_shield = interest_writeoff + property_tax_writeoff
+			
+			cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield
 			cash_flow_stream.append(cash_flow)
 		
 			# Increments current home value and cost of rent by the year appreciation rate
@@ -98,7 +114,8 @@ class Investment:
 			alternative_rent = alternative_rent * (1+self.house.yearly_appreciation_rate)
 			
 			# Calculates balance sheet
-			debt = debt - self.mortgage.getPrincipalPayment(i)
+			principal_payment = self.mortgage.getPrincipalPayment(i)
+			debt = debt - principal_payment
 			equity = current_value + debt
 			
 			# Calculates IRR with separate cash flow array
@@ -116,8 +133,8 @@ class Investment:
 				'debt': self.__convertToReadableString(debt),
 				'irr': round(irr * 100,2),
 				'year': i,
-				'principal_payment': self.__convertToReadableString(self.mortgage.getPrincipalPayment(i)),
-				'debt_payment': self.__convertToReadableString(mortgage_payment - self.mortgage.getPrincipalPayment(i)),
+				'principal_payment': self.__convertToReadableString(principal_payment),
+				'debt_payment': self.__convertToReadableString(interest_payment),
 				'saved_rent': self.__convertToReadableString(rent_avoided)
 			}
 			
@@ -125,6 +142,30 @@ class Investment:
 			
 		return cash_flows
 			
+	def getInterestTaxBenefit(self, federal_tax_rate, state_tax_rate, debt_value, interest_payment):
+		DEBT_LIMIT = 750000
+		
+		if debt_value > DEBT_LIMIT:
+			interest_multiplier = DEBT_LIMIT / debt_value
+		else:
+			interest_multiplier = 1
+		
+		total_tax_rate = federal_tax_rate + state_tax_rate
+		interest_writeoff = total_tax_rate * interest_payment * interest_multiplier
+		
+		return interest_writeoff * -1
+
+	def getPropertyTaxBenefit(self, federal_tax_rate, property_tax):
+		SALT_LIMIT = 10000
+		
+		if property_tax > SALT_LIMIT:
+			property_tax_writeoff = SALT_LIMIT * federal_tax_rate
+		else:
+			property_tax_writeoff = property_tax * federal_tax_rate
+			
+		return property_tax_writeoff * -1
+		
+	
 	# Returns total cash costs for purchase	
 	def getYearZeroCashFlow(self):
 		equity_check = self.starting_equity * -1

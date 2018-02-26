@@ -3,7 +3,7 @@ $('#calculate').click(function() {
 	
 	$('.mortgage').remove();
 	
-	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.04', yearly_appreciation: '.06', alternative_rent: '4000', realtor_cost: '.06'}, function(data) {
+	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.04', yearly_appreciation: '.06', alternative_rent: '4000', realtor_cost: '.06', federal_tax_bracket: '.24', state_tax_bracket: '.06'}, function(data) {
 		var table_body = $('#tbody');
 		var response = data.cash_stream;
 		var first_year_ppmt_greater_than_ipmt = false;
