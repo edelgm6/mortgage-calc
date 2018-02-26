@@ -27,7 +27,7 @@ class InvestmentView(View):
 			mortgage = Mortgage(house, yearly_interest_rate, term_in_years, down_payment_percent)
 			
 			closing_cost_as_percent_of_value = form.cleaned_data['closing_cost']
-			alternative_rent = form.cleaned_data['alternative_rent']
+			alternative_rent = form.cleaned_data['alternative_rent'] * 12
 			realtor_cost = form.cleaned_data['realtor_cost']
 			federal_tax_rate = form.cleaned_data['federal_tax_bracket']
 			state_tax_rate = form.cleaned_data['state_tax_bracket']

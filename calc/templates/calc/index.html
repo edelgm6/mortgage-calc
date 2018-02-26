@@ -38,7 +38,7 @@
 		  <div class="form-group row">
 			<label for="id_price" class="col-sm-3 col-form-label">Price</label>
 			<div class="col-sm-9">
-			<input type="number" name="price" class="form-control" aria-expanded="false" required id="id_price" />
+			<input type="number" name="price" class="form-control" aria-expanded="false" required id="id_price" value="500000" />
 			</div>
 			<div class="col-sm-12">
 			<div class="collapse" id="price-collapse" name="price">
@@ -52,7 +52,7 @@
 		  <div class="form-group row">
 			<label for="id_down_payment" class="col-sm-5 col-form-label">Down payment %</label>
 			<div class="col-sm-7">
-			<input type="number" name="down_payment" min="0" max="1" step="0.01" class="form-control" required id="id_down_payment" />		
+			<input type="number" name="down_payment" min="0" max="1" step="0.01" class="form-control" required id="id_down_payment" value=".2" />		
 			</div>
 			<div class="col-sm-12">
 			  <div class="collapse" id="price-collapse" name="down_payment">
@@ -66,7 +66,7 @@
 		  <div class="form-group row">
 			<label for="id_interest_rate" class="col-sm-5 col-form-label">Interest rate %</label>
 			<div class="col-sm-7">
-			<input type="number" name="interest_rate" min="0" max="1" step="0.01" class="form-control" required id="id_interest_rate" />			
+			<input type="number" name="interest_rate" min="0" max="1" step="0.01" class="form-control" required id="id_interest_rate" value=".05" />			
 			</div>
 			<div class="col-sm-12">
 			  <div class="collapse" id="price-collapse" name="interest_rate">
@@ -80,7 +80,7 @@
 		  <div class="form-group row">
 			<label for="id_yearly_appreciation" class="col-sm-5 col-form-label">Yearly appreciation %</label>
 			<div class="col-sm-7">
-			<input type="number" name="yearly_appreciation" min="0" max="1" step="0.01" class="form-control" required id="id_yearly_appreciation" />
+			<input type="number" name="yearly_appreciation" min="0" max="1" step="0.01" class="form-control" required id="id_yearly_appreciation" value=".05" />
 			</div>
 			<div class="col-sm-12">
 			  <div class="collapse" id="price-collapse" name="yearly_appreciation">
@@ -92,14 +92,14 @@
 	      </div>
 		
 		  <div class="form-group row">
-			<label for="id_alternative_rent" class="col-sm-5 col-form-label">Annual rent</label>
+			<label for="id_alternative_rent" class="col-sm-5 col-form-label">Monthly rent</label>
 			<div class="col-sm-7">
-			<input type="number" name="alternative_rent" min="0" class="form-control" required id="id_alternative_rent" />		
+			<input type="number" name="alternative_rent" min="0" class="form-control" required id="id_alternative_rent" value="1000" />		
 			</div>
 			<div class="col-sm-12">
 			  <div class="collapse" id="price-collapse" name="alternative_rent">
 			  <div class="card card-body">
-				  <p>Alternative rent is the <b>yearly</b> rent you would pay if you do not buy -- your current rent is a good proxy.</p>
+				  <p>Alternative rent is the <b>monthly</b> rent you would pay if you do not buy -- your current rent is a good proxy.</p>
 			  </div>
 			</div>	
 		  </div>
@@ -109,13 +109,13 @@
 			<label for="id_price" class="col-sm-3 col-form-label">Federal tax rate</label>
 			<div class="col-sm-9">
 			<select name="federal_tax_bracket" id="id_federal_tax_bracket" class="form-control" aria-expanded="false">
-			  <option value="0.1">10% - Income $9,525/$19,050 Single/Married</option>
-			  <option value="0.12">12% - Income $38,700/$77,400 Single/Married</option>
-			  <option value="0.22">22% - Income $82,500/$165,000 Single/Married</option>
-			  <option value="0.24" selected>24% - Income $157,500/$315,000 Single/Married</option>
-			  <option value="0.32">32% - Income $200,000/$400,000 Single/Married</option>
-			  <option value="0.35">35% - Income $500,000/$600,000 Single/Married</option>
-			  <option value="0.37">37% - Income $500,000+/$600,000+ Single/Married</option>
+			  <option value=".1">10% - Income $9,525/$19,050 Single/Married</option>
+			  <option value=".12">12% - Income $38,700/$77,400 Single/Married</option>
+			  <option value=".22">22% - Income $82,500/$165,000 Single/Married</option>
+			  <option value=".24" selected>24% - Income $157,500/$315,000 Single/Married</option>
+			  <option value=".32">32% - Income $200,000/$400,000 Single/Married</option>
+			  <option value=".35">35% - Income $500,000/$600,000 Single/Married</option>
+			  <option value=".37">37% - Income $500,000+/$600,000+ Single/Married</option>
 			</select>
 			</div>
 			<div class="col-sm-12">
@@ -130,7 +130,7 @@
 		  <div class="form-group row">
 			<label for="id_state_tax_bracket" class="col-sm-5 col-form-label">State tax rate</label>
 			<div class="col-sm-7">
-			<input type="number" name="state_tax_bracket" min="0" max="1" step="0.01" class="form-control" required id="id_state_tax_bracket" />
+			<input type="number" name="state_tax_bracket" min="0" max="1" step="0.01" class="form-control" required id="id_state_tax_bracket" value=".06" />
 			</div>
 			<div class="col-sm-12">
 			  <div class="collapse" id="price-collapse" name="state_tax_bracket">
@@ -168,7 +168,7 @@
 		  <div class="form-group row">
 			<label for="id_property_tax" class="col-sm-5 col-form-label">Property tax %</label>
 			<div class="col-sm-7">
-			<input type="number" name="property_tax" min="0" max="1" step="0.01" class="form-control" required id="id_property_tax"  value=".015"/>			
+			<input type="number" name="property_tax" min="0" max="1" step="0.01" class="form-control" required id="id_property_tax" value=".02"/>			
 			</div>
 			<div class="col-sm-12">
 			  <div class="collapse" id="price-collapse" name="property_tax">
@@ -210,7 +210,7 @@
 			  </div>
 			</div>
 			<br>
-	
+  </form>
 	<div class="form-group row">
 		<div class="col-sm-12">
 		
@@ -219,7 +219,6 @@
       </button>
 		</div>
     </div>
-  </form>
 </div>
 <div class="col-sm-7">
 	<div id="takeaways" class="row p-3 mb-2 bg-secondary text-white" style="display:none;">
