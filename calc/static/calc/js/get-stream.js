@@ -3,7 +3,7 @@ $('#calculate').click(function() {
 	
 	$('.mortgage').remove();
 	
-	$.get('stream/', {price: '100000', closing_cost: '.03', maintenance_cost: '.02', property_tax: '.01', down_payment: '.2', interest_rate: '.04', yearly_appreciation: '.06', alternative_rent: '4000', realtor_cost: '.06', federal_tax_bracket: '.24', state_tax_bracket: '.06'}, function(data) {
+	$.get('stream/', {price: '1200000', closing_cost: '.03', maintenance_cost: '.01', property_tax: '.02', down_payment: '.2', interest_rate: '.04', yearly_appreciation: '.07', alternative_rent: '4100', realtor_cost: '.06', federal_tax_bracket: '.32', state_tax_bracket: '.09'}, function(data) {
 		var table_body = $('#tbody');
 		var response = data.cash_stream;
 		var first_year_ppmt_greater_than_ipmt = false;
@@ -113,23 +113,33 @@ function buildCashFlowChart(streams) {
 	var labels = [];
 	var cash_flow = [];
 	var cum_cash_flow = [];
+	var cum_rent_flow = [];
 	
 	var cum_flow = 0;
+	var cum_rent = 0;
 	for (var i=0; i < streams.length; i++) {
 		labels.push(streams[i].year);
 		
-		var flow = streams[i].total
+		var flow = streams[i].total;
 		cash_flow.push(flow);
 		cum_cash_flow.push(flow + cum_flow);
-		console.log(flow);
-		console.log(flow+cum_flow);
 		cum_flow = cum_flow + flow;
+		
+		var rent = streams[i].saved_rent;
+		if (i > 0) {
+			var rent = streams[i].saved_rent * -1;
+		} else {
+			var rent = 0;
+		};
+		cum_rent_flow.push(cum_rent + rent);
+		cum_rent = cum_rent + rent;
 	};
 	
 	labels[0] = '0';
 	cashFlowChart['data']['labels'] = labels;
-	cashFlowChart['data']['datasets'][0]['data'] = cash_flow;
-	cashFlowChart['data']['datasets'][1]['data'] = cum_cash_flow;
+	//cashFlowChart['data']['datasets'][0]['data'] = cash_flow;
+	cashFlowChart['data']['datasets'][0]['data'] = cum_cash_flow;
+	cashFlowChart['data']['datasets'][1]['data'] = cum_rent_flow;
 	
 };
 

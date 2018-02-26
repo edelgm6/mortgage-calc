@@ -2,6 +2,11 @@ Chart.defaults.global.defaultFontColor = 'white';
 Chart.defaults.global.elements.line.fill = false;
 Chart.defaults.global.zeroLineColor = 'white';
 
+var primary = '#E4F1FF';
+//var secondary = '#4B7199';
+//var secondary = '#FFB8A4';
+var secondary = '#CCA5A2';
+var tertiary = '#393C40';
 var ctx = $("#irrChart");
 var irrChart = new Chart(ctx, {
 	type: 'line',
@@ -10,7 +15,7 @@ var irrChart = new Chart(ctx, {
 		datasets: [{
 			label: 'IRR',
 			data: [],
-			borderColor: 'white',
+			borderColor: primary,
 		}],
 	},
 	options: {
@@ -56,12 +61,12 @@ var pmtChart = new Chart(ctx, {
 		datasets: [{
 			label: 'Principal',
 			data: [],
-			borderColor: 'green',
+			borderColor: primary,
 		},
 		{
 			label: 'Interest',
 			data: [],
-			borderColor: 'darkred',
+			borderColor: secondary,
 		}],
 	},
 	options: {
@@ -102,14 +107,19 @@ var cashFlowChart = new Chart(ctx, {
 	data: {
 		labels: [],
 		datasets: [{
-			label: 'Cash flow',
+		//	label: 'Cash flow',
+		//	data: [],
+		//	borderColor: 'blue',
+		//},
+		//{
+			label: 'Own',
 			data: [],
-			borderColor: 'blue',
+			borderColor: primary,
 		},
 		{
-			label: 'Cumulative cash flow',
+			label: 'Rent',
 			data: [],
-			borderColor: 'black',
+			borderColor: secondary,
 		}],
 	},
 	options: {
@@ -117,7 +127,7 @@ var cashFlowChart = new Chart(ctx, {
 			yAxes: [{
 				scaleLabel: {
 					display: true,
-					labelString: 'Payment',
+					labelString: 'Cumulative spend',
 
 				},
 				gridLines: {
