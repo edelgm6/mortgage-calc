@@ -6,7 +6,7 @@
     height: 120px;
     animation: spin 2s linear infinite;
 
-    position: absolute;
+    position: fixed;
     top:0;
     bottom: 0;
     left: 0;
@@ -23,7 +23,7 @@
 .overlay {
     background: #e9e9e9;
     display: none;      
-    position: absolute; 
+    position: fixed; 
     top: 0;             
     right: 0;
     bottom: 0;

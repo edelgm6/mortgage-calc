@@ -3,21 +3,21 @@ $('#calculate').click(function () {
 
 	$('.mortgage').remove();
 
-	var get_response = getMortgageStream();
-
-	$.get('stream/', {
-		price: '1700000',
-		closing_cost: '.03',
-		maintenance_cost: '.01',
-		property_tax: '.02',
-		down_payment: '.1',
-		interest_rate: '.04',
-		yearly_appreciation: '.06',
-		alternative_rent: '4100',
-		realtor_cost: '.06',
-		federal_tax_bracket: '.24',
-		state_tax_bracket: '.09'
-	}, function (data) {
+	var get_data = {
+		'price': $('#id_price').val(),
+		'closing_cost': $('#id_closing_cost').val(),
+		'maintenance_cost': $('#id_maintenance_cost').val(),
+		'property_tax': $('#id_property_tax').val(),
+		'down_payment': $('#id_down_payment').val(),
+		'interest_rate': $('#id_interest_rate').val(),
+		'yearly_appreciation': $('#id_yearly_appreciation').val(),
+		'alternative_rent': $('#id_alternative_rent').val(),
+		'realtor_cost': $('#id_realtor_cost').val(),
+		'federal_tax_bracket': $('#id_federal_tax_bracket').val(),
+		'state_tax_bracket': $('#id_state_tax_bracket').val()
+	};
+	
+	$.get('stream/', get_data, function (data) {
 
 		var table_body = $('#tbody');
 		var response = data.cash_stream;
@@ -112,6 +112,9 @@ $('#calculate').click(function () {
 		setTimeout(function () {
 			$('.overlay').removeAttr('style');
 			$('#takeaways').fadeIn(1000);
+			irrChart.update();
+			pmtChart.update();
+			cashFlowChart.update();
 			$('#thead').fadeIn(1000);
 			$(".mortgage").each(function (index) {
 				$(this).delay(150 * index).fadeIn(1000);
@@ -121,27 +124,6 @@ $('#calculate').click(function () {
 
 	});
 });
-
-function getMortgageStream() {
-	
-	var get_data = {
-		'price': $('#id_price').val(),
-		'closing_cost': $('#id_closing_cost').val(),
-		'maintenance_cost': $('#id_maintenance_cost').val(),
-		'property_tax': $('#id_property_tax').val(),
-		'down_payment': $('#id_down_payment').val(),
-		'interest_rate': $('#id_interest_rate').val(),
-		'yearly_appreciation': $('#id_yearly_appreciation').val(),
-		'alternative_rent': $('#id_alternative_rent').val(),
-		'realtor_cost': $('#id_realtor_cost').val(),
-		'federal_tax_bracket': $('#id_federal_tax_bracket').val(),
-		'state_tax_bracket': $('#id_state_tax_bracket').val()
-	};
-	
-	$.get('stream/', get_data, function (data) {
-		console.log(data)
-	});
-}
 
 function convertNumberToString(number) {
 	try {
