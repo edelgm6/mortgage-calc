@@ -7,6 +7,22 @@ class House:
 		self.yearly_appreciation_rate = yearly_appreciation_rate
 		self.yearly_property_tax_rate = yearly_property_tax_rate
 		self.yearly_maintenance_as_percent_of_value = yearly_maintenance_as_percent_of_value
+		
+	def getHomeValueStreams(self):
+		base_case = [self.price]
+		high_case = [self.price]
+		low_case = [self.price]
+		
+		BASE_GROWTH_RATE = self.yearly_appreciation_rate
+		HIGH_GROWTH_RATE = BASE_GROWTH_RATE + Decimal(.01)
+		LOW_GROWTH_RATE = BASE_GROWTH_RATE - Decimal(.01)
+		
+		for year in range(1,31):
+			base_case.append(base_case[year-1] * (1+BASE_GROWTH_RATE))
+			high_case.append(high_case[year-1] * (1+HIGH_GROWTH_RATE))
+			low_case.append(low_case[year-1] * (1+LOW_GROWTH_RATE))
+			
+		return base_case, high_case, low_case
 	
 	
 class Mortgage:
@@ -124,6 +140,8 @@ class Investment:
 			cash_flows_with_sale[i] = cash_flow_stream[i] + net_sale_proceeds
 			irr = numpy.irr(cash_flows_with_sale)
 			
+			base, high, low = self.house.getHomeValueStreams()
+			
 			cash_flow_dict = {
 				'total': self.__convertToReadableString(cash_flow),
 				'mortgage': self.__convertToReadableString(mortgage_payment),
@@ -141,7 +159,23 @@ class Investment:
 			cash_flows.append(cash_flow_dict)
 			
 		return cash_flows
+	
+	def getAlternativeRentStreams(self):
+		base_case = [self.alternative_rent]
+		high_case = [self.alternative_rent]
+		low_case = [self.alternative_rent]
+		
+		BASE_GROWTH_RATE = self.house.yearly_appreciation_rate
+		HIGH_GROWTH_RATE = BASE_GROWTH_RATE + Decimal(.01)
+		LOW_GROWTH_RATE = BASE_GROWTH_RATE - Decimal(.01)
+		
+		for year in range(1,31):
+			base_case.append(base_case[year-1] * (1+BASE_GROWTH_RATE))
+			high_case.append(high_case[year-1] * (1+HIGH_GROWTH_RATE))
+			low_case.append(low_case[year-1] * (1+LOW_GROWTH_RATE))
 			
+		return base_case, high_case, low_case
+	
 	def getInterestTaxBenefit(self, federal_tax_rate, state_tax_rate, debt_value, interest_payment):
 		DEBT_LIMIT = 750000
 		
