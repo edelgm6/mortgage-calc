@@ -13,15 +13,22 @@ var irrChart = new Chart(ctx, {
 	data: {
 		labels: [],
 		datasets: [{
-			label: 'IRR',
+			label: 'Base appreciation',
 			data: [],
 			borderColor: primary,
+		},
+		{
+			label: 'High (Base+1%)',
+			data: [],
+			borderColor: tertiary,
+		},
+		{
+			label: 'Low (Base-1%)',
+			data: [],
+			borderColor: secondary,
 		}],
 	},
 	options: {
-		legend: {
-			display: false,
-		},
 		scales: {
 			yAxes: [{
 				scaleLabel: {

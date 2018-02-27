@@ -102,55 +102,40 @@ class Investment:
 		mortgage_payment = self.mortgage.getYearlyPayment()
 		current_value = self.house.price
 		debt = self.mortgage.mortgage_amount * -1
-		cash_flow_stream = []
-		cash_flow_stream.append(self.getYearZeroCashFlow())
 		alternative_rent = self.alternative_rent
-		for i in range(1,31):
-			
-			###Clean this shit up, especially this issue with averaging some things 
-			##May need to average in the alternate rent.  Should be clustered to be cleaner
-			
-			# Calculates in-year costs based on average value throughout year
-			average_value = self.getAverageValueInYear(current_value)
-			rent_avoided = self.getAverageValueInYear(alternative_rent)
-			maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
-			property_tax = self.house.yearly_property_tax_rate * average_value * -1
-			
-			# Calculates tax benefits
-			interest_payment = self.mortgage.getInterestPayment(i)
-			interest_writeoff = self.getInterestTaxBenefit(self.federal_tax_rate, self.state_tax_rate, debt, interest_payment)
-			property_tax_writeoff = self.getPropertyTaxBenefit(self.federal_tax_rate, property_tax)
-			tax_shield = interest_writeoff + property_tax_writeoff
-			
-			cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield
-			cash_flow_stream.append(cash_flow)
 		
-			# Increments current home value and cost of rent by the year appreciation rate
-			current_value = current_value * (1+self.house.yearly_appreciation_rate)
-			alternative_rent = alternative_rent * (1+self.house.yearly_appreciation_rate)
-			
-			# Calculates balance sheet
-			principal_payment = self.mortgage.getPrincipalPayment(i)
+		base_rent, high_rent, low_rent = self.getAlternativeRentStreams()
+		base_value, high_value, low_value = self.house.getHomeValueStreams()
+		base_cash_stream = [self.getYearZeroCashFlow()]
+		high_cash_stream = [self.getYearZeroCashFlow()]
+		low_cash_stream = [self.getYearZeroCashFlow()]
+		
+		for year in range(1,31):
+
+			interest_payment = self.mortgage.getInterestPayment(year)
+			interest_writeoff = self.getInterestTaxBenefit(self.federal_tax_rate, self.state_tax_rate, debt, interest_payment)
+			principal_payment = self.mortgage.getPrincipalPayment(year)
 			debt = debt - principal_payment
-			equity = current_value + debt
 			
-			# Calculates IRR with separate cash flow array
-			cash_flows_with_sale = cash_flow_stream[:]
-			net_sale_proceeds = self.getSaleProceeds(current_value, equity)
-			cash_flows_with_sale[i] = cash_flow_stream[i] + net_sale_proceeds
-			irr = numpy.irr(cash_flows_with_sale)
+			other_costs, rent_avoided = self.updateCashStream(base_cash_stream, base_value, base_rent, interest_writeoff, year, mortgage_payment, True)
+			self.updateCashStream(low_cash_stream, low_value, low_rent, interest_writeoff, year, mortgage_payment)
+			self.updateCashStream(high_cash_stream, high_value, high_rent, interest_writeoff, year, mortgage_payment)
 			
-			base, high, low = self.house.getHomeValueStreams()
+			base_irr, equity = self.getIRR(base_cash_stream, base_value, debt, year, True)
+			low_irr = self.getIRR(low_cash_stream, low_value, debt, year)
+			high_irr = self.getIRR(high_cash_stream, high_value, debt, year)
 			
+			# Calculates for base stream only
 			cash_flow_dict = {
-				'total': self.__convertToReadableString(cash_flow),
-				'mortgage': self.__convertToReadableString(mortgage_payment),
-				'other_costs': self.__convertToReadableString(maintenance + property_tax),
-				'value': self.__convertToReadableString(current_value),
+				'total': self.__convertToReadableString(base_cash_stream[year]),
+				'other_costs': self.__convertToReadableString(other_costs),
+				'value': self.__convertToReadableString(base_value[year]),
 				'equity': self.__convertToReadableString(equity),
 				'debt': self.__convertToReadableString(debt),
-				'irr': round(irr * 100,2),
-				'year': i,
+				'irr': round(base_irr * 100,2),
+				'high_irr': round(high_irr * 100,2),
+				'low_irr': round(low_irr * 100,2),
+				'year': year,
 				'principal_payment': self.__convertToReadableString(principal_payment),
 				'debt_payment': self.__convertToReadableString(interest_payment),
 				'saved_rent': self.__convertToReadableString(rent_avoided)
@@ -159,6 +144,41 @@ class Investment:
 			cash_flows.append(cash_flow_dict)
 			
 		return cash_flows
+
+	def updateCashStream(self, cash_stream, value_stream, rent_stream, interest_writeoff, year, mortgage_payment, is_base=False):
+		# Calculates in-year costs based on average value throughout year
+		average_value = (value_stream[year] + value_stream[year-1]) / 2
+		rent_avoided = (rent_stream[year] + rent_stream[year-1]) / 2
+		maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
+		property_tax = self.house.yearly_property_tax_rate * average_value * -1
+
+		# Calculates tax benefits
+		property_tax_writeoff = self.getPropertyTaxBenefit(self.federal_tax_rate, property_tax)
+		tax_shield = interest_writeoff + property_tax_writeoff
+
+		cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield
+		cash_stream.append(cash_flow)	
+		
+		if is_base:
+			other_costs = maintenance + property_tax
+			return other_costs, rent_avoided
+		
+	def getIRR(self, cash_stream, value_stream, debt, year, is_base=False):
+			
+		# Calculates balance sheet
+		current_value = value_stream[year]
+		equity = current_value + debt
+
+		# Calculates IRR with separate cash flow array
+		cash_stream_with_sale = cash_stream[:]
+		net_sale_proceeds = self.getSaleProceeds(current_value, equity)
+		cash_stream_with_sale[year] = cash_stream[year] + net_sale_proceeds
+		irr = numpy.irr(cash_stream_with_sale)
+		
+		if is_base:
+			return irr, equity
+		else:
+			return irr
 	
 	def getAlternativeRentStreams(self):
 		base_case = [self.alternative_rent]

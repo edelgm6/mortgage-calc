@@ -139,14 +139,20 @@ function buildIRRChart(streams) {
 
 	var labels = [];
 	var data = [];
+	var high_data = [];
+	var low_data = [];
 
 	for (var i = 1; i < streams.length; i++) {
 		labels.push(streams[i].year);
 		data.push(streams[i].irr);
+		high_data.push(streams[i].high_irr);
+		low_data.push(streams[i].low_irr);
 	};
 
 	irrChart['data']['labels'] = labels;
 	irrChart['data']['datasets'][0]['data'] = data;
+	irrChart['data']['datasets'][1]['data'] = high_data;
+	irrChart['data']['datasets'][2]['data'] = low_data;
 };
 
 function buildCashFlowChart(streams) {
@@ -160,17 +166,17 @@ function buildCashFlowChart(streams) {
 	for (var i = 0; i < streams.length; i++) {
 		labels.push(streams[i].year);
 
-		var flow = streams[i].total;
-		cash_flow.push(flow);
-		cum_cash_flow.push(flow + cum_flow);
-		cum_flow = cum_flow + flow;
-
 		var rent = streams[i].saved_rent;
 		if (i > 0) {
 			var rent = streams[i].saved_rent * -1;
 		} else {
 			var rent = 0;
 		};
+		
+		var flow = streams[i].total + rent;
+		cum_cash_flow.push(flow + cum_flow);
+		cum_flow = cum_flow + flow;
+		
 		cum_rent_flow.push(cum_rent + rent);
 		cum_rent = cum_rent + rent;
 	};
