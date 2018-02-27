@@ -25,14 +25,14 @@
 	<div class="container">
 		<br>
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-md-10">
 		<h1>Home Investment Calculator</h1>
 		<p>You'll often hear certain "common sense" reasons to buy a house -- 1) "pay yourself (i.e., via your mortgage) instead of your landlord," 2) "your mortgage payment is less than your rent," and 3) "a home is a great investment." I've often found that very few people have actually run the numbers -- this calculator helps you do that. Unlike most calculators you find online, which try to tell you what you can afford or whether you should rent or buy, this calculator tells you whether or not you will be making a good investment.</p>
 			</div>
 		</div>
 		
 		<div class="row">
-		<div class="col-sm-6">  
+		<div class="col-sm-5">  
 		  <div class="form-group row">
 			<label for="id_price" class="col-sm-3 col-form-label">Price</label>
 			<div class="col-sm-9">
@@ -90,7 +90,7 @@
 	      </div>
 		  </div>
 			
-		<div class="col-sm-6"> 
+		<div class="col-sm-5"> 
 		
 		  <div class="form-group row">
 			<label for="id_alternative_rent" class="col-sm-5 col-form-label">Monthly rent</label>
@@ -149,7 +149,10 @@
 		  <a class="btn btn-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
 			Advanced options
 		  </a>
-
+				</div>
+		</div>
+			<div class="row">
+			<div class="col-sm-6">
 			<div class="collapse" id="collapseExample">
 			  <div class="card card-body">
 				 
@@ -211,7 +214,8 @@
 
 			</div>
 			</div>
-				</div>
+			</div>
+		</div>
 			
 		<div class="row">
 			<div class="col-sm-12">
@@ -225,21 +229,40 @@
     </div>
 </div>
 </div>
-<div class="col-sm-7">
-	<div id="takeaways" class="row p-3 mb-2 bg-secondary text-white" style="display:none;">
-		<div class="col-sm-12">
-		<p><strong>Investment returns (IRR): </strong>As a reference, the long run annualized return of the S&P500 is ~9% with reinvested dividends.</p><br>
-		<canvas id="irrChart"></canvas>
 		
+
+<div id="takeaways" class="row" style="display:none;">
+	<div class="col-sm-10 p-3 mb-2 bg-secondary text-white">
+
+		<div class="row">
+		<div class="col-sm-3">
+		<p><strong>Investment returns (IRR): </strong>As a reference, the long run annualized return of the S&P500 is ~9% with reinvested dividends.</p><br>
+		</div>
+		<div class="col-sm-9">
+		<canvas id="irrChart"></canvas>
+		</div>
+		</div>
+		
+		<div class="row">
+		<div class="col-sm-3">
 		<p><strong>Paying yourself: </strong>Year <span id="first_year_ppmt_greater_than_ipmt"></span> 
 		is the first year when your <strong>principal payment will be larger
 		than your interest payment.</strong></p>
+		</div>
+		<div class="col-sm-9">
 		<canvas id="pmtChart"></canvas>
+		</div>
+		</div>
 		
+		<div class="row">
+		<div class="col-sm-3">
 		<p><strong>Saving money: </strong>Year <span id="first_year_positive_cash_flow"></span> 
 		is the first year when your <strong>house's mortgage and other costs are less expensive than the equivalent rent.</strong></p>
+		</div>
+		<div class="col-sm-9">
 		<canvas id="cashFlowChart"></canvas>
-	</div>
+	    </div>
+		</div>
 </div>
 </div>
 		

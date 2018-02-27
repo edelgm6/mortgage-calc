@@ -6,7 +6,7 @@ var primary = '#E4F1FF';
 //var secondary = '#4B7199';
 //var secondary = '#FFB8A4';
 var secondary = '#CCA5A2';
-var tertiary = '#393C40';
+var tertiary = '#D7FFE7';
 var ctx = $("#irrChart");
 var irrChart = new Chart(ctx, {
 	type: 'line',
