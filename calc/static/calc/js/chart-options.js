@@ -5,160 +5,161 @@ Chart.defaults.global.zeroLineColor = 'white';
 const zeroArray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 var primary = '#E4F1FF';
-//var secondary = '#4B7199';
-//var secondary = '#FFB8A4';
 var secondary = '#CCA5A2';
 var tertiary = '#D7FFE7';
-var ctx = $("#irrChart");
-var irrChart = new Chart(ctx, {
-	type: 'line',
-	data: {
-		labels: [],
-		datasets: [{
-			label: 'Base appreciation',
-			data: zeroArray,
-			borderColor: primary,
-		},
-		{
-			label: 'High (Base+1%)',
-			data: zeroArray,
-			borderColor: tertiary,
-		},
-		{
-			label: 'Low (Base-1%)',
-			data: zeroArray,
-			borderColor: secondary,
-		}],
-	},
-	options: {
-		scales: {
-			yAxes: [{
-				scaleLabel: {
-					display: true,
-					labelString: 'Annualized return',
+var irr = $("#irrChart");
 
-				},
-				gridLines: {
-					color: 'lightgray',
-					zeroLineColor: 'white',
-				},
-				ticks: {
-					callback: function(value, index, values) {
-						return value + '%';
+function irrChart(labels, base, high, low) {
+	var irrChart = new Chart(irr, {
+		type: 'line',
+		data: {
+			labels: labels,
+			datasets: [{
+				label: 'Base appreciation',
+				data: base,
+				borderColor: primary,
+			},
+			{
+				label: 'High (Base+1%)',
+				data: high,
+				borderColor: tertiary,
+			},
+			{
+				label: 'Low (Base-1%)',
+				data: low,
+				borderColor: secondary,
+			}],
+		},
+		options: {
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Annualized return',
+
 					},
-				}
-			}],
-			xAxes: [{
-				scaleLabel: {
-					display: true,
-					labelString: 'Years since purchase',
-					fontColor: 'white',
-				},
-				gridLines: {
-					color: 'transparent',
-				},
-			}],
-		},
-	},
-});
-
-var ctx = $("#pmtChart");
-var pmtChart = new Chart(ctx, {
-	type: 'line',
-	data: {
-		labels: [],
-		datasets: [{
-			label: 'Principal',
-			data: [],
-			borderColor: primary,
-		},
-		{
-			label: 'Interest',
-			data: [],
-			borderColor: secondary,
-		}],
-	},
-	options: {
-		scales: {
-			yAxes: [{
-				scaleLabel: {
-					display: true,
-					labelString: 'Payment',
-
-				},
-				gridLines: {
-					color: 'lightgray',
-					zeroLineColor: 'white',
-				},
-				ticks: {
-					callback: function(value, index, values) {
-						return '$' + value + 'K';
+					gridLines: {
+						color: 'lightgray',
+						zeroLineColor: 'white',
 					},
-				}
-			}],
-			xAxes: [{
-				scaleLabel: {
-					display: true,
-					labelString: 'Years since purchase',
-					fontColor: 'white',
-				},
-				gridLines: {
-					color: 'transparent',
-				},
+					ticks: {
+						callback: function(value, index, values) {
+							return value + '%';
+						},
+					}
+				}],
+				xAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Years since purchase',
+						fontColor: 'white',
+					},
+					gridLines: {
+						color: 'transparent',
+					},
+				}],
+			},
+		},
+	});
+};
+
+var pmt = $("#pmtChart");
+
+function pmtChart(labels, principal, interest) {
+	var pmtChart = new Chart(pmt, {
+		type: 'line',
+		data: {
+			labels: labels,
+			datasets: [{
+				label: 'Principal',
+				data: principal,
+				borderColor: primary,
+			},
+			{
+				label: 'Interest',
+				data: interest,
+				borderColor: secondary,
 			}],
 		},
-	},
-});
+		options: {
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Payment',
 
+					},
+					gridLines: {
+						color: 'lightgray',
+						zeroLineColor: 'white',
+					},
+					ticks: {
+						callback: function(value, index, values) {
+							return '$' + value + 'K';
+						},
+					}
+				}],
+				xAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Years since purchase',
+						fontColor: 'white',
+					},
+					gridLines: {
+						color: 'transparent',
+					},
+				}],
+			},
+		},
+	});
+};
+	
 var ctx = $("#cashFlowChart");
-var cashFlowChart = new Chart(ctx, {
-	type: 'line',
-	data: {
-		labels: [],
-		datasets: [{
-		//	label: 'Cash flow',
-		//	data: [],
-		//	borderColor: 'blue',
-		//},
-		//{
-			label: 'Own',
-			data: [],
-			borderColor: primary,
+function cashFlowChart(labels, own, rent) {
+	var cashFlowChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: labels,
+			datasets: [{
+				label: 'Own',
+				data: own,
+				borderColor: primary,
+			},
+			{
+				label: 'Rent',
+				data: rent,
+				borderColor: secondary,
+			}],
 		},
-		{
-			label: 'Rent',
-			data: [],
-			borderColor: secondary,
-		}],
-	},
-	options: {
-		scales: {
-			yAxes: [{
-				scaleLabel: {
-					display: true,
-					labelString: 'Cumulative spend',
+		options: {
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Cumulative spend',
 
-				},
-				gridLines: {
-					color: 'lightgray',
-					zeroLineColor: 'white',
-				},
-				ticks: {
-					callback: function(value, index, values) {
-						return '$' + value + 'K';
 					},
-				}
-			}],
-			xAxes: [{
-				scaleLabel: {
-					display: true,
-					labelString: 'Years since purchase',
-					fontColor: 'white',
-				},
-				gridLines: {
-					color: 'transparent',
-				},
-			}],
+					gridLines: {
+						color: 'lightgray',
+						zeroLineColor: 'white',
+					},
+					ticks: {
+						callback: function(value, index, values) {
+							return '$' + value + 'K';
+						},
+					}
+				}],
+				xAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Years since purchase',
+						fontColor: 'white',
+					},
+					gridLines: {
+						color: 'transparent',
+					},
+				}],
+			},
 		},
-	},
-});
+	});
+};

@@ -149,10 +149,11 @@ function buildIRRChart(streams) {
 		low_data.push(streams[i].low_irr);
 	};
 
-	irrChart['data']['labels'] = labels;
-	irrChart['data']['datasets'][0]['data'] = data;
-	irrChart['data']['datasets'][1]['data'] = high_data;
-	irrChart['data']['datasets'][2]['data'] = low_data;
+	irrChart(labels, data, high_data, low_data);
+	//irrChart['data']['labels'] = labels;
+	//irrChart['data']['datasets'][0]['data'] = data;
+	//irrChart['data']['datasets'][1]['data'] = high_data;
+	//irrChart['data']['datasets'][2]['data'] = low_data;
 };
 
 function buildCashFlowChart(streams) {
@@ -182,10 +183,7 @@ function buildCashFlowChart(streams) {
 	};
 
 	labels[0] = '0';
-	cashFlowChart['data']['labels'] = labels;
-	//cashFlowChart['data']['datasets'][0]['data'] = cash_flow;
-	cashFlowChart['data']['datasets'][0]['data'] = cum_cash_flow;
-	cashFlowChart['data']['datasets'][1]['data'] = cum_rent_flow;
+	cashFlowChart(labels, cum_cash_flow, cum_rent_flow);
 
 };
 
@@ -200,8 +198,6 @@ function buildPMTChart(streams) {
 		ppmt.push(streams[i].principal_payment * -1/1000);
 	};
 
-	pmtChart['data']['labels'] = labels;
-	pmtChart['data']['datasets'][0]['data'] = ppmt;
-	pmtChart['data']['datasets'][1]['data'] = ipmt;
+	pmtChart(labels, ppmt, ipmt);
 
 };
