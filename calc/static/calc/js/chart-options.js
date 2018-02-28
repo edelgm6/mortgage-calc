@@ -90,7 +90,7 @@ var pmtChart = new Chart(ctx, {
 				},
 				ticks: {
 					callback: function(value, index, values) {
-						return '$' + value;
+						return '$' + value + 'K';
 					},
 				}
 			}],
@@ -143,7 +143,7 @@ var cashFlowChart = new Chart(ctx, {
 				},
 				ticks: {
 					callback: function(value, index, values) {
-						return '$' + value;
+						return '$' + value + 'K';
 					},
 				}
 			}],
