@@ -2,6 +2,8 @@ Chart.defaults.global.defaultFontColor = 'white';
 Chart.defaults.global.elements.line.fill = false;
 Chart.defaults.global.zeroLineColor = 'white';
 
+const zeroArray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
 var primary = '#E4F1FF';
 //var secondary = '#4B7199';
 //var secondary = '#FFB8A4';
@@ -14,17 +16,17 @@ var irrChart = new Chart(ctx, {
 		labels: [],
 		datasets: [{
 			label: 'Base appreciation',
-			data: [],
+			data: zeroArray,
 			borderColor: primary,
 		},
 		{
 			label: 'High (Base+1%)',
-			data: [],
+			data: zeroArray,
 			borderColor: tertiary,
 		},
 		{
 			label: 'Low (Base-1%)',
-			data: [],
+			data: zeroArray,
 			borderColor: secondary,
 		}],
 	},

@@ -111,7 +111,7 @@ $('#calculate').click(function () {
 		});
 		setTimeout(function () {
 			$('.overlay').removeAttr('style');
-			$('#takeaways').fadeIn(1000);
+			//$('#takeaways').fadeIn(1000);
 			irrChart.update();
 			pmtChart.update();
 			cashFlowChart.update();
