@@ -112,7 +112,7 @@ $('#calculate').click(function () {
 		setTimeout(function () {
 			$('.overlay').removeAttr('style');
 			//$('#takeaways').fadeIn(1000);
-			irrChart.update();
+			irrChartObject.update();
 			pmtChart.update();
 			cashFlowChart.update();
 			$('#thead').fadeIn(1000);
@@ -148,12 +148,16 @@ function buildIRRChart(streams) {
 		high_data.push(streams[i].high_irr);
 		low_data.push(streams[i].low_irr);
 	};
+	
+	if (Object.keys(irrChartObject).length==0) {
+		irrChart(labels, data, high_data, low_data);
+	} else {
+		irrChartObject['data']['labels'] = labels;
+		irrChartObject['data']['datasets'][0]['data'] = data;
+		irrChartObject['data']['datasets'][1]['data'] = high_data;
+		irrChartObject['data']['datasets'][2]['data'] = low_data;	
+	};
 
-	irrChart(labels, data, high_data, low_data);
-	//irrChart['data']['labels'] = labels;
-	//irrChart['data']['datasets'][0]['data'] = data;
-	//irrChart['data']['datasets'][1]['data'] = high_data;
-	//irrChart['data']['datasets'][2]['data'] = low_data;
 };
 
 function buildCashFlowChart(streams) {

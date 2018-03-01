@@ -2,15 +2,14 @@ Chart.defaults.global.defaultFontColor = 'white';
 Chart.defaults.global.elements.line.fill = false;
 Chart.defaults.global.zeroLineColor = 'white';
 
-const zeroArray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-
 var primary = '#E4F1FF';
 var secondary = '#CCA5A2';
 var tertiary = '#D7FFE7';
 var irr = $("#irrChart");
+var irrChartObject = {};
 
 function irrChart(labels, base, high, low) {
-	var irrChart = new Chart(irr, {
+	irrChartObject = new Chart(irr, {
 		type: 'line',
 		data: {
 			labels: labels,
