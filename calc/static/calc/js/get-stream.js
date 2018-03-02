@@ -1,3 +1,5 @@
+var first_click = true;
+
 $('#calculate').click(function () {
 	$('.overlay').show();
 
@@ -23,9 +25,6 @@ $('#calculate').click(function () {
 		var response = data.cash_stream;
 		var first_year_ppmt_greater_than_ipmt = false;
 		var first_year_positive_cash_flow = false;
-		buildIRRChart(response);
-		buildPMTChart(response);
-		buildCashFlowChart(response);
 		$.each(response, function (key, value) {
 			var $tr = $("<tr>", {
 				'class': 'mortgage',
@@ -111,7 +110,9 @@ $('#calculate').click(function () {
 		});
 		setTimeout(function () {
 			$('.overlay').removeAttr('style');
-			//$('#takeaways').fadeIn(1000);
+			buildIRRChart(response);
+			buildPMTChart(response);
+			buildCashFlowChart(response);
 			irrChartObject.update();
 			pmtChartObject.update();
 			cashFlowChartObject.update();
@@ -119,7 +120,14 @@ $('#calculate').click(function () {
 			$(".mortgage").each(function (index) {
 				$(this).delay(150 * index).fadeIn(1000);
 			});
+			if (first_click) {
+				$(window).scrollTo('#takeaways', 800);
+				first_click = false;
+			}
+			
 		}, 3000);
+		
+		
 
 
 	});

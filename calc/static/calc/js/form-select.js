@@ -20,6 +20,7 @@ $(document).ready( function() {
     });
 });
 
+
 $("#id_price,#id_alternative_rent").keyup( function(event) {
 
   // skip for arrow keys
