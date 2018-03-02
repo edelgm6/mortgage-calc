@@ -113,8 +113,8 @@ $('#calculate').click(function () {
 			$('.overlay').removeAttr('style');
 			//$('#takeaways').fadeIn(1000);
 			irrChartObject.update();
-			pmtChart.update();
-			cashFlowChart.update();
+			pmtChartObject.update();
+			cashFlowChartObject.update();
 			$('#thead').fadeIn(1000);
 			$(".mortgage").each(function (index) {
 				$(this).delay(150 * index).fadeIn(1000);
@@ -173,12 +173,12 @@ function buildCashFlowChart(streams) {
 
 		var rent = streams[i].saved_rent;
 		if (i > 0) {
-			var rent = streams[i].saved_rent * -1/1000;
+			var rent = Math.round(streams[i].saved_rent * -1/1000);
 		} else {
 			var rent = 0;
 		};
 		
-		var flow = (streams[i].total / 1000) + rent;
+		var flow = Math.round((streams[i].total / 1000)) + rent;
 		cum_cash_flow.push(flow + cum_flow);
 		cum_flow = cum_flow + flow;
 		
@@ -187,7 +187,14 @@ function buildCashFlowChart(streams) {
 	};
 
 	labels[0] = '0';
-	cashFlowChart(labels, cum_cash_flow, cum_rent_flow);
+	if (Object.keys(cashFlowChartObject).length==0) {
+		cashFlowChart(labels, cum_cash_flow, cum_rent_flow);
+	} else {
+		cashFlowChartObject['data']['labels'] = labels;
+		cashFlowChartObject['data']['datasets'][0]['data'] = cum_cash_flow;
+		cashFlowChartObject['data']['datasets'][1]['data'] = cum_rent_flow;
+	};
+	
 
 };
 
@@ -198,10 +205,16 @@ function buildPMTChart(streams) {
 
 	for (var i = 1; i < streams.length; i++) {
 		labels.push(streams[i].year);
-		ipmt.push(streams[i].debt_payment * -1/1000);
-		ppmt.push(streams[i].principal_payment * -1/1000);
+		ipmt.push((streams[i].debt_payment * -1/1000).toFixed(2));
+		ppmt.push((streams[i].principal_payment * -1/1000).toFixed(2));
 	};
-
-	pmtChart(labels, ppmt, ipmt);
+	if (Object.keys(cashFlowChartObject).length==0) {
+		pmtChart(labels, ppmt, ipmt);
+	} else {
+		pmtChartObject['data']['labels'] = labels;
+		pmtChartObject['data']['datasets'][0]['data'] = ppmt;
+		pmtChartObject['data']['datasets'][1]['data'] = ipmt;
+	};
+	
 
 };

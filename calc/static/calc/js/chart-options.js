@@ -5,9 +5,9 @@ Chart.defaults.global.zeroLineColor = 'white';
 var primary = '#E4F1FF';
 var secondary = '#CCA5A2';
 var tertiary = '#D7FFE7';
+
 var irr = $("#irrChart");
 var irrChartObject = {};
-
 function irrChart(labels, base, high, low) {
 	irrChartObject = new Chart(irr, {
 		type: 'line',
@@ -63,16 +63,16 @@ function irrChart(labels, base, high, low) {
 };
 
 var pmt = $("#pmtChart");
-
+var pmtChartObject = {};
 function pmtChart(labels, principal, interest) {
-	var pmtChart = new Chart(pmt, {
+	pmtChartObject = new Chart(pmt, {
 		type: 'line',
 		data: {
 			labels: labels,
 			datasets: [{
 				label: 'Principal',
 				data: principal,
-				borderColor: primary,
+				borderColor: tertiary,
 			},
 			{
 				label: 'Interest',
@@ -113,9 +113,10 @@ function pmtChart(labels, principal, interest) {
 	});
 };
 	
-var ctx = $("#cashFlowChart");
+var cash = $("#cashFlowChart");
+var cashFlowChartObject = {};
 function cashFlowChart(labels, own, rent) {
-	var cashFlowChart = new Chart(ctx, {
+	cashFlowChartObject = new Chart(cash, {
 		type: 'line',
 		data: {
 			labels: labels,
