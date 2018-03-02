@@ -4,14 +4,14 @@ $('#calculate').click(function () {
 	$('.mortgage').remove();
 
 	var get_data = {
-		'price': $('#id_price').val(),
+		'price': $('#id_price').val().replace(",", ""),
 		'closing_cost': $('#id_closing_cost').val(),
 		'maintenance_cost': $('#id_maintenance_cost').val(),
 		'property_tax': $('#id_property_tax').val(),
 		'down_payment': $('#id_down_payment').val(),
 		'interest_rate': $('#id_interest_rate').val(),
 		'yearly_appreciation': $('#id_yearly_appreciation').val(),
-		'alternative_rent': $('#id_alternative_rent').val(),
+		'alternative_rent': $('#id_alternative_rent').val().replace(",", ""),
 		'realtor_cost': $('#id_realtor_cost').val(),
 		'federal_tax_bracket': $('#id_federal_tax_bracket').val(),
 		'state_tax_bracket': $('#id_state_tax_bracket').val()
