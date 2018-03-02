@@ -113,9 +113,11 @@ $('#calculate').click(function () {
 			buildIRRChart(response);
 			buildPMTChart(response);
 			buildCashFlowChart(response);
-			irrChartObject.update();
-			pmtChartObject.update();
-			cashFlowChartObject.update();
+			if (Object.keys(irrChartObject).length>0) {
+				irrChartObject.update();
+				pmtChartObject.update();
+				cashFlowChartObject.update();
+			};
 			$('#thead').fadeIn(1000);
 			$(".mortgage").each(function (index) {
 				$(this).delay(150 * index).fadeIn(1000);
