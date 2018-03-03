@@ -17,8 +17,9 @@ class InvestmentView(View):
 			yearly_appreciation_rate = form.cleaned_data['yearly_appreciation']
 			yearly_property_tax_rate = form.cleaned_data['property_tax']
 			yearly_maintenance_as_percent_of_value = form.cleaned_data['maintenance_cost']
+			insurance = form.cleaned_data['insurance']
 			
-			house = House(price, yearly_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value)
+			house = House(price, yearly_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value, insurance)
 			
 			yearly_interest_rate = form.cleaned_data['interest_rate']
 			term_in_years = 30

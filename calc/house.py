@@ -2,11 +2,12 @@ import numpy
 from decimal import Decimal
 
 class House:
-	def __init__(self, price, yearly_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value):
+	def __init__(self, price, yearly_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value, yearly_insurance_as_percent_of_value):
 		self.price = price
 		self.yearly_appreciation_rate = yearly_appreciation_rate
 		self.yearly_property_tax_rate = yearly_property_tax_rate
 		self.yearly_maintenance_as_percent_of_value = yearly_maintenance_as_percent_of_value
+		self.yearly_insurance_as_percent_of_value = yearly_insurance_as_percent_of_value
 		
 	def getHomeValueStreams(self):
 		base_case = [self.price]
@@ -151,16 +152,17 @@ class Investment:
 		rent_avoided = (rent_stream[year] + rent_stream[year-1]) / 2
 		maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
 		property_tax = self.house.yearly_property_tax_rate * average_value * -1
+		insurance = self.house.yearly_insurance_as_percent_of_value * average_value * -1
 
 		# Calculates tax benefits
 		property_tax_writeoff = self.getPropertyTaxBenefit(self.federal_tax_rate, property_tax)
 		tax_shield = interest_writeoff + property_tax_writeoff
 
-		cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield
+		cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance
 		cash_stream.append(cash_flow)	
 		
 		if is_base:
-			other_costs = maintenance + property_tax
+			other_costs = cash_flow - rent_avoided
 			return other_costs, rent_avoided
 		
 	def getIRR(self, cash_stream, value_stream, debt, year, is_base=False):

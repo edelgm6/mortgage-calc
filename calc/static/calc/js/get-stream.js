@@ -16,7 +16,8 @@ $('#calculate').click(function () {
 		'alternative_rent': $('#id_alternative_rent').val().replace(",", ""),
 		'realtor_cost': $('#id_realtor_cost').val(),
 		'federal_tax_bracket': $('#id_federal_tax_bracket').val(),
-		'state_tax_bracket': $('#id_state_tax_bracket').val()
+		'state_tax_bracket': $('#id_state_tax_bracket').val(),
+		'insurance': $('#id_insurance').val()
 	};
 	
 	$.get('stream/', get_data, function (data) {

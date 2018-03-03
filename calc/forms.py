@@ -26,6 +26,7 @@ class InvestmentForm(forms.Form):
 	realtor_cost = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
 	federal_tax_bracket = forms.ChoiceField(choices=FEDERAL_TAX_RATE, initial=.24)
 	state_tax_bracket = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
+	insurance = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
 
 	def clean_closing_cost(self):
 		data = self.cleaned_data['closing_cost']
@@ -63,3 +64,6 @@ class InvestmentForm(forms.Form):
 		data = self.cleaned_data['state_tax_bracket']
 		return data / 100
 	
+	def clean_insurance(self):
+		data = self.cleaned_data['insurance']
+		return data / 100
