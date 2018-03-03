@@ -22,7 +22,7 @@
 			<div class="col-sm-12">
 				<div class="collapse" id="price-collapse" name="down_payment">
 					<div class="card card-body">
-						<p>Down payment percent of the purchase price. Most banks require at least 20% or private mortgage insurance is triggered. A higher down payment means a lower monthly mortgage payment. However, if the appreciation of the home is greater than the interest rate, a lower down payment increases the investment returns.</p>
+						<p>Down payment percent of the purchase price. <b>If less than 20%, requires PMI insurance of 1% of the loan balance until you hit 20% principal paid</b>. A higher down payment means a lower monthly mortgage payment. If the appreciation of the home is greater than the interest rate, a lower down payment increases the investment returns.</p>
 					</div>
 				</div>
 			</div>
@@ -123,80 +123,86 @@
 		<div class="collapse" id="collapseExample">
 			<div class="card card-body p-3 mb-2 bg-light text-dark">
 				<div class="row">
-				<div class="col-sm-6">
-					<div class="form-group row">
-						<label for="id_closing_cost" class="col-sm-5 col-form-label">Closing cost %</label>
-						<div class="col-sm-7">
-							<input type="number" name="closing_cost" min="0" max="100" step="0.01" class="form-control" required id="id_closing_cost" value="3" />
+					<div class="col-sm-6">
+						<div class="form-group row">
+							<label for="id_closing_cost" class="col-sm-5 col-form-label">Closing cost %</label>
+							<div class="col-sm-7">
+								<input type="number" name="closing_cost" min="0" max="100" step="0.01" class="form-control" required id="id_closing_cost" value="3" />
+							</div>
+							<div class="col-sm-12">
+								<div class="collapse" id="price-collapse" name="closing_cost">
+									<div class="card card-body">
+										<p>Closing costs (appraisals, loan origination fees, etc.) as a percent of the home price. This typically ranges 2-5%.</p>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="col-sm-12">
-							<div class="collapse" id="price-collapse" name="closing_cost">
-								<div class="card card-body">
-									<p>Closing costs (appraisals, loan origination fees, etc.) as a percent of the home price. This typically ranges 2-5%.</p>
+
+						<div class="form-group row">
+							<label for="id_property_tax" class="col-sm-5 col-form-label">Property tax %</label>
+							<div class="col-sm-7">
+								<input type="number" name="property_tax" min="0" max="100" step="0.01" class="form-control" required id="id_property_tax" value="2" />
+							</div>
+							<div class="col-sm-12">
+								<div class="collapse" id="price-collapse" name="property_tax">
+									<div class="card card-body">
+										<p>Yearly property taxes as a percent of home price. This varies between state and municipality, but is typically 1-2% of the home value. </p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="id_insurance" class="col-sm-5 col-form-label">Insurance %</label>
+							<div class="col-sm-7">
+								<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value=".5" />
+							</div>
+							<div class="col-sm-12">
+								<div class="collapse" id="price-collapse" name="insurance">
+									<div class="card card-body">
+										<p>Yearly homeowner's insurance as a percent of home price. This varies depending on home location (e.g., flood prone, etc.).</p>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="form-group row">
-						<label for="id_property_tax" class="col-sm-5 col-form-label">Property tax %</label>
-						<div class="col-sm-7">
-							<input type="number" name="property_tax" min="0" max="100" step="0.01" class="form-control" required id="id_property_tax" value="2" />
-						</div>
-						<div class="col-sm-12">
-							<div class="collapse" id="price-collapse" name="property_tax">
-								<div class="card card-body">
-									<p>Yearly property taxes as a percent of home price. This varies between state and municipality, but is typically 1-2% of the home value. </p>
+					<div class="col-sm-6">
+						<div class="form-group row">
+							<label for="id_maintenance_cost" class="col-sm-5 col-form-label">Maintenance %</label>
+							<div class="col-sm-7">
+								<input type="number" name="maintenance_cost" min="0" max="100" step="0.01" class="form-control" required id="id_maintenance_cost" value="1" />
+							</div>
+							<div class="col-sm-12">
+								<div class="collapse" id="price-collapse" name="maintenance_cost">
+									<div class="card card-body">
+										<p>Yearly maintenance costs (lawncare, plumbing, etc.) per year as a percent of the home price. This is typically at least 1% of the home value.</p>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					
-					<div class="form-group row">
-						<label for="id_insurance" class="col-sm-5 col-form-label">Insurance %</label>
-						<div class="col-sm-7">
-							<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value=".5" />
-						</div>
-						<div class="col-sm-12">
-							<div class="collapse" id="price-collapse" name="insurance">
-								<div class="card card-body">
-									<p>Yearly homeowner's insurance as a percent of home price. This varies depending on home location (e.g., flood prone, etc.).</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-				</div>
 
-				<div class="col-sm-6">
-					<div class="form-group row">
-						<label for="id_maintenance_cost" class="col-sm-5 col-form-label">Maintenance %</label>
-						<div class="col-sm-7">
-							<input type="number" name="maintenance_cost" min="0" max="100" step="0.01" class="form-control" required id="id_maintenance_cost" value="1" />
-						</div>
-						<div class="col-sm-12">
-							<div class="collapse" id="price-collapse" name="maintenance_cost">
-								<div class="card card-body">
-									<p>Yearly maintenance costs (lawncare, plumbing, etc.) per year as a percent of the home price. This is typically at least 1% of the home value.</p>
+						<div class="form-group row">
+							<label for="id_realtor_cost" class="col-sm-5 col-form-label">Realtor cost %</label>
+							<div class="col-sm-7">
+								<input type="number" name="realtor_cost" min="0" max="100" step="0.01" class="form-control" required id="id_realtor_cost" value="6" />
+							</div>
+							<div class="col-sm-12">
+								<div class="collapse" id="price-collapse" name="realtor_cost">
+									<div class="card card-body">
+										<p>Percent of sale price paid to the listing agents by the seller. Typically 6%.</p>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<div class="form-group row">
-						<label for="id_realtor_cost" class="col-sm-5 col-form-label">Realtor cost %</label>
-						<div class="col-sm-7">
-							<input type="number" name="realtor_cost" min="0" max="100" step="0.01" class="form-control" required id="id_realtor_cost" value="6" />
-						</div>
-						<div class="col-sm-12">
-							<div class="collapse" id="price-collapse" name="realtor_cost">
-								<div class="card card-body">
-									<p>Percent of sale price paid to the listing agents by the seller. Typically 6%.</p>
-								</div>
+						<div class="form-group row">
+							<div class="col-sm-12">
+								<button class="btn btn-info" id="reset_defaults">Reset</button>
 							</div>
 						</div>
+						
 					</div>
-				</div>
 				</div>
 			</div>
 		</div>

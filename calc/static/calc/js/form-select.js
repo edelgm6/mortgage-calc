@@ -39,3 +39,17 @@ $("#id_price,#id_alternative_rent").keyup( function(event) {
     ;
   });
 });
+
+$("#reset_defaults").click( function() {
+	var closing_cost_default = 3;
+	var property_tax_default = 2;
+	var insurance_default = .5;
+	var maintenance_cost_default = 1;
+	var realtor_cost_default = 6;
+	
+	$("#id_closing_cost").val(closing_cost_default);
+	$("#id_property_tax").val(property_tax_default);
+	$("#id_insurance").val(insurance_default);
+	$("#id_maintenance_cost").val(maintenance_cost_default);
+	$("#id_realtor_cost").val(realtor_cost_default);
+});
