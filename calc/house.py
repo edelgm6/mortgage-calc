@@ -63,6 +63,15 @@ class Mortgage:
 		ipmt = numpy.ipmt(yearly_rate, year, years, mortgage_amount)
 		return numpy.asscalar(ipmt)
 	
+	def getPMIPayment(self, debt):
+		PMI_INSURANCE = Decimal(.01)
+		if debt / self.house.price < -.8:
+			pmi = debt * PMI_INSURANCE
+			return pmi
+		else:
+			return 0
+		
+	
 class Investment:
 	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost_as_percent_of_value, federal_tax_rate, state_tax_rate):
 		self.house = house
@@ -117,10 +126,11 @@ class Investment:
 			interest_writeoff = self.getInterestTaxBenefit(self.federal_tax_rate, self.state_tax_rate, debt, interest_payment)
 			principal_payment = self.mortgage.getPrincipalPayment(year)
 			debt = debt - principal_payment
+			pmi = self.mortgage.getPMIPayment(debt)
 			
-			other_costs, rent_avoided = self.updateCashStream(base_cash_stream, base_value, base_rent, interest_writeoff, year, mortgage_payment, True)
-			self.updateCashStream(low_cash_stream, low_value, low_rent, interest_writeoff, year, mortgage_payment)
-			self.updateCashStream(high_cash_stream, high_value, high_rent, interest_writeoff, year, mortgage_payment)
+			other_costs, rent_avoided = self.updateCashStream(base_cash_stream, base_value, base_rent, interest_writeoff, year, mortgage_payment, pmi, True)
+			self.updateCashStream(low_cash_stream, low_value, low_rent, interest_writeoff, year, mortgage_payment, pmi)
+			self.updateCashStream(high_cash_stream, high_value, high_rent, interest_writeoff, year, mortgage_payment, pmi)
 			
 			base_irr, equity = self.getIRR(base_cash_stream, base_value, debt, year, True)
 			low_irr = self.getIRR(low_cash_stream, low_value, debt, year)
@@ -146,7 +156,7 @@ class Investment:
 			
 		return cash_flows
 
-	def updateCashStream(self, cash_stream, value_stream, rent_stream, interest_writeoff, year, mortgage_payment, is_base=False):
+	def updateCashStream(self, cash_stream, value_stream, rent_stream, interest_writeoff, year, mortgage_payment, pmi, is_base=False):
 		# Calculates in-year costs based on average value throughout year
 		average_value = (value_stream[year] + value_stream[year-1]) / 2
 		rent_avoided = (rent_stream[year] + rent_stream[year-1]) / 2
@@ -158,7 +168,7 @@ class Investment:
 		property_tax_writeoff = self.getPropertyTaxBenefit(self.federal_tax_rate, property_tax)
 		tax_shield = interest_writeoff + property_tax_writeoff
 
-		cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance
+		cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
 		cash_stream.append(cash_flow)	
 		
 		if is_base:
