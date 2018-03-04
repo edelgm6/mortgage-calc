@@ -22,10 +22,16 @@ $('#calculate').click(function () {
 	
 	$.get('stream/', get_data, function (data) {
 
+		var mortgage_payment = convertNumberToString(data.mortgage_payment * -1);
+		$('#mortgage_payment').text(mortgage_payment);
+		$('#rent_payment').text($('#id_alternative_rent').val())
+		
 		var table_body = $('#tbody');
 		var response = data.cash_stream;
 		var first_year_ppmt_greater_than_ipmt = false;
 		var first_year_positive_cash_flow = false;
+		var peak_irr = -100.00;
+		var peak_irr_year = 0;
 		$.each(response, function (key, value) {
 			var $tr = $("<tr>", {
 				'class': 'mortgage',
@@ -71,6 +77,13 @@ $('#calculate').click(function () {
 					$('#first_year_ppmt_greater_than_ipmt').text(value.year);
 				};
 			};
+			
+			if (value.year != 'Purchase') {
+				if (value.irr > peak_irr) {
+					peak_irr = value.irr;
+					peak_irr_year = value.year;
+				};
+			};
 
 			/*
 			if (!first_year_positive_cash_flow && value.year != 'Purchase') {
@@ -101,8 +114,13 @@ $('#calculate').click(function () {
 				};
 			});
 		});
+		
 		setTimeout(function () {
 			$('.overlay').removeAttr('style');
+			//console.log(peak_irr);
+			$('#peak_irr').text(peak_irr);
+			$('#sell_year').text(peak_irr_year);
+			
 			buildIRRChart(response);
 			buildPMTChart(response);
 			buildCashFlowChart(response);

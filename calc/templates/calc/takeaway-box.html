@@ -5,10 +5,11 @@
 	<div class="col-sm-12 p-3 mb-2 bg-secondary text-white">
 		<div class="row">
 			<div class="col-sm-4">
-				<p><strong>Investment returns (IRR): </strong>
+				<strong>Investment returns (IRR): </strong>
 					
-					<span class="takeaways-content" style="display:none;">
-					Your peak annualized return is <span id="peak_irr"></span> if you sell in year <span id="sell_year"></span>. The long run annualized return of the S&P500 is ~7-9%.</span></p>
+					<p><div class="takeaways-content" style="display:none;">
+					Your peak annualized return is <span id="peak_irr"></span>% if you sell in year <span id="sell_year"></span>. The long run annualized return of the S&P500 is ~7-9%.</p>
+				</div>
 					
 			</div>
 			<div class="col-sm-8">
@@ -18,10 +19,13 @@
 
 		<div class="row">
 			<div class="col-sm-4">
-				<p><strong>Mortgage payments: </strong>
+				<strong>Mortgage payments: </strong>
 					
-					<span class="takeaways-content" style="display:none;">
-						Your monthly mortgage payment is <span class="mortgage_payment"></span> versus a rent payment of <span class="rent"></span>. Year <span id="first_year_ppmt_greater_than_ipmt"></span> is the first year when your principal payment will be larger than your interest payment.</span></p>
+					<div class="takeaways-content" style="display:none;">
+						<p>Your monthly mortgage payment is <span id="mortgage_payment"></span> versus a rent payment of <span id="rent_payment"></span>.</p> 
+						
+						<p>Year <span id="first_year_ppmt_greater_than_ipmt"></span> is the first year when your principal payment will be larger than your interest payment.</p>
+				</div>
 			</div>
 			<div class="col-sm-8">
 				<canvas id="pmtChart"></canvas>
@@ -30,10 +34,11 @@
 
 		<div class="row">
 			<div class="col-sm-4">
-				<p><strong>Cash flow: </strong> 
+				<strong>Cash flow: </strong> 
 					
-					<span class="takeaways-content" style="display:none;">
-						While your mortgage payment may be less than your curent rent, home ownership carries other costs like maintenance, insurance, property taxes, etc.</span></p>
+					<div class="takeaways-content" style="display:none;">
+						<p>Home ownership has other costs in addition to a mortgage that renters don't have, like the down payment, property taxes, maintenance, etc.</p>
+				</div>
 				
 			</div>
 			<div class="col-sm-8">

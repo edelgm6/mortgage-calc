@@ -36,9 +36,11 @@ class InvestmentView(View):
 			investment = Investment(house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost, federal_tax_rate, state_tax_rate)
 			
 			cash_stream = investment.getYearlyCashFlowsAndIRR()
+			mortgage_payment = int(round(mortgage.getMonthlyPayment())) 
 			
 			context_dict = {
-				'cash_stream': cash_stream
+				'cash_stream': cash_stream,
+				'mortgage_payment': mortgage_payment
 			}
 			
 			return JsonResponse(context_dict)
