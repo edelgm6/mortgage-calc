@@ -62,16 +62,6 @@ $('#calculate').click(function () {
 				'text': value.irr + '%'
 			});
 
-			if (value.year == 5) {
-				$('#year_5_irr').text(value.irr);
-			} else if (value.year == 10) {
-				$('#year_10_irr').text(value.irr);
-			} else if (value.year == 20) {
-				$('#year_20_irr').text(value.irr);
-			} else if (value.year == 30) {
-				$('#year_30_irr').text(value.irr);
-			};
-
 			if (!first_year_ppmt_greater_than_ipmt && value.year != 'Purchase') {
 				var ppmt = value.principal_payment;
 				var ipmt = value.debt_payment;
@@ -82,6 +72,7 @@ $('#calculate').click(function () {
 				};
 			};
 
+			/*
 			if (!first_year_positive_cash_flow && value.year != 'Purchase') {
 				var cash_flow = value.total;
 				if (cash_flow > 0) {
@@ -89,6 +80,7 @@ $('#calculate').click(function () {
 					$('#first_year_positive_cash_flow').text(value.year);
 				};
 			};
+			*/
 
 			$(table_body).append(($tr)
 				.append(($td_year))
@@ -117,24 +109,26 @@ $('#calculate').click(function () {
 			if (Object.keys(irrChartObject).length>0) {
 				irrChartObject.update();
 				pmtChartObject.update();
-				cashFlowChartObject.update();
+				cashFlowChartObject.update();	
 			};
 			$('#thead').fadeIn(1000);
-			$(".mortgage").each(function (index) {
-				$(this).delay(150 * index).fadeIn(1000);
-			});
+			$('.takeaways-content').fadeIn(1000);
 			if (first_click) {
 				$(window).scrollTo('#takeaways', 800);
 				first_click = false;
-			}
-			
-		}, 3000);
-		
-		
+			};	
+			$(".mortgage").each(function (index) {
+				$(this).delay(150 * index).fadeIn(1000);
+			});
+		}, 3000);	
 
 
 	});
 });
+
+function buildTable(data) {
+	
+}
 
 function convertNumberToString(number) {
 	try {
