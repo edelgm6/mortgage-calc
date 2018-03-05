@@ -154,6 +154,8 @@ class Investment:
 			
 			cash_flows.append(cash_flow_dict)
 			
+			print()
+			
 		return cash_flows
 
 	def updateCashStream(self, cash_stream, value_stream, rent_stream, interest_writeoff, year, mortgage_payment, pmi, is_base=False):
@@ -172,6 +174,17 @@ class Investment:
 		cash_stream.append(cash_flow)	
 		
 		if is_base:
+			print(year)
+			print('property_tax')
+			print(property_tax)
+			print('insurance')
+			print(insurance)
+			print('maintenance')
+			print(maintenance)
+			print('interest_writeoff')
+			print(interest_writeoff)
+			print('property_tax_writeoff')
+			print(property_tax_writeoff)
 			other_costs = cash_flow - rent_avoided
 			return other_costs, rent_avoided
 		
@@ -224,12 +237,15 @@ class Investment:
 	def getPropertyTaxBenefit(self, federal_tax_rate, property_tax):
 		SALT_LIMIT = 10000
 		
-		if property_tax > SALT_LIMIT:
+		if property_tax * -1 > SALT_LIMIT:
 			property_tax_writeoff = SALT_LIMIT * federal_tax_rate
 		else:
-			property_tax_writeoff = property_tax * federal_tax_rate
-			
-		return property_tax_writeoff * -1
+			property_tax_writeoff = property_tax * federal_tax_rate * -1
+		
+		print(property_tax)
+		print(federal_tax_rate)
+		
+		return property_tax_writeoff
 		
 	
 	# Returns total cash costs for purchase	
