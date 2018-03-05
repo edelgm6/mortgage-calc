@@ -1,4 +1,5 @@
 $(document).ready( function() {
+	$('[data-toggle="tooltip"]').tooltip(); 
 	$(".form-control").focusin( function() {
 		var input_name = $(this).attr('name')
 		var collapsible = $("div[name=" + input_name + "]");

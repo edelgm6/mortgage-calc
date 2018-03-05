@@ -50,7 +50,9 @@
 			<div class="col-sm-12">
 				<div class="collapse" id="price-collapse" name="yearly_appreciation">
 					<div class="card card-body">
-						<p>Yearly appreciation of the home value. This varies widely by market and timing. For example, since Jan 2008 the San Francisco housing market gained an annualized rate of 3%. Buying 2 years later (near the bottom of the market) would have resulted in an annualized gain of 8%.</p>
+						<p>Yearly appreciation of the home value. Sustaining long-term yearly appreciation over 5% is unlikely (see below).</p>
+						<p><b>Annualized returns to Dec 2017 by purchase year</b></p>
+						{% include "calc/appreciation-table.html" %}
 					</div>
 				</div>
 			</div>
@@ -201,7 +203,7 @@
 								<button class="btn btn-link" id="reset_defaults">Reset</button>
 							</div>
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
