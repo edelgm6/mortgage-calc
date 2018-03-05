@@ -206,13 +206,13 @@ function buildCashFlowChart(streams) {
 		
 		cum_rent_flow.push((cum_rent + rent).toFixed(2));
 		
-		
+		/*
 		console.log('year' + streams[i].year)
 		console.log('rent' + rent)
 		console.log('flow' + flow)
 		console.log('cumrent' + cum_rent_flow[i])
 		console.log('cumown' + cum_cash_flow[i])
-		
+		*/
 		cum_rent = cum_rent + rent;
 		cum_flow = cum_flow + flow;
 	};

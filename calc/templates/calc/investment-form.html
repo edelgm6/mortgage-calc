@@ -15,9 +15,14 @@
 		</div>
 
 		<div class="form-group row">
-			<label for="id_down_payment" class="col-sm-5 col-form-label">Down payment %</label>
+			<label for="id_down_payment" class="col-sm-5 col-form-label">Down payment</label>
 			<div class="col-sm-7">
-				<input type="number" name="down_payment" min="0" max="100" step="0.01" class="form-control" required id="id_down_payment" value="20" />
+				<div class="input-group">
+					<input type="number" name="down_payment" min="0" max="100" step="0.01" class="form-control" required id="id_down_payment" value="20.0" />
+					<div class="input-group-append">
+						<span class="input-group-text">%</span>
+					</div>
+				</div>
 			</div>
 			<div class="col-sm-12">
 				<div class="collapse" id="price-collapse" name="down_payment">
@@ -29,9 +34,14 @@
 		</div>
 
 		<div class="form-group row">
-			<label for="id_interest_rate" class="col-sm-5 col-form-label">Interest rate %</label>
+			<label for="id_interest_rate" class="col-sm-5 col-form-label">Interest rate</label>
 			<div class="col-sm-7">
-				<input type="number" name="interest_rate" min="0" max="100" step="0.01" class="form-control" required id="id_interest_rate" value="5" />
+				<div class="input-group">
+					<input type="number" name="interest_rate" min="0" max="100" step="0.01" class="form-control" required id="id_interest_rate" value="5.0" />
+					<div class="input-group-append">
+						<span class="input-group-text">%</span>
+					</div>
+				</div>
 			</div>
 			<div class="col-sm-12">
 				<div class="collapse" id="price-collapse" name="interest_rate">
@@ -43,9 +53,14 @@
 		</div>
 
 		<div class="form-group row">
-			<label for="id_yearly_appreciation" class="col-sm-5 col-form-label">Yearly appreciation %</label>
+			<label for="id_yearly_appreciation" class="col-sm-5 col-form-label">Yearly appreciation</label>
 			<div class="col-sm-7">
-				<input type="number" name="yearly_appreciation" min="0" max="100" step="0.01" class="form-control" required id="id_yearly_appreciation" value="5" />
+				<div class="input-group">
+					<input type="number" name="yearly_appreciation" min="0" max="100" step="0.01" class="form-control" required id="id_yearly_appreciation" value="5.0" />
+					<div class="input-group-append">
+						<span class="input-group-text">%</span>
+					</div>
+				</div>
 			</div>
 			<div class="col-sm-12">
 				<div class="collapse" id="price-collapse" name="yearly_appreciation">
@@ -100,7 +115,12 @@
 		<div class="form-group row">
 			<label for="id_state_tax_bracket" class="col-sm-5 col-form-label">State tax rate</label>
 			<div class="col-sm-7">
-				<input type="number" name="state_tax_bracket" min="0" max="100" step="0.01" class="form-control" required id="id_state_tax_bracket" value="6" />
+				<div class="input-group">
+					<input type="number" name="state_tax_bracket" min="0" max="100" step="0.01" class="form-control" required id="id_state_tax_bracket" value="6.0" />
+					<div class="input-group-append">
+						<span class="input-group-text">%</span>
+					</div>
+				</div>
 			</div>
 			<div class="col-sm-12">
 				<div class="collapse" id="price-collapse" name="state_tax_bracket">
@@ -127,9 +147,14 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="form-group row">
-							<label for="id_closing_cost" class="col-sm-5 col-form-label">Closing cost %</label>
+							<label for="id_closing_cost" class="col-sm-5 col-form-label">Closing cost</label>
 							<div class="col-sm-7">
-								<input type="number" name="closing_cost" min="0" max="100" step="0.01" class="form-control" required id="id_closing_cost" value="3" />
+								<div class="input-group">
+									<input type="number" name="closing_cost" min="0" max="100" step="0.01" class="form-control" required id="id_closing_cost" value="3.0" />
+									<div class="input-group-append">
+										<span class="input-group-text">%</span>
+									</div>
+								</div>
 							</div>
 							<div class="col-sm-12">
 								<div class="collapse" id="price-collapse" name="closing_cost">
@@ -141,9 +166,14 @@
 						</div>
 
 						<div class="form-group row">
-							<label for="id_property_tax" class="col-sm-5 col-form-label">Property tax %</label>
+							<label for="id_property_tax" class="col-sm-5 col-form-label">Property tax</label>
 							<div class="col-sm-7">
-								<input type="number" name="property_tax" min="0" max="100" step="0.01" class="form-control" required id="id_property_tax" value="2" />
+								<div class="input-group">
+									<input type="number" name="property_tax" min="0" max="100" step="0.01" class="form-control" required id="id_property_tax" value="2.0" />
+									<div class="input-group-append">
+										<span class="input-group-text">%</span>
+									</div>
+								</div>
 							</div>
 							<div class="col-sm-12">
 								<div class="collapse" id="price-collapse" name="property_tax">
@@ -155,9 +185,14 @@
 						</div>
 
 						<div class="form-group row">
-							<label for="id_insurance" class="col-sm-5 col-form-label">Insurance %</label>
+							<label for="id_insurance" class="col-sm-5 col-form-label">Insurance</label>
 							<div class="col-sm-7">
-								<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value="0.5" />
+								<div class="input-group">
+									<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value="0.5" />
+									<div class="input-group-append">
+										<span class="input-group-text">%</span>
+									</div>
+								</div>
 							</div>
 							<div class="col-sm-12">
 								<div class="collapse" id="price-collapse" name="insurance">
@@ -171,9 +206,14 @@
 
 					<div class="col-sm-6">
 						<div class="form-group row">
-							<label for="id_maintenance_cost" class="col-sm-5 col-form-label">Maintenance %</label>
+							<label for="id_maintenance_cost" class="col-sm-5 col-form-label">Maintenance</label>
 							<div class="col-sm-7">
-								<input type="number" name="maintenance_cost" min="0" max="100" step="0.01" class="form-control" required id="id_maintenance_cost" value="1" />
+								<div class="input-group">
+									<input type="number" name="maintenance_cost" min="0" max="100" step="0.01" class="form-control" required id="id_maintenance_cost" value="1.0" />
+									<div class="input-group-append">
+										<span class="input-group-text">%</span>
+									</div>
+								</div>
 							</div>
 							<div class="col-sm-12">
 								<div class="collapse" id="price-collapse" name="maintenance_cost">
@@ -185,9 +225,14 @@
 						</div>
 
 						<div class="form-group row">
-							<label for="id_realtor_cost" class="col-sm-5 col-form-label">Realtor cost %</label>
+							<label for="id_realtor_cost" class="col-sm-5 col-form-label">Realtor cost</label>
 							<div class="col-sm-7">
-								<input type="number" name="realtor_cost" min="0" max="100" step="0.01" class="form-control" required id="id_realtor_cost" value="6" />
+								<div class="input-group">
+									<input type="number" name="realtor_cost" min="0" max="100" step="0.01" class="form-control" required id="id_realtor_cost" value="6.0" />
+									<div class="input-group-append">
+										<span class="input-group-text">%</span>
+									</div>
+								</div>
 							</div>
 							<div class="col-sm-12">
 								<div class="collapse" id="price-collapse" name="realtor_cost">
