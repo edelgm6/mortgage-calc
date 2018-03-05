@@ -42,11 +42,11 @@ $("#id_price,#id_alternative_rent").keyup( function(event) {
 });
 
 $("#reset_defaults").click( function() {
-	var closing_cost_default = 3;
-	var property_tax_default = 2;
+	var closing_cost_default = 3.0;
+	var property_tax_default = 2.0;
 	var insurance_default = .5;
-	var maintenance_cost_default = 1;
-	var realtor_cost_default = 6;
+	var maintenance_cost_default = 1.0;
+	var realtor_cost_default = 6.0;
 	
 	$("#id_closing_cost").val(closing_cost_default);
 	$("#id_property_tax").val(property_tax_default);
