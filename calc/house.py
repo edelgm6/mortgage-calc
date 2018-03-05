@@ -65,11 +65,12 @@ class Mortgage:
 	
 	def getPMIPayment(self, debt):
 		PMI_INSURANCE = Decimal(.01)
+		print(debt / self.house.price)
+		pmi = 0
 		if debt / self.house.price < -.8:
 			pmi = debt * PMI_INSURANCE
-			return pmi
-		else:
-			return 0
+		
+		return pmi
 		
 	
 class Investment:
@@ -122,10 +123,11 @@ class Investment:
 		
 		for year in range(1,31):
 
+			
 			interest_payment = self.mortgage.getInterestPayment(year)
-			interest_writeoff = self.getInterestTaxBenefit(self.federal_tax_rate, self.state_tax_rate, debt, interest_payment)
 			principal_payment = self.mortgage.getPrincipalPayment(year)
 			debt = debt - principal_payment
+			interest_writeoff = self.getInterestTaxBenefit(self.federal_tax_rate, self.state_tax_rate, debt, interest_payment)
 			pmi = self.mortgage.getPMIPayment(debt)
 			
 			other_costs, rent_avoided = self.updateCashStream(base_cash_stream, base_value, base_rent, interest_writeoff, year, mortgage_payment, pmi, True)
@@ -154,8 +156,6 @@ class Investment:
 			
 			cash_flows.append(cash_flow_dict)
 			
-			print()
-			
 		return cash_flows
 
 	def updateCashStream(self, cash_stream, value_stream, rent_stream, interest_writeoff, year, mortgage_payment, pmi, is_base=False):
@@ -174,6 +174,7 @@ class Investment:
 		cash_stream.append(cash_flow)	
 		
 		if is_base:
+			"""
 			print(year)
 			print('property_tax')
 			print(property_tax)
@@ -181,10 +182,13 @@ class Investment:
 			print(insurance)
 			print('maintenance')
 			print(maintenance)
+			print('pmi')
+			print(pmi)
 			print('interest_writeoff')
 			print(interest_writeoff)
 			print('property_tax_writeoff')
 			print(property_tax_writeoff)
+			"""
 			other_costs = cash_flow - rent_avoided
 			return other_costs, rent_avoided
 		
@@ -224,8 +228,8 @@ class Investment:
 	def getInterestTaxBenefit(self, federal_tax_rate, state_tax_rate, debt_value, interest_payment):
 		DEBT_LIMIT = 750000
 		
-		if debt_value > DEBT_LIMIT:
-			interest_multiplier = DEBT_LIMIT / debt_value
+		if debt_value * -1 > DEBT_LIMIT:
+			interest_multiplier = (DEBT_LIMIT / debt_value) * -1
 		else:
 			interest_multiplier = 1
 		
@@ -241,9 +245,6 @@ class Investment:
 			property_tax_writeoff = SALT_LIMIT * federal_tax_rate
 		else:
 			property_tax_writeoff = property_tax * federal_tax_rate * -1
-		
-		print(property_tax)
-		print(federal_tax_rate)
 		
 		return property_tax_writeoff
 		

@@ -196,17 +196,25 @@ function buildCashFlowChart(streams) {
 
 		var rent = streams[i].saved_rent;
 		if (i > 0) {
-			var rent = Math.round(streams[i].saved_rent * -1/1000);
+			var rent = (streams[i].saved_rent * -1/1000);
 		} else {
 			var rent = 0;
 		};
 		
-		var flow = Math.round((streams[i].total / 1000)) + rent;
-		cum_cash_flow.push(flow + cum_flow);
-		cum_flow = cum_flow + flow;
+		var flow = (streams[i].total / 1000) + rent;
+		cum_cash_flow.push((flow + cum_flow).toFixed(2));
 		
-		cum_rent_flow.push(cum_rent + rent);
+		cum_rent_flow.push((cum_rent + rent).toFixed(2));
+		
+		
+		console.log('year' + streams[i].year)
+		console.log('rent' + rent)
+		console.log('flow' + flow)
+		console.log('cumrent' + cum_rent_flow[i])
+		console.log('cumown' + cum_cash_flow[i])
+		
 		cum_rent = cum_rent + rent;
+		cum_flow = cum_flow + flow;
 	};
 
 	labels[0] = '0';
