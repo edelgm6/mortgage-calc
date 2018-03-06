@@ -65,7 +65,6 @@ class Mortgage:
 	
 	def getPMIPayment(self, debt):
 		PMI_INSURANCE = Decimal(.01)
-		print(debt / self.house.price)
 		pmi = 0
 		if debt / self.house.price < -.8:
 			pmi = debt * PMI_INSURANCE

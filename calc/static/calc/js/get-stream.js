@@ -135,9 +135,12 @@ $('#calculate').click(function () {
 				$(window).scrollTo('#takeaways', 800);
 				first_click = false;
 			};	
+			/*
 			$(".mortgage").each(function (index) {
 				$(this).delay(150 * index).fadeIn(1000);
 			});
+			*/
+			$(".mortgage").fadeIn(1000);
 		}, 3000);	
 
 
