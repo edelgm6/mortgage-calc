@@ -189,7 +189,7 @@ class Investment:
 			print('property_tax_writeoff')
 			print(property_tax_writeoff)
 			"""
-			other_costs = cash_flow - rent_avoided
+			other_costs = cash_flow - rent_avoided - mortgage_payment
 			return other_costs, rent_avoided
 		
 	def getIRR(self, cash_stream, value_stream, debt, year, is_base=False):
