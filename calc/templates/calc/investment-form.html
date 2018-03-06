@@ -189,7 +189,7 @@
 							<label for="id_insurance" class="col-sm-5 col-form-label">Insurance</label>
 							<div class="col-sm-7">
 								<div class="input-group">
-									<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value="0.5" />
+									<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value={% if insurance %}{{ insurance}}{% else %}1.0{% endif %} />
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
 									</div>

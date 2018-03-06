@@ -56,6 +56,8 @@ class IndexView(View):
 	
 	def get(self, request, *args, **kwargs):
 		
-		context_dict = {'form': self.form_class}
+		context_dict = {}
+		if 'insurance' in request.GET:
+			context_dict = {'insurance': request.GET['insurance']}
 		
 		return render(request, self.template_name, context_dict)
