@@ -1,11 +1,11 @@
 <div class="row">
-	<div class="col-sm-4">
+	<div class="col-md-4">
 		<div class="form-group row">
-			<label for="id_price" class="col-sm-5 col-form-label">Price</label>
-			<div class="col-sm-7">
+			<label for="id_price" class="col-md-5 col-form-label">Price</label>
+			<div class="col-md-7">
 				<input type="text" name="price" class="form-control" aria-expanded="false" required id="id_price" value="500,000" />
 			</div>
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="price">
 					<div class="card card-body">
 						<p>Total price of the home in dollars, <i>excluding closing costs, appraisals, etc.</i></p>
@@ -15,8 +15,8 @@
 		</div>
 
 		<div class="form-group row">
-			<label for="id_down_payment" class="col-sm-5 col-form-label">Down payment</label>
-			<div class="col-sm-7">
+			<label for="id_down_payment" class="col-md-5 col-form-label">Down payment</label>
+			<div class="col-md-7">
 				<div class="input-group">
 					<input type="number" name="down_payment" min="0" max="100" step="0.01" class="form-control" required id="id_down_payment" value="20.0" />
 					<div class="input-group-append">
@@ -24,7 +24,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="down_payment">
 					<div class="card card-body">
 						<p>Down payment percent of the purchase price. <b>If less than 20%, requires PMI insurance of 1% of the loan balance until you hit 20% principal paid</b>. If the appreciation of the home is greater than the interest rate, a lower down payment increases the investment returns.</p>
@@ -34,8 +34,8 @@
 		</div>
 
 		<div class="form-group row">
-			<label for="id_interest_rate" class="col-sm-5 col-form-label">Interest rate</label>
-			<div class="col-sm-7">
+			<label for="id_interest_rate" class="col-md-5 col-form-label">Interest rate</label>
+			<div class="col-md-7">
 				<div class="input-group">
 					<input type="number" name="interest_rate" min="0" max="100" step="0.01" class="form-control" required id="id_interest_rate" value="5.0" />
 					<div class="input-group-append">
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="interest_rate">
 					<div class="card card-body">
 						<p>The mortgage rate is best thought of as the cost of 'renting' the money that you are borrowing. The higher the interest rate, the greater the loan payment each month and the lower the returns.</p>
@@ -53,8 +53,8 @@
 		</div>
 
 		<div class="form-group row">
-			<label for="id_yearly_appreciation" class="col-sm-5 col-form-label">Yearly appreciation</label>
-			<div class="col-sm-7">
+			<label for="id_yearly_appreciation" class="col-md-5 col-form-label">Yearly appreciation</label>
+			<div class="col-md-7">
 				<div class="input-group">
 					<input type="number" name="yearly_appreciation" min="0" max="100" step="0.01" class="form-control" required id="id_yearly_appreciation" value="5.0" />
 					<div class="input-group-append">
@@ -62,7 +62,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="yearly_appreciation">
 					<div class="card card-body">
 						<p>Yearly appreciation of the home value. Sustaining long-term yearly appreciation over 5% is unlikely (see below).</p>
@@ -74,14 +74,14 @@
 		</div>
 	</div>
 
-	<div class="col-sm-4">
+	<div class="col-md-4">
 
 		<div class="form-group row">
-			<label for="id_alternative_rent" class="col-sm-5 col-form-label">Monthly rent</label>
-			<div class="col-sm-7">
+			<label for="id_alternative_rent" class="col-md-5 col-form-label">Monthly rent</label>
+			<div class="col-md-7">
 				<input type="text" lang="en-150" name="alternative_rent" min="0" class="form-control" required id="id_alternative_rent" value="1,000" />
 			</div>
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="alternative_rent">
 					<div class="card card-body">
 						<p><b>Monthly</b> rent you would pay if you do not buy -- your current rent is a good proxy.</p>
@@ -91,8 +91,8 @@
 		</div>
 
 		<div class="form-group row">
-			<label for="id_price" class="col-sm-5 col-form-label">Federal tax rate</label>
-			<div class="col-sm-7">
+			<label for="id_price" class="col-md-5 col-form-label">Federal tax rate</label>
+			<div class="col-md-7">
 				<select name="federal_tax_bracket" id="id_federal_tax_bracket" class="form-control" aria-expanded="false">
 			  <option value=".1">10% - Income $9,525/$19,050 Single/Married</option>
 			  <option value=".12">12% - Income $38,700/$77,400 Single/Married</option>
@@ -103,7 +103,7 @@
 			  <option value=".37">37% - Income $500,000+/$600,000+ Single/Married</option>
 			</select>
 			</div>
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="federal_tax_bracket">
 					<div class="card card-body">
 						<p>Top marginal tax rate for your income - the higher your tax rate, the bigger the benefit of the mortgage interest and property tax deductions.</p>
@@ -113,8 +113,8 @@
 		</div>
 
 		<div class="form-group row">
-			<label for="id_state_tax_bracket" class="col-sm-5 col-form-label">State tax rate</label>
-			<div class="col-sm-7">
+			<label for="id_state_tax_bracket" class="col-md-5 col-form-label">State tax rate</label>
+			<div class="col-md-7">
 				<div class="input-group">
 					<input type="number" name="state_tax_bracket" min="0" max="100" step="0.01" class="form-control" required id="id_state_tax_bracket" value="6.0" />
 					<div class="input-group-append">
@@ -122,7 +122,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="state_tax_bracket">
 					<div class="card card-body">
 						<p>Top marginal state tax rate - the higher your tax rate, the bigger the benefit of the mortgage interest tax deduction.</p>
@@ -142,14 +142,14 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-8">
+	<div class="col-md-8">
 		<div class="collapse" id="collapseExample">
 			<div class="card card-body p-3 mb-2 bg-light text-dark">
 				<div class="row">
-					<div class="col-sm-6">
+					<div class="col-md-6">
 						<div class="form-group row">
-							<label for="id_closing_cost" class="col-sm-5 col-form-label">Closing cost</label>
-							<div class="col-sm-7">
+							<label for="id_closing_cost" class="col-md-5 col-form-label">Closing cost</label>
+							<div class="col-md-7">
 								<div class="input-group">
 									<input type="number" name="closing_cost" min="0" max="100" step="0.01" class="form-control" required id="id_closing_cost" value="3.0" />
 									<div class="input-group-append">
@@ -157,7 +157,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-12">
+							<div class="col-md-12">
 								<div class="collapse" id="price-collapse" name="closing_cost">
 									<div class="card card-body">
 										<p>Closing costs (appraisals, loan origination fees, etc.) as a percent of the home price. This typically ranges 2-5%.</p>
@@ -167,8 +167,8 @@
 						</div>
 
 						<div class="form-group row">
-							<label for="id_property_tax" class="col-sm-5 col-form-label">Property tax</label>
-							<div class="col-sm-7">
+							<label for="id_property_tax" class="col-md-5 col-form-label">Property tax</label>
+							<div class="col-md-7">
 								<div class="input-group">
 									<input type="number" name="property_tax" min="0" max="100" step="0.01" class="form-control" required id="id_property_tax" value="2.0" />
 									<div class="input-group-append">
@@ -176,7 +176,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-12">
+							<div class="col-md-12">
 								<div class="collapse" id="price-collapse" name="property_tax">
 									<div class="card card-body">
 										<p>Yearly property taxes as a percent of home price. This varies between state and municipality, but is typically 1-3% of the home value. </p>
@@ -186,8 +186,8 @@
 						</div>
 
 						<div class="form-group row">
-							<label for="id_insurance" class="col-sm-5 col-form-label">Insurance</label>
-							<div class="col-sm-7">
+							<label for="id_insurance" class="col-md-5 col-form-label">Insurance</label>
+							<div class="col-md-7">
 								<div class="input-group">
 									<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value={% if insurance %}{{ insurance}}{% else %}1.0{% endif %} />
 									<div class="input-group-append">
@@ -195,7 +195,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-12">
+							<div class="col-md-12">
 								<div class="collapse" id="price-collapse" name="insurance">
 									<div class="card card-body">
 										<p>Yearly homeowner's insurance as a percent of home price. This varies depending on home location (e.g., flood prone, etc.).</p>
@@ -205,10 +205,10 @@
 						</div>
 					</div>
 
-					<div class="col-sm-6">
+					<div class="col-md-6">
 						<div class="form-group row">
-							<label for="id_maintenance_cost" class="col-sm-5 col-form-label">Maintenance</label>
-							<div class="col-sm-7">
+							<label for="id_maintenance_cost" class="col-md-5 col-form-label">Maintenance</label>
+							<div class="col-md-7">
 								<div class="input-group">
 									<input type="number" name="maintenance_cost" min="0" max="100" step="0.01" class="form-control" required id="id_maintenance_cost" value="1.0" />
 									<div class="input-group-append">
@@ -216,7 +216,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-12">
+							<div class="col-md-12">
 								<div class="collapse" id="price-collapse" name="maintenance_cost">
 									<div class="card card-body">
 										<p>Yearly maintenance costs and upkeep (lawncare, plumbing, painting, etc.) per year as a percent of the home price. This is typically at least 1% of the home value.</p>
@@ -226,8 +226,8 @@
 						</div>
 
 						<div class="form-group row">
-							<label for="id_realtor_cost" class="col-sm-5 col-form-label">Realtor cost</label>
-							<div class="col-sm-7">
+							<label for="id_realtor_cost" class="col-md-5 col-form-label">Realtor cost</label>
+							<div class="col-md-7">
 								<div class="input-group">
 									<input type="number" name="realtor_cost" min="0" max="100" step="0.01" class="form-control" required id="id_realtor_cost" value="6.0" />
 									<div class="input-group-append">
@@ -235,7 +235,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-12">
+							<div class="col-md-12">
 								<div class="collapse" id="price-collapse" name="realtor_cost">
 									<div class="card card-body">
 										<p>Percent of sale price paid to the listing agents by the seller. Typically 6%.</p>
@@ -245,7 +245,7 @@
 						</div>
 
 						<div class="form-group row">
-							<div class="col-sm-12">
+							<div class="col-md-12">
 								<button class="btn btn-link" id="reset_defaults">Reset</button>
 							</div>
 						</div>
@@ -258,9 +258,9 @@
 </div>
 
 <div class="row">
-	<div class="col-sm-12">
+	<div class="col-md-12">
 		<div class="form-group row">
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<button class="btn btn-info btn-lg" id="calculate">Calculate</button>
 			</div>
 		</div>
