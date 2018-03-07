@@ -30,6 +30,7 @@ function irrChart(labels, base, high, low) {
 			}],
 		},
 		options: {
+			maintainAspectRatio: false,
 			scales: {
 				yAxes: [{
 					scaleLabel: {
@@ -81,6 +82,7 @@ function pmtChart(labels, principal, interest) {
 			}],
 		},
 		options: {
+			maintainAspectRatio: false,
 			scales: {
 				yAxes: [{
 					scaleLabel: {
@@ -132,6 +134,7 @@ function cashFlowChart(labels, own, rent) {
 			}],
 		},
 		options: {
+			maintainAspectRatio: false,
 			scales: {
 				yAxes: [{
 					scaleLabel: {
