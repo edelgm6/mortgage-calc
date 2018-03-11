@@ -1,6 +1,6 @@
 var first_click = true;
 
-$('#calculate').click(function () {
+//$('#calculate').click(function () {
 	$('.overlay').show();
 
 	$('.mortgage').remove();
