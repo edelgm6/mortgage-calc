@@ -4,7 +4,7 @@
 		<div class="form-group row">
 			<label for="id_price" class="col-md-5 col-form-label">Price</label>
 			<div class="col-md-7">
-				<input type="text" name="price" class="form-control" aria-expanded="false" required id="id_price" value="500,000" />
+				<input type="text" name="price" class="form-control" aria-expanded="false" required id="id_price" value={% if price %}{{ price }}{% else %}"500,000"{% endif %}>
 			</div>
 			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="priceasdf">
@@ -19,7 +19,7 @@
 			<label for="id_down_payment" class="col-md-5 col-form-label">Down payment</label>
 			<div class="col-md-7">
 				<div class="input-group">
-					<input type="number" name="down_payment" min="0" max="100" step="0.01" class="form-control" required id="id_down_payment" value="20.0" />
+					<input type="number" name="down_payment" min="0" max="100" step="0.01" class="form-control" required id="id_down_payment" value={% if down_payment %}{{ down_payment }}{% else %}"20.0"{% endif %}>
 					<div class="input-group-append">
 						<span class="input-group-text">%</span>
 					</div>
@@ -38,7 +38,7 @@
 			<label for="id_interest_rate" class="col-md-5 col-form-label">Interest rate</label>
 			<div class="col-md-7">
 				<div class="input-group">
-					<input type="number" name="interest_rate" min="0" max="100" step="0.01" class="form-control" required id="id_interest_rate" value="5.0" />
+					<input type="number" name="interest_rate" min="0" max="100" step="0.01" class="form-control" required id="id_interest_rate" value={% if interest_rate %}{{ interest_rate }}{% else %}"5.0"{% endif %}>
 					<div class="input-group-append">
 						<span class="input-group-text">%</span>
 					</div>
@@ -57,7 +57,7 @@
 			<label for="id_yearly_appreciation" class="col-md-5 col-form-label">Yearly appreciation</label>
 			<div class="col-md-7">
 				<div class="input-group">
-					<input type="number" name="yearly_appreciation" min="0" max="100" step="0.01" class="form-control" required id="id_yearly_appreciation" value="5.0" />
+					<input type="number" name="yearly_appreciation" min="0" max="100" step="0.01" class="form-control" required id="id_yearly_appreciation" value={% if yearly_appreciation %}{{ yearly_appreciation }}{% else %}"5.0"{% endif %}>
 					<div class="input-group-append">
 						<span class="input-group-text">%</span>
 					</div>
@@ -80,7 +80,7 @@
 		<div class="form-group row">
 			<label for="id_alternative_rent" class="col-md-5 col-form-label">Monthly rent</label>
 			<div class="col-md-7">
-				<input type="text" lang="en-150" name="alternative_rent" class="form-control" required id="id_alternative_rent" value="1,000" />
+				<input type="text" lang="en-150" name="alternative_rent" class="form-control" required id="id_alternative_rent" value={% if alternative_rent %}{{ alternative_rent }}{% else %}"1,000"{% endif %}>
 			</div>
 			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="alternative_rent">
@@ -95,13 +95,13 @@
 			<label for="id_price" class="col-md-5 col-form-label">Federal tax rate</label>
 			<div class="col-md-7">
 				<select name="federal_tax_bracket" id="id_federal_tax_bracket" class="form-control" aria-expanded="false">
-			  <option value=".1">10% - Income $9,525/$19,050 Single/Married</option>
-			  <option value=".12">12% - Income $38,700/$77,400 Single/Married</option>
-			  <option value=".22">22% - Income $82,500/$165,000 Single/Married</option>
-			  <option value=".24" selected>24% - Income $157,500/$315,000 Single/Married</option>
-			  <option value=".32">32% - Income $200,000/$400,000 Single/Married</option>
-			  <option value=".35">35% - Income $500,000/$600,000 Single/Married</option>
-			  <option value=".37">37% - Income $500,000+/$600,000+ Single/Married</option>
+			  <option value=".1" {% if federal_tax_bracket == .1 %}selected{% endif %}>10% - Income $9,525/$19,050 Single/Married</option>
+			  <option value=".12" {% if federal_tax_bracket == .12 %}selected{% endif %}>12% - Income $38,700/$77,400 Single/Married</option>
+			  <option value=".22" {% if federal_tax_bracket == .22 %}selected{% endif %}>22% - Income $82,500/$165,000 Single/Married</option>
+			  <option value=".24" {% if federal_tax_bracket == .24 %}selected{% endif %} {% if not federal_tax_bracket %}selected{% endif %}>24% - Income $157,500/$315,000 Single/Married</option>
+			  <option value=".32" {% if federal_tax_bracket == .32 %}selected{% endif %}>32% - Income $200,000/$400,000 Single/Married</option>
+			  <option value=".35" {% if federal_tax_bracket == .35 %}selected{% endif %}>35% - Income $500,000/$600,000 Single/Married</option>
+			  <option value=".37" {% if federal_tax_bracket == .37 %}selected{% endif %}>37% - Income $500,000+/$600,000+ Single/Married</option>
 			</select>
 			</div>
 			<div class="col-md-12">
@@ -190,7 +190,7 @@
 							<label for="id_insurance" class="col-md-5 col-form-label">Insurance</label>
 							<div class="col-md-7">
 								<div class="input-group">
-									<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value={% if insurance %}{{ insurance}}{% else %}1.0{% endif %} />
+									<input type="number" name="insurance" min="0" max="100" step="0.01" class="form-control" required id="id_insurance" value={% if insurance %}{{ insurance }}{% else %}1.0{% endif %} />
 									<div class="input-group-append">
 										<span class="input-group-text">%</span>
 									</div>

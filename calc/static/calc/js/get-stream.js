@@ -29,7 +29,7 @@ function investmentFormSubmit() {
 	})
 	.done(function (data) {
 
-		var get_url = ("?price=" + get_data['price'] + "&closing_cost=" + get_data['closing_cost'] + "&maintenance_cost=" + get_data['maintenance_cost'] + "&property_tax=" + get_data['property_tax'] + "&down_payment=" + get_data['down_payment'] + "&interest_rate=" + get_data['interest_rate'] + "&yearly_appreciation=" + get_data['yearly_appreciation'] + "&alternative_rent=" + get_data['alternate_rent'] + "&realtor_cost=" + get_data['realtor_cost'] + "&federal_tax_bracket=" + get_data['federal_tax_bracket'] + "&state_tax_bracket=" + get_data['state_tax_bracket'] + "&insurance=" + get_data['insurance'])
+		var get_url = ("?price=" + get_data['price'] + "&closing_cost=" + get_data['closing_cost'] + "&maintenance_cost=" + get_data['maintenance_cost'] + "&property_tax=" + get_data['property_tax'] + "&down_payment=" + get_data['down_payment'] + "&interest_rate=" + get_data['interest_rate'] + "&yearly_appreciation=" + get_data['yearly_appreciation'] + "&alternative_rent=" + get_data['alternative_rent'] + "&realtor_cost=" + get_data['realtor_cost'] + "&federal_tax_bracket=" + get_data['federal_tax_bracket'] + "&state_tax_bracket=" + get_data['state_tax_bracket'] + "&insurance=" + get_data['insurance'])
 		window.history.pushState("object or string", "Mortgage ROI", "/" + get_url);
 		
 		var mortgage_payment = convertNumberToString(data.mortgage_payment * -1);
