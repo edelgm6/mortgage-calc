@@ -1,6 +1,7 @@
 var first_click = true;
 
 //$('#calculate').click(function () {
+function investmentFormSubmit() {
 	$('.overlay').show();
 
 	$('.mortgage').remove();
@@ -154,7 +155,7 @@ var first_click = true;
 
 
 	});
-});
+};
 
 function buildTable(data) {
 	

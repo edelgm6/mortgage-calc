@@ -20,47 +20,48 @@ $(document).ready(function () {
 		};
 	});
 
-	$("#investmentForm").validate({
-		ignore: false,
-		invalidHandler: function (e, validator) {
-			// loop through the errors:
-			for (var i = 0; i < validator.errorList.length; i++) {
-				// "uncollapse" section containing invalid input/s:
-				$(validator.errorList[i].element).closest('.collapse').collapse('show');
-				
-			}
-		},
-		errorElement: "div",
-		errorPlacement: function (error, element) {
-			// Add the `invalid-feedback` class to the error element
-			error.addClass("invalid-feedback");
-
-			//if (element.prop("type") === "checkbox") {
-			//	error.insertAfter(element.parent("label"));
-			//} else {
-			//Some inputs have an append div after -- check if that exists
-			//If so, slot the error after the div.  Else put it after the input
-			if (element.siblings(".input-group-append").length > 0) {
-				var $targetdiv = element.siblings(".input-group-append")
-				error.insertAfter($targetdiv);
-			} else {
-				error.insertAfter(element);
-			}
-
-			//}
-		},
-		/*
-		highlight: function (element, errorClass, validClass) {
-			$(element).parents(".col-md-7").addClass("invalid-feedback").removeClass("valid-feedback");
-		},
-		unhighlight: function (element, errorClass, validClass) {
-			$(element).parents(".col-md-7").addClass("valid-feedback").removeClass("invalid-feedback");
-		}*/
-
-	});
-
 });
 
+$("#investmentForm").validate({
+	submitHandler: function(form) {
+		investmentFormSubmit()
+	},
+	ignore: false,
+	invalidHandler: function (e, validator) {
+		// loop through the errors:
+		for (var i = 0; i < validator.errorList.length; i++) {
+			// "uncollapse" section containing invalid input/s:
+			$(validator.errorList[i].element).closest('.collapse').collapse('show');
+
+		}
+	},
+	errorElement: "div",
+	errorPlacement: function (error, element) {
+		// Add the `invalid-feedback` class to the error element
+		error.addClass("invalid-feedback");
+
+		//if (element.prop("type") === "checkbox") {
+		//	error.insertAfter(element.parent("label"));
+		//} else {
+		//Some inputs have an append div after -- check if that exists
+		//If so, slot the error after the div.  Else put it after the input
+		if (element.siblings(".input-group-append").length > 0) {
+			var $targetdiv = element.siblings(".input-group-append")
+			error.insertAfter($targetdiv);
+		} else {
+			error.insertAfter(element);
+		}
+
+		//}
+	},
+	/*
+	highlight: function (element, errorClass, validClass) {
+		$(element).parents(".col-md-7").addClass("invalid-feedback").removeClass("valid-feedback");
+	},
+	unhighlight: function (element, errorClass, validClass) {
+		$(element).parents(".col-md-7").addClass("valid-feedback").removeClass("invalid-feedback");
+	}*/
+});
 
 $("#id_price,#id_alternative_rent").keyup(function (event) {
 
