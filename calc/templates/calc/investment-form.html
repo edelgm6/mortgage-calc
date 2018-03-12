@@ -7,7 +7,7 @@
 				<input type="text" name="price" class="form-control" aria-expanded="false" required id="id_price" value={% if price %}{{ price }}{% else %}"500,000"{% endif %}>
 			</div>
 			<div class="col-md-12">
-				<div class="collapse" id="price-collapse" name="priceasdf">
+				<div class="collapse" id="price-collapse" name="price">
 					<div class="card card-body">
 						<p>Total price of the home in dollars, <i>excluding closing costs, appraisals, etc.</i></p>
 					</div>
@@ -80,7 +80,7 @@
 		<div class="form-group row">
 			<label for="id_alternative_rent" class="col-md-5 col-form-label">Monthly rent</label>
 			<div class="col-md-7">
-				<input type="text" lang="en-150" name="alternative_rent" class="form-control" required id="id_alternative_rent" value={% if alternative_rent %}{{ alternative_rent }}{% else %}"1,000"{% endif %}>
+				<input type="text" lang="en-150" name="alternative_rent" class="form-control" required id="id_alternative_rent" value={% if alternative_rent %}{{ alternative_rent }}{% else %}"1,500"{% endif %}>
 			</div>
 			<div class="col-md-12">
 				<div class="collapse" id="price-collapse" name="alternative_rent">
