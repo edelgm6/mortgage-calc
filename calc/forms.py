@@ -19,7 +19,7 @@ class InvestmentForm(forms.Form):
 	closing_cost = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
 	maintenance_cost = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
 	property_tax = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
-	down_payment = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
+	down_payment = forms.DecimalField(max_value=100, min_value=0, max_digits=5, decimal_places=2)
 	interest_rate = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
 	yearly_appreciation = forms.DecimalField(max_value=100, min_value=0, max_digits=4, decimal_places=2)
 	alternative_rent = forms.IntegerField(min_value=0)
