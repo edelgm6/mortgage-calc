@@ -1,6 +1,5 @@
 var first_click = true;
 
-//$('#calculate').click(function () {
 function investmentFormSubmit() {
 	$('.overlay').show();
 
@@ -35,6 +34,14 @@ function investmentFormSubmit() {
 		var mortgage_payment = convertNumberToString(data.mortgage_payment * -1);
 		$('#mortgage_payment').text(mortgage_payment);
 		$('#rent_payment').text($('#id_alternative_rent').val())
+		//If down payment is 1 then give the takeaways content class to the no mortgage div
+		if (get_data['down_payment'] >= 100){
+			$('#takeaways_no_mortgage').addClass('takeaways-content');
+			$('#takeaways_has_mortgage').removeClass('takeaways-content').hide();
+		} else {
+			$('#takeaways_has_mortgage').addClass('takeaways-content')
+			$('#takeaways_no_mortgage').removeClass('takeaways-content').hide();
+		};
 		
 		var table_body = $('#tbody');
 		var response = data.cash_stream;

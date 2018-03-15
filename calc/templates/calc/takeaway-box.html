@@ -28,7 +28,13 @@
 					<div class="takeaways-content" style="display:none;">
 						<p>Your monthly <b>mortgage payment is $<span id="mortgage_payment"></span></b> versus a <b>rent payment of $<span id="rent_payment"></span>.</b></p>
 						
+						<div id="takeaways_has_mortgage" style="display:none;">
 						<p>Year <span id="first_year_ppmt_greater_than_ipmt"></span> is the first year when your <b>principal payment will be larger than your interest payment</b> (i.e., you pay yourself more than the bank).</p>
+						</div>
+						
+						<div id="takeaways_no_mortgage" style="display:none;">
+						<p>Since your down payment is 100% (i.e., you paid all cash up front) you have no interest payments. Note that if your yearly appreciation is greater than your interest rate, it increases returns to have a mortgage.</p>
+						</div>
 				</div>
 			</div>
 			<div class="col-sm-8">
@@ -39,7 +45,7 @@
 		<div class="row">
 			<div class="col-sm-4">
 				<img src="{% static "calc/media/funds.png" %}" class="img-fluid" height="50" width="50">
-				<u><strong>Cash flow: </strong></u>
+				<u><strong>Pre-Sale Cash flow: </strong></u>
 					
 					<div class="takeaways-content" style="display:none;">
 						<p>Aside from the mortgage payment, home ownership has other costs that renters don't have, like the down payment, property taxes, maintenance, etc.</p>
