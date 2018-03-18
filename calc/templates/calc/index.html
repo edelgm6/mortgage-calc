@@ -27,6 +27,7 @@
     <title>Home Investment Calculator</title>
   </head>
   <body>
+	{% include "calc/about-modal.html" %}
 	<div class="col-x-12 overlay">
 		<div class="loader"></div>
 	</div>
@@ -40,6 +41,11 @@
 			</div>
 		</div>
 		{% include "calc/investment-form.html" %}
+		<div class="row">
+		<div class="col-md-12">
+		<button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#aboutModal">About/Methodology</button>
+		</div>
+		</div>
 	  </div>
 	  </div>
 	  <div class="p-3 mb-2 bg-secondary text-white" style="overflow-x: hidden;">
