@@ -137,7 +137,7 @@ function investmentFormSubmit() {
 			$('#peak_irr').text(peak_irr);
 			$('#sell_year').text(peak_irr_year);
 			
-			buildIRRChart(cash_stream, data.high_irr, data.low_irr);
+			buildIRRChart(data.base_irr, data.high_irr, data.low_irr);
 			buildPMTChart(cash_stream);
 			buildCashFlowChart(cash_stream);
 			if (Object.keys(irrChartObject).length>0) {
@@ -172,16 +172,17 @@ function convertNumberToString(number) {
 	}
 };
 
-function buildIRRChart(streams, high_irr, low_irr) {
+function buildIRRChart(irr, high_irr, low_irr) {
 
 	var labels = [];
 	var data = [];
 	var high_data = [];
 	var low_data = [];
+	console.log(irr);
 	
-	for (var i = 2; i < streams.length; i++) {
-		labels.push(streams[i].year);
-		data.push(streams[i].irr);
+	for (var i = 2; i < irr.length; i++) {
+		labels.push(i);
+		data.push(irr[i]);
 		high_data.push(high_irr[i]);
 		low_data.push(low_irr[i]);
 	};

@@ -92,11 +92,11 @@ class Investment:
 		return string
 	
 	def getYearlyCashFlowsAndIRR(self, irr_only=False):
-		cash_flows = []
+		irr = []
+		irr.append('NA')
 		
-		if irr_only:
-			cash_flows.append('NA')
-		else:
+		if not irr_only:
+			cash_flows = []
 			cash_flow_dict = {
 				'total': self.__convertToReadableString(self.getYearZeroCashFlow()),
 				'mortgage': 0,
@@ -107,7 +107,7 @@ class Investment:
 				'debt': self.__convertToReadableString(self.mortgage.mortgage_amount * -1),
 				'closing_costs': 0,
 				'net_proceeds': 0,
-				'irr': 'NA',
+				#'irr': 'NA',
 				'year': 'Purchase'
 			}
 			cash_flows.append(cash_flow_dict)
@@ -127,7 +127,6 @@ class Investment:
 		
 		for year in range(1,31):
 
-			
 			interest_payment = self.mortgage.getInterestPayment(year)
 			principal_payment = self.mortgage.getPrincipalPayment(year)
 			debt = debt - principal_payment
@@ -143,26 +142,26 @@ class Investment:
 			#high_irr = self.getIRR(high_cash_stream, high_value, debt, year)
 			
 			# Calculates for base stream only
-			if irr_only:
-				cash_flows.append(round(base_irr * 100,2))
-			else:
+			irr.append(round(base_irr * 100,2))
+			if not irr_only:
 				cash_flow_dict = {
 					'total': self.__convertToReadableString(base_cash_stream[year]),
 					'other_costs': self.__convertToReadableString(other_costs),
 					'value': self.__convertToReadableString(base_value[year]),
 					'equity': self.__convertToReadableString(equity),
 					'debt': self.__convertToReadableString(debt),
-					'irr': round(base_irr * 100,2),
-					#'high_irr': round(high_irr * 100,2),
-					#'low_irr': round(low_irr * 100,2),
+					#'irr': round(base_irr * 100,2),
 					'year': year,
 					'principal_payment': self.__convertToReadableString(principal_payment),
 					'debt_payment': self.__convertToReadableString(interest_payment),
 					'saved_rent': self.__convertToReadableString(rent_avoided)
 				}			
 				cash_flows.append(cash_flow_dict)
-			
-		return cash_flows
+		
+		if irr_only:
+			return irr
+		else:
+			return irr, cash_flows
 
 	def updateCashStream(self, cash_stream, value_stream, rent_stream, interest_writeoff, year, mortgage_payment, pmi, is_base=False):
 		# Calculates in-year costs based on average value throughout year

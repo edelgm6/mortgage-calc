@@ -17,7 +17,10 @@ class InvestmentView(View):
 			
 		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)	
 		
-		return investment.getYearlyCashFlowsAndIRR(), int(round(mortgage.getMonthlyPayment()))
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+		mortgage_payment = int(round(mortgage.getMonthlyPayment()))
+		
+		return irr, cash_flows, mortgage_payment
 	
 	def getModifiedIRR(self, irr_increment):
 		appreciation_rate = self.yearly_appreciation_rate + irr_increment
@@ -29,6 +32,8 @@ class InvestmentView(View):
 		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)
 		
 		return investment.getYearlyCashFlowsAndIRR(irr_only=True)
+	
+	#def getMortgageValueDriver(self, comparison_irr)
 	
 	def get(self, request, *args, **kwargs):
 		
@@ -54,8 +59,9 @@ class InvestmentView(View):
 			self.state_tax_rate = form.cleaned_data['state_tax_bracket']			
 			
 			# Base stream
-			cash_stream, mortgage_payment = self.getBaseStreamAndMortgagePayment()
+			irr, cash_stream, mortgage_payment = self.getBaseStreamAndMortgagePayment()
 			context_dict = {
+				'base_irr': irr,
 				'cash_stream': cash_stream,
 				'mortgage_payment': mortgage_payment
 			}
