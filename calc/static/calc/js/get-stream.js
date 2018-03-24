@@ -96,21 +96,11 @@ function investmentFormSubmit() {
 			};
 			
 			if (value.year != 'Purchase') {
-				if (value.irr > peak_irr) {
-					peak_irr = value.irr;
+				if (data.base_irr[value.year] > peak_irr) {
+					peak_irr = data.base_irr[value.year];
 					peak_irr_year = value.year;
 				};
 			};
-
-			/*
-			if (!first_year_positive_cash_flow && value.year != 'Purchase') {
-				var cash_flow = value.total;
-				if (cash_flow > 0) {
-					first_year_positive_cash_flow = true;
-					$('#first_year_positive_cash_flow').text(value.year);
-				};
-			};
-			*/
 
 			$(table_body).append(($tr)
 				.append(($td_year))

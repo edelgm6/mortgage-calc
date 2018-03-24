@@ -10,15 +10,17 @@ class InvestmentView(View):
 	form_class = InvestmentForm
 	TERM_IN_YEARS = 30
 	
+	def buildInvestment(self):
+		house = House(self.price, self.yearly_appreciation_rate, self.yearly_property_tax_rate, self.yearly_maintenance_as_percent_of_value, self.insurance)	
+		mortgage = Mortgage(house, self.yearly_interest_rate, self.TERM_IN_YEARS, self.down_payment_percent)	
+		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)
+		return investment
+	
 	def getBaseStreamAndMortgagePayment(self):
-		house = House(self.price, self.yearly_appreciation_rate, self.yearly_property_tax_rate, self.yearly_maintenance_as_percent_of_value, self.insurance)
-			
-		mortgage = Mortgage(house, self.yearly_interest_rate, self.TERM_IN_YEARS, self.down_payment_percent)
-			
-		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)	
+		investment = self.buildInvestment()	
 		
 		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
-		mortgage_payment = int(round(mortgage.getMonthlyPayment()))
+		mortgage_payment = int(round(investment.mortgage.getMonthlyPayment()))
 		
 		return irr, cash_flows, mortgage_payment
 	
@@ -49,7 +51,10 @@ class InvestmentView(View):
 			delta = comparison_irr[year] - irr[year]
 			irr_delta.append(delta)
 		
-		return investment.getYearlyCashFlowsAndIRR(irr_only=True)	
+		return investment.getYearlyCashFlowsAndIRR(irr_only=True)
+	
+	#def getAlternativeRentValueDriver():
+		
 	
 	def get(self, request, *args, **kwargs):
 		
