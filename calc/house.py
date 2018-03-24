@@ -11,17 +11,10 @@ class House:
 		
 	def getHomeValueStreams(self):
 		base_case = [self.price]
-		#high_case = [self.price]
-		#low_case = [self.price]
-		
 		BASE_GROWTH_RATE = self.yearly_appreciation_rate
-		#HIGH_GROWTH_RATE = BASE_GROWTH_RATE + Decimal(.01)
-		#LOW_GROWTH_RATE = BASE_GROWTH_RATE - Decimal(.01)
 		
 		for year in range(1,31):
 			base_case.append(base_case[year-1] * (1+BASE_GROWTH_RATE))
-			##high_case.append(high_case[year-1] * (1+HIGH_GROWTH_RATE))
-			##low_case.append(low_case[year-1] * (1+LOW_GROWTH_RATE))
 			
 		return base_case#, high_case, low_case
 	
@@ -31,8 +24,7 @@ class Mortgage:
 		self.house = house
 		self.yearly_interest_rate = yearly_interest_rate
 		self.term_in_years = term_in_years
-		self.down_payment_percent = down_payment_percent
-		self.down_payment_amount = self.house.price * self.down_payment_percent
+		self.down_payment_amount = self.house.price * down_payment_percent
 		self.mortgage_amount = self.house.price - self.down_payment_amount
 		self.monthly_payment = self.getMonthlyPayment()
 	
@@ -46,22 +38,31 @@ class Mortgage:
 		yearly_rate = self.yearly_interest_rate
 		years = self.term_in_years
 		mortgage_amount = self.mortgage_amount
-		return numpy.pmt(yearly_rate, years, mortgage_amount)
+		if yearly_rate == 0:
+			return Decimal(-mortgage_amount / years)
+		else:
+			return numpy.pmt(yearly_rate, years, mortgage_amount)
 	
 	def getPrincipalPayment(self, years_since_investment):
 		yearly_rate = self.yearly_interest_rate
 		years = self.term_in_years
 		year = years_since_investment
 		mortgage_amount = self.mortgage_amount
-		return numpy.ppmt(yearly_rate, year, years, mortgage_amount)
+		if yearly_rate == 0:
+			return Decimal(-mortgage_amount / years)
+		else:
+			return numpy.ppmt(yearly_rate, year, years, mortgage_amount)
 	
 	def getInterestPayment(self, years_since_investment):
 		yearly_rate = self.yearly_interest_rate
-		years = self.term_in_years
-		year = years_since_investment
-		mortgage_amount = self.mortgage_amount
-		ipmt = numpy.ipmt(yearly_rate, year, years, mortgage_amount)
-		return numpy.asscalar(ipmt)
+		if yearly_rate == 0:
+			return 0
+		else:
+			years = self.term_in_years
+			year = years_since_investment
+			mortgage_amount = self.mortgage_amount
+			ipmt = numpy.ipmt(yearly_rate, year, years, mortgage_amount)
+			return numpy.asscalar(ipmt)
 	
 	def getPMIPayment(self, debt):
 		PMI_INSURANCE = Decimal(.01)
@@ -107,7 +108,6 @@ class Investment:
 				'debt': self.__convertToReadableString(self.mortgage.mortgage_amount * -1),
 				'closing_costs': 0,
 				'net_proceeds': 0,
-				#'irr': 'NA',
 				'year': 'Purchase'
 			}
 			cash_flows.append(cash_flow_dict)
@@ -117,13 +117,9 @@ class Investment:
 		debt = self.mortgage.mortgage_amount * -1
 		alternative_rent = self.alternative_rent
 		
-		#base_rent, high_rent, low_rent = self.getAlternativeRentStreams()
-		#base_value, high_value, low_value = self.house.getHomeValueStreams()
 		base_rent = self.getAlternativeRentStreams()
 		base_value = self.house.getHomeValueStreams()
 		base_cash_stream = [self.getYearZeroCashFlow()]
-		#high_cash_stream = [self.getYearZeroCashFlow()]
-		#low_cash_stream = [self.getYearZeroCashFlow()]
 		
 		for year in range(1,31):
 
@@ -134,12 +130,8 @@ class Investment:
 			pmi = self.mortgage.getPMIPayment(debt)
 			
 			other_costs, rent_avoided = self.updateCashStream(base_cash_stream, base_value, base_rent, interest_writeoff, year, mortgage_payment, pmi, True)
-			#self.updateCashStream(low_cash_stream, low_value, low_rent, interest_writeoff, year, mortgage_payment, pmi)
-			#self.updateCashStream(high_cash_stream, high_value, high_rent, interest_writeoff, year, mortgage_payment, pmi)
 			
 			base_irr, equity = self.getIRR(base_cash_stream, base_value, debt, year, True)
-			#low_irr = self.getIRR(low_cash_stream, low_value, debt, year)
-			#high_irr = self.getIRR(high_cash_stream, high_value, debt, year)
 			
 			# Calculates for base stream only
 			irr.append(round(base_irr * 100,2))
@@ -150,7 +142,6 @@ class Investment:
 					'value': self.__convertToReadableString(base_value[year]),
 					'equity': self.__convertToReadableString(equity),
 					'debt': self.__convertToReadableString(debt),
-					#'irr': round(base_irr * 100,2),
 					'year': year,
 					'principal_payment': self.__convertToReadableString(principal_payment),
 					'debt_payment': self.__convertToReadableString(interest_payment),
@@ -174,7 +165,6 @@ class Investment:
 		# Calculates tax benefits
 		property_tax_writeoff = self.getPropertyTaxBenefit(self.federal_tax_rate, property_tax)
 		tax_shield = interest_writeoff + property_tax_writeoff
-
 		cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
 		cash_stream.append(cash_flow)	
 		
@@ -239,7 +229,8 @@ class Investment:
 			interest_multiplier = 1
 		
 		total_tax_rate = federal_tax_rate + state_tax_rate
-		interest_writeoff = total_tax_rate * interest_payment * interest_multiplier
+		
+		interest_writeoff = total_tax_rate * Decimal(interest_payment) * interest_multiplier
 		
 		return interest_writeoff * -1
 

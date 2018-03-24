@@ -128,12 +128,14 @@ function investmentFormSubmit() {
 			$('#sell_year').text(peak_irr_year);
 			
 			buildIRRChart(data.base_irr, data.high_irr, data.low_irr);
+			buildValueDriversChart(data.mortgage_driver_irr, data.alternative_rent_driver_irr);
 			buildPMTChart(cash_stream);
 			buildCashFlowChart(cash_stream);
 			if (Object.keys(irrChartObject).length>0) {
 				irrChartObject.update();
 				pmtChartObject.update();
-				cashFlowChartObject.update();	
+				cashFlowChartObject.update();
+				valueDriversChartObject.update();
 			};
 			$('#thead').fadeIn(1000);
 			$('.takeaways-content').fadeIn(1000);
@@ -162,13 +164,37 @@ function convertNumberToString(number) {
 	}
 };
 
+function buildValueDriversChart(mortgage, rent) {
+
+	var labels = [];
+	var mortgage_irr = [];
+	var rent_irr = [];
+	
+	for (var i = 1; i < mortgage.length; i++) {
+		labels.push(i+1                               );
+		mortgage_irr.push(mortgage[i]);
+		rent_irr.push(rent[i]);
+	};
+	
+	console.log(labels);
+	console.log(mortgage_irr);
+	
+	if (Object.keys(valueDriversChartObject).length==0) {
+		valueDriversChart(labels, mortgage_irr, rent_irr);
+	} else {
+		valueDriversChartObject['data']['labels'] = labels;
+		valueDriversChartObject['data']['datasets'][0]['data'] = mortgage_irr;
+		valueDriversChartObject['data']['datasets'][1]['data'] = rent_irr;	
+	};
+
+};
+
 function buildIRRChart(irr, high_irr, low_irr) {
 
 	var labels = [];
 	var data = [];
 	var high_data = [];
 	var low_data = [];
-	console.log(irr);
 	
 	for (var i = 2; i < irr.length; i++) {
 		labels.push(i);

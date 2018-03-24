@@ -6,6 +6,59 @@ var primary = '#E4F1FF';
 var secondary = '#CCA5A2';
 var tertiary = '#D7FFE7';
 
+var valueDrivers = $("#valueDriversChart");
+var valueDriversChartObject = {};
+function valueDriversChart(labels, mortgage, rent) {
+	valueDriversChartObject = new Chart(valueDrivers, {
+		type: 'line',
+		data: {
+			labels: labels,
+			datasets: [{
+				label: 'Mortgage',
+				data: mortgage,
+				borderColor: primary,
+			},
+			{
+				label: 'Avoided rent',
+				data: rent,
+				borderColor: tertiary,
+			}],
+		},
+		options: {
+			maintainAspectRatio: false,
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Annualized return gain/loss',
+
+					},
+					gridLines: {
+						color: 'lightgray',
+						zeroLineColor: 'white',
+					},
+					ticks: {
+						callback: function(value, index, values) {
+							return value + '%';
+						},
+					}
+				}],
+				xAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: 'Years since purchase',
+						fontColor: 'white',
+					},
+					gridLines: {
+						color: 'transparent',
+					},
+				}],
+			},
+		},
+	});
+};
+
+
 var irr = $("#irrChart");
 var irrChartObject = {};
 function irrChart(labels, base, high, low) {

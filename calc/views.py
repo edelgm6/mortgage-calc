@@ -17,8 +17,7 @@ class InvestmentView(View):
 		return investment
 	
 	def getBaseStreamAndMortgagePayment(self):
-		investment = self.buildInvestment()	
-		
+		investment = self.buildInvestment()
 		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
 		mortgage_payment = int(round(investment.mortgage.getMonthlyPayment()))
 		
@@ -26,34 +25,38 @@ class InvestmentView(View):
 	
 	def getModifiedIRR(self, irr_increment):
 		appreciation_rate = self.yearly_appreciation_rate + irr_increment
-		
-		house = House(self.price, appreciation_rate, self.yearly_property_tax_rate, self.yearly_maintenance_as_percent_of_value, self.insurance)
-			
-		mortgage = Mortgage(house, self.yearly_interest_rate, self.TERM_IN_YEARS, self.down_payment_percent)
-			
-		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)
+		investment = self.buildInvestment()
+		investment.house.yearly_appreciation_rate = appreciation_rate
 		
 		return investment.getYearlyCashFlowsAndIRR(irr_only=True)
 	
 	def getMortgageValueDriver(self, comparison_irr):
-		DOWN_PAYMENT = 1
-		
-		house = House(self.price, self.yearly_appreciation_rate, self.yearly_property_tax_rate, self.yearly_maintenance_as_percent_of_value, self.insurance)
-			
-		mortgage = Mortgage(house, self.yearly_interest_rate, self.TERM_IN_YEARS, DOWN_PAYMENT)
-			
-		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)	
-		
+		house = House(self.price, self.yearly_appreciation_rate, self.yearly_property_tax_rate, self.yearly_maintenance_as_percent_of_value, self.insurance)	
+		mortgage = Mortgage(house, 0, self.TERM_IN_YEARS, 1)	
+		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)
 		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
 		
-		irr_delta = []
-		for year in range(2,31):
-			delta = comparison_irr[year] - irr[year]
-			irr_delta.append(delta)
-		
-		return investment.getYearlyCashFlowsAndIRR(irr_only=True)
+		delta = self.getIRRDelta(comparison_irr, irr)
+		return delta
 	
-	#def getAlternativeRentValueDriver():
+	def getAlternativeRentValueDriver(self, comparison_irr):
+		investment = self.buildInvestment()
+		investment.alternative_rent = 0
+		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
+		
+		print(comparison_irr)
+		print(irr)
+		delta = self.getIRRDelta(comparison_irr, irr)
+		print(delta)
+		return delta
+		
+	def getIRRDelta(self, base_irr, alternative_irr):
+		irr_delta = []
+		for year in range(1,31):
+			delta =  base_irr[year] - alternative_irr[year]
+			irr_delta.append(round(delta,2))
+		
+		return irr_delta
 		
 	
 	def get(self, request, *args, **kwargs):
@@ -97,7 +100,8 @@ class InvestmentView(View):
 			low_irr = self.getModifiedIRR(LOW_CASE_DECREASE)
 			context_dict['low_irr'] = low_irr
 			
-			self.getMortgageValueDriver(irr)
+			context_dict['mortgage_driver_irr'] = self.getMortgageValueDriver(irr)
+			context_dict['alternative_rent_driver_irr'] = self.getAlternativeRentValueDriver(irr)
 			
 			return JsonResponse(context_dict)
 		else:
