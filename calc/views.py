@@ -8,6 +8,27 @@ from decimal import Decimal
 class InvestmentView(View): 
 	
 	form_class = InvestmentForm
+	TERM_IN_YEARS = 30
+	
+	def getBaseStreamAndMortgagePayment(self):
+		house = House(self.price, self.yearly_appreciation_rate, self.yearly_property_tax_rate, self.yearly_maintenance_as_percent_of_value, self.insurance)
+			
+		mortgage = Mortgage(house, self.yearly_interest_rate, self.TERM_IN_YEARS, self.down_payment_percent)
+			
+		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)	
+		
+		return investment.getYearlyCashFlowsAndIRR(), int(round(mortgage.getMonthlyPayment()))
+	
+	def getModifiedIRR(self, irr_increment):
+		appreciation_rate = self.yearly_appreciation_rate + irr_increment
+		
+		house = House(self.price, appreciation_rate, self.yearly_property_tax_rate, self.yearly_maintenance_as_percent_of_value, self.insurance)
+			
+		mortgage = Mortgage(house, self.yearly_interest_rate, self.TERM_IN_YEARS, self.down_payment_percent)
+			
+		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)
+		
+		return investment.getYearlyCashFlowsAndIRR(irr_only=True)
 	
 	def get(self, request, *args, **kwargs):
 		
@@ -15,34 +36,25 @@ class InvestmentView(View):
 		if form.is_valid():			
 			
 			# House object fields
-			price = form.cleaned_data['price']
-			yearly_appreciation_rate = form.cleaned_data['yearly_appreciation']
-			yearly_property_tax_rate = form.cleaned_data['property_tax']
-			yearly_maintenance_as_percent_of_value = form.cleaned_data['maintenance_cost']
-			insurance = form.cleaned_data['insurance']
+			self.price = form.cleaned_data['price']
+			self.yearly_appreciation_rate = form.cleaned_data['yearly_appreciation']
+			self.yearly_property_tax_rate = form.cleaned_data['property_tax']
+			self.yearly_maintenance_as_percent_of_value = form.cleaned_data['maintenance_cost']
+			self.insurance = form.cleaned_data['insurance']
 
 			# Mortgage objects fields
-			yearly_interest_rate = form.cleaned_data['interest_rate']
-			TERM_IN_YEARS = 30
-			down_payment_percent = form.cleaned_data['down_payment']
+			self.yearly_interest_rate = form.cleaned_data['interest_rate']
+			self.down_payment_percent = form.cleaned_data['down_payment']
 			
 			# Investment object fields
-			closing_cost_as_percent_of_value = form.cleaned_data['closing_cost']
-			alternative_rent = form.cleaned_data['alternative_rent'] * 12
-			realtor_cost = form.cleaned_data['realtor_cost']
-			federal_tax_rate = form.cleaned_data['federal_tax_bracket']
-			state_tax_rate = form.cleaned_data['state_tax_bracket']			
+			self.closing_cost_as_percent_of_value = form.cleaned_data['closing_cost']
+			self.alternative_rent = form.cleaned_data['alternative_rent'] * 12
+			self.realtor_cost = form.cleaned_data['realtor_cost']
+			self.federal_tax_rate = form.cleaned_data['federal_tax_bracket']
+			self.state_tax_rate = form.cleaned_data['state_tax_bracket']			
 			
 			# Base stream
-			house = House(price, yearly_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value, insurance)
-			
-			mortgage = Mortgage(house, yearly_interest_rate, TERM_IN_YEARS, down_payment_percent)
-			
-			investment = Investment(house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost, federal_tax_rate, state_tax_rate)
-			
-			cash_stream = investment.getYearlyCashFlowsAndIRR()
-			mortgage_payment = int(round(mortgage.getMonthlyPayment())) 
-			
+			cash_stream, mortgage_payment = self.getBaseStreamAndMortgagePayment()
 			context_dict = {
 				'cash_stream': cash_stream,
 				'mortgage_payment': mortgage_payment
@@ -50,23 +62,13 @@ class InvestmentView(View):
 			
 			# High stream
 			HIGH_CASE_INCREASE = Decimal(.01)
-			high_appreciation_rate = yearly_appreciation_rate + HIGH_CASE_INCREASE
-			house = House(price, high_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value, insurance)
-			mortgage = Mortgage(house, yearly_interest_rate, TERM_IN_YEARS, down_payment_percent)
-			investment = Investment(house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost, federal_tax_rate, state_tax_rate)
-			
-			context_dict['high_irr'] = investment.getYearlyCashFlowsAndIRR(IRR_ONLY=True)
-			print(context_dict['high_irr'])
+			high_irr = self.getModifiedIRR(HIGH_CASE_INCREASE)
+			context_dict['high_irr'] = high_irr
 			
 			# Low stream
 			LOW_CASE_DECREASE = -Decimal(.01)
-			low_appreciation_rate = yearly_appreciation_rate + LOW_CASE_DECREASE
-			house = House(price, low_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value, insurance)
-			mortgage = Mortgage(house, yearly_interest_rate, TERM_IN_YEARS, down_payment_percent)
-			investment = Investment(house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost, federal_tax_rate, state_tax_rate)
-			
-			context_dict['low_irr'] = investment.getYearlyCashFlowsAndIRR(IRR_ONLY=True)
-			print(context_dict['low_irr'])
+			low_irr = self.getModifiedIRR(LOW_CASE_DECREASE)
+			context_dict['low_irr'] = low_irr
 			
 			return JsonResponse(context_dict)
 		else:

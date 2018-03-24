@@ -91,10 +91,10 @@ class Investment:
 		string = int(round(number))
 		return string
 	
-	def getYearlyCashFlowsAndIRR(self, IRR_ONLY=False):
+	def getYearlyCashFlowsAndIRR(self, irr_only=False):
 		cash_flows = []
 		
-		if IRR_ONLY:
+		if irr_only:
 			cash_flows.append('NA')
 		else:
 			cash_flow_dict = {
@@ -143,7 +143,7 @@ class Investment:
 			#high_irr = self.getIRR(high_cash_stream, high_value, debt, year)
 			
 			# Calculates for base stream only
-			if IRR_ONLY:
+			if irr_only:
 				cash_flows.append(round(base_irr * 100,2))
 			else:
 				cash_flow_dict = {
