@@ -68,7 +68,7 @@ class InvestmentView(View):
 			context_dict['low_irr'] = investment.getYearlyCashFlowsAndIRR(IRR_ONLY=True)
 			print(context_dict['low_irr'])
 			
-			#return JsonResponse(context_dict)
+			return JsonResponse(context_dict)
 		else:
 			print(form.errors)
 		
