@@ -92,7 +92,7 @@ class Investment:
 		string = int(round(number))
 		return string
 	
-	def getYearlyCashFlowsAndIRR(self, irr_only=False):
+	def getYearlyCashFlowsAndIRR(self, irr_only=False, tax_shield_included=True):
 		irr = []
 		irr.append('NA')
 		
@@ -108,7 +108,8 @@ class Investment:
 				'debt': self.__convertToReadableString(self.mortgage.mortgage_amount * -1),
 				'closing_costs': 0,
 				'net_proceeds': 0,
-				'year': 'Purchase'
+				'year': 'Purchase',
+				'irr': 'N/A'
 			}
 			cash_flows.append(cash_flow_dict)
 		
@@ -129,12 +130,13 @@ class Investment:
 			interest_writeoff = self.getInterestTaxBenefit(self.federal_tax_rate, self.state_tax_rate, debt, interest_payment)
 			pmi = self.mortgage.getPMIPayment(debt)
 			
-			other_costs, rent_avoided = self.updateCashStream(base_cash_stream, base_value, base_rent, interest_writeoff, year, mortgage_payment, pmi, True)
+			other_costs, rent_avoided = self.updateCashStream(base_cash_stream, base_value, base_rent, interest_writeoff, year, mortgage_payment, pmi, True, tax_shield_included)
 			
 			base_irr, equity = self.getIRR(base_cash_stream, base_value, debt, year, True)
 			
 			# Calculates for base stream only
-			irr.append(round(base_irr * 100,2))
+			cumulative_irr = round(base_irr * 100,2)
+			irr.append(cumulative_irr)
 			if not irr_only:
 				cash_flow_dict = {
 					'total': self.__convertToReadableString(base_cash_stream[year]),
@@ -145,7 +147,8 @@ class Investment:
 					'year': year,
 					'principal_payment': self.__convertToReadableString(principal_payment),
 					'debt_payment': self.__convertToReadableString(interest_payment),
-					'saved_rent': self.__convertToReadableString(rent_avoided)
+					'saved_rent': self.__convertToReadableString(rent_avoided),
+					'irr': cumulative_irr
 				}			
 				cash_flows.append(cash_flow_dict)
 		
@@ -154,7 +157,7 @@ class Investment:
 		else:
 			return irr, cash_flows
 
-	def updateCashStream(self, cash_stream, value_stream, rent_stream, interest_writeoff, year, mortgage_payment, pmi, is_base=False):
+	def updateCashStream(self, cash_stream, value_stream, rent_stream, interest_writeoff, year, mortgage_payment, pmi, is_base=False, tax_shield_included=True):
 		# Calculates in-year costs based on average value throughout year
 		average_value = (value_stream[year] + value_stream[year-1]) / 2
 		rent_avoided = (rent_stream[year] + rent_stream[year-1]) / 2
@@ -164,7 +167,10 @@ class Investment:
 
 		# Calculates tax benefits
 		property_tax_writeoff = self.getPropertyTaxBenefit(self.federal_tax_rate, property_tax)
-		tax_shield = interest_writeoff + property_tax_writeoff
+		if tax_shield_included:
+			tax_shield = interest_writeoff + property_tax_writeoff
+		else:
+			tax_shield = 0
 		cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
 		cash_stream.append(cash_flow)	
 		
@@ -206,17 +212,10 @@ class Investment:
 	
 	def getAlternativeRentStreams(self):
 		base_case = [self.alternative_rent]
-		#high_case = [self.alternative_rent]
-		#low_case = [self.alternative_rent]
-		
 		BASE_GROWTH_RATE = self.house.yearly_appreciation_rate
-		#HIGH_GROWTH_RATE = BASE_GROWTH_RATE + Decimal(.01)
-		#LOW_GROWTH_RATE = BASE_GROWTH_RATE - Decimal(.01)
 		
 		for year in range(1,31):
 			base_case.append(base_case[year-1] * (1+BASE_GROWTH_RATE))
-			#high_case.append(high_case[year-1] * (1+HIGH_GROWTH_RATE))
-			#low_case.append(low_case[year-1] * (1+LOW_GROWTH_RATE))
 			
 		return base_case#, high_case, low_case
 	

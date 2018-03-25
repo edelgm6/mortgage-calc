@@ -8,7 +8,7 @@ var tertiary = '#D7FFE7';
 
 var valueDrivers = $("#valueDriversChart");
 var valueDriversChartObject = {};
-function valueDriversChart(labels, mortgage, rent) {
+function valueDriversChart(labels, mortgage, rent, tax_shield) {
 	valueDriversChartObject = new Chart(valueDrivers, {
 		type: 'line',
 		data: {
@@ -22,6 +22,11 @@ function valueDriversChart(labels, mortgage, rent) {
 				label: 'Avoided rent',
 				data: rent,
 				borderColor: tertiary,
+			},			
+			{
+				label: 'Tax shield',
+				data: tax_shield,
+				borderColor: secondary,
 			}],
 		},
 		options: {

@@ -44,10 +44,14 @@ class InvestmentView(View):
 		investment.alternative_rent = 0
 		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
 		
-		print(comparison_irr)
-		print(irr)
 		delta = self.getIRRDelta(comparison_irr, irr)
-		print(delta)
+		return delta
+	
+	def getTaxShieldValueDriver(self, comparison_irr):
+		investment = self.buildInvestment()
+		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True, tax_shield_included=False)
+
+		delta = self.getIRRDelta(comparison_irr, irr)
 		return delta
 		
 	def getIRRDelta(self, base_irr, alternative_irr):
@@ -102,6 +106,7 @@ class InvestmentView(View):
 			
 			context_dict['mortgage_driver_irr'] = self.getMortgageValueDriver(irr)
 			context_dict['alternative_rent_driver_irr'] = self.getAlternativeRentValueDriver(irr)
+			context_dict['tax_shield_driver_irr'] = self.getTaxShieldValueDriver(irr)
 			
 			return JsonResponse(context_dict)
 		else:
