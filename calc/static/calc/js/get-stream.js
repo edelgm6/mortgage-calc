@@ -128,7 +128,7 @@ function investmentFormSubmit() {
 			$('#sell_year').text(peak_irr_year);
 			
 			buildIRRChart(data.base_irr, data.high_irr, data.low_irr);
-			buildValueDriversChart(data.mortgage_driver_irr, data.alternative_rent_driver_irr, data.tax_shield_driver_irr);
+			buildValueDriversChart(data.mortgage_driver_irr, data.alternative_rent_driver_irr, data.tax_shield_driver_irr, data.appreciation_driver_irr);
 			buildPMTChart(cash_stream);
 			buildCashFlowChart(cash_stream);
 			if (Object.keys(irrChartObject).length>0) {
@@ -164,30 +164,30 @@ function convertNumberToString(number) {
 	}
 };
 
-function buildValueDriversChart(mortgage, rent, tax_shield) {
+function buildValueDriversChart(mortgage, rent, tax_shield, appreciation) {
 
 	var labels = [];
 	var mortgage_irr = [];
 	var rent_irr = [];
 	var tax_shield_irr = [];
+	var appreciation_irr = [];
 	
 	for (var i = 1; i < mortgage.length; i++) {
 		labels.push(i+1                               );
 		mortgage_irr.push(mortgage[i]);
 		rent_irr.push(rent[i]);
 		tax_shield_irr.push(tax_shield[i]);
+		appreciation_irr.push(appreciation[i]);
 	};
 	
-	console.log(labels);
-	console.log(mortgage_irr);
-	
 	if (Object.keys(valueDriversChartObject).length==0) {
-		valueDriversChart(labels, mortgage_irr, rent_irr, tax_shield_irr);
+		valueDriversChart(labels, mortgage_irr, rent_irr, tax_shield_irr, appreciation_irr);
 	} else {
 		valueDriversChartObject['data']['labels'] = labels;
 		valueDriversChartObject['data']['datasets'][0]['data'] = mortgage_irr;
 		valueDriversChartObject['data']['datasets'][1]['data'] = rent_irr;	
-		valueDriversChartObject['data']['datasets'][2]['data'] = tax_shield_irr;	
+		valueDriversChartObject['data']['datasets'][2]['data'] = tax_shield_irr;
+		valueDriversChartObject['data']['datasets'][3]['data'] = appreciation_irr;
 	};
 
 };
