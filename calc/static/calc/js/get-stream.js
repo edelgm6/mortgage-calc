@@ -167,27 +167,19 @@ function convertNumberToString(number) {
 function buildValueDriversChart(mortgage, rent, tax_shield, appreciation) {
 
 	var labels = [];
-	var mortgage_irr = [];
-	var rent_irr = [];
-	var tax_shield_irr = [];
-	var appreciation_irr = [];
-	
 	for (var i = 1; i < mortgage.length; i++) {
-		labels.push(i+1                               );
-		mortgage_irr.push(mortgage[i]);
-		rent_irr.push(rent[i]);
-		tax_shield_irr.push(tax_shield[i]);
-		appreciation_irr.push(appreciation[i]);
+		labels.push(i+1);
 	};
 	
+	//Slice(1) needed as first value (i.e., slice (0)) is year 1 -- want 2->30
 	if (Object.keys(valueDriversChartObject).length==0) {
-		valueDriversChart(labels, mortgage_irr, rent_irr, tax_shield_irr, appreciation_irr);
+		valueDriversChart(labels, mortgage.slice(1), rent.slice(1), tax_shield.slice(1), appreciation.slice(1));
 	} else {
 		valueDriversChartObject['data']['labels'] = labels;
-		valueDriversChartObject['data']['datasets'][0]['data'] = mortgage_irr;
-		valueDriversChartObject['data']['datasets'][1]['data'] = rent_irr;	
-		valueDriversChartObject['data']['datasets'][2]['data'] = tax_shield_irr;
-		valueDriversChartObject['data']['datasets'][3]['data'] = appreciation_irr;
+		valueDriversChartObject['data']['datasets'][0]['data'] = mortgage.slice(1);
+		valueDriversChartObject['data']['datasets'][1]['data'] = rent.slice(1);	
+		valueDriversChartObject['data']['datasets'][2]['data'] = tax_shield.slice(1);
+		valueDriversChartObject['data']['datasets'][3]['data'] = appreciation.slice(1);
 	};
 
 };
@@ -195,24 +187,18 @@ function buildValueDriversChart(mortgage, rent, tax_shield, appreciation) {
 function buildIRRChart(irr, high_irr, low_irr) {
 
 	var labels = [];
-	var data = [];
-	var high_data = [];
-	var low_data = [];
-	
 	for (var i = 2; i < irr.length; i++) {
 		labels.push(i);
-		data.push(irr[i]);
-		high_data.push(high_irr[i]);
-		low_data.push(low_irr[i]);
 	};
 	
+	//Slice(2) needed as slice (0) is NA and slice(1) is too extreme, want 2->30
 	if (Object.keys(irrChartObject).length==0) {
-		irrChart(labels, data, high_data, low_data);
+		irrChart(labels, irr.slice(2), high_irr.slice(2), low_irr.slice(2));
 	} else {
 		irrChartObject['data']['labels'] = labels;
-		irrChartObject['data']['datasets'][0]['data'] = data;
-		irrChartObject['data']['datasets'][1]['data'] = high_data;
-		irrChartObject['data']['datasets'][2]['data'] = low_data;	
+		irrChartObject['data']['datasets'][0]['data'] = irr.slice(2);
+		irrChartObject['data']['datasets'][1]['data'] = high_irr.slice(2);
+		irrChartObject['data']['datasets'][2]['data'] = low_irr.slice(2);	
 	};
 
 };
@@ -239,14 +225,6 @@ function buildCashFlowChart(streams) {
 		cum_cash_flow.push((flow + cum_flow).toFixed(2));
 		
 		cum_rent_flow.push((cum_rent + rent).toFixed(2));
-		
-		/*
-		console.log('year' + streams[i].year)
-		console.log('rent' + rent)
-		console.log('flow' + flow)
-		console.log('cumrent' + cum_rent_flow[i])
-		console.log('cumown' + cum_cash_flow[i])
-		*/
 		cum_rent = cum_rent + rent;
 		cum_flow = cum_flow + flow;
 	};
