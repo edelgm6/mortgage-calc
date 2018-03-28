@@ -65,6 +65,7 @@ class InvestmentView(View):
 	def getIRRDelta(self, base_irr, alternative_irr):
 		irr_delta = []
 		for year in range(1,31):
+			# Handles case where one of the IRRs is null due to no positive cash flows
 			try:
 				delta =  base_irr[year] - alternative_irr[year]
 				irr_delta.append(round(delta,2))
@@ -119,7 +120,7 @@ class InvestmentView(View):
 			context_dict['alternative_rent_driver_irr'] = self.getAlternativeRentValueDriver(irr)
 			context_dict['tax_shield_driver_irr'] = self.getTaxShieldValueDriver(irr)
 			context_dict['appreciation_driver_irr'] = self.getAppreciationValueDriver(irr)
-			print(context_dict)
+
 			return JsonResponse(context_dict)
 		else:
 			print(form.errors)

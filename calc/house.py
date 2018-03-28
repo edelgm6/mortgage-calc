@@ -17,7 +17,7 @@ class House:
 		for year in range(1,31):
 			base_case.append(base_case[year-1] * (1+BASE_GROWTH_RATE))
 			
-		return base_case#, high_case, low_case
+		return base_case
 	
 	
 class Mortgage:
@@ -135,13 +135,12 @@ class Investment:
 			
 			base_irr, equity = self.getIRR(base_cash_stream, base_value, debt, year, True)
 			
-			# Calculates for base stream only
+			# Sets cumulative to None for when cash flows are always negative
 			if math.isnan(base_irr):
 				cumulative_irr = None
 			else:
 				cumulative_irr = round(base_irr * 100,2)
-			print(base_irr)
-			print(cumulative_irr)
+
 			irr.append(cumulative_irr)
 			if not irr_only:
 				cash_flow_dict = {
