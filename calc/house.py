@@ -1,5 +1,6 @@
 import numpy
 from decimal import Decimal
+import math
 
 class House:
 	def __init__(self, price, yearly_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value, yearly_insurance_as_percent_of_value):
@@ -135,7 +136,12 @@ class Investment:
 			base_irr, equity = self.getIRR(base_cash_stream, base_value, debt, year, True)
 			
 			# Calculates for base stream only
-			cumulative_irr = round(base_irr * 100,2)
+			if math.isnan(base_irr):
+				cumulative_irr = None
+			else:
+				cumulative_irr = round(base_irr * 100,2)
+			print(base_irr)
+			print(cumulative_irr)
 			irr.append(cumulative_irr)
 			if not irr_only:
 				cash_flow_dict = {

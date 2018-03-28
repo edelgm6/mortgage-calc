@@ -65,8 +65,11 @@ class InvestmentView(View):
 	def getIRRDelta(self, base_irr, alternative_irr):
 		irr_delta = []
 		for year in range(1,31):
-			delta =  base_irr[year] - alternative_irr[year]
-			irr_delta.append(round(delta,2))
+			try:
+				delta =  base_irr[year] - alternative_irr[year]
+				irr_delta.append(round(delta,2))
+			except TypeError:
+				irr_delta.append(None)
 		
 		return irr_delta
 		
@@ -74,7 +77,7 @@ class InvestmentView(View):
 	def get(self, request, *args, **kwargs):
 		
 		form = self.form_class(request.GET)
-		if form.is_valid():			
+		if form.is_valid():	
 			
 			# House object fields
 			self.price = form.cleaned_data['price']
@@ -116,7 +119,7 @@ class InvestmentView(View):
 			context_dict['alternative_rent_driver_irr'] = self.getAlternativeRentValueDriver(irr)
 			context_dict['tax_shield_driver_irr'] = self.getTaxShieldValueDriver(irr)
 			context_dict['appreciation_driver_irr'] = self.getAppreciationValueDriver(irr)
-			
+			print(context_dict)
 			return JsonResponse(context_dict)
 		else:
 			print(form.errors)

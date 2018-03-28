@@ -4,7 +4,9 @@ function investmentFormSubmit() {
 	$('.overlay').show();
 
 	$('.mortgage').remove();
-
+	
+	console.log($('#id_down_payment').val());
+	
 	var get_data = {
 		'price': $('#id_price').val().replace(/,/g, ""),
 		'closing_cost': $('#id_closing_cost').val(),
@@ -27,7 +29,7 @@ function investmentFormSubmit() {
 		data: get_data
 	})
 	.done(function (data) {
-
+		console.log(data);
 		var get_url = ("?price=" + get_data['price'] + "&closing_cost=" + get_data['closing_cost'] + "&maintenance_cost=" + get_data['maintenance_cost'] + "&property_tax=" + get_data['property_tax'] + "&down_payment=" + get_data['down_payment'] + "&interest_rate=" + get_data['interest_rate'] + "&yearly_appreciation=" + get_data['yearly_appreciation'] + "&alternative_rent=" + get_data['alternative_rent'] + "&realtor_cost=" + get_data['realtor_cost'] + "&federal_tax_bracket=" + get_data['federal_tax_bracket'] + "&state_tax_bracket=" + get_data['state_tax_bracket'] + "&insurance=" + get_data['insurance'])
 		window.history.pushState("object or string", "Mortgage ROI", "/" + get_url);
 		
