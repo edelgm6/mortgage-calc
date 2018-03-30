@@ -127,7 +127,7 @@ function investmentFormSubmit() {
 			$('#sell_year').text(peak_irr_year);
 			
 			buildIRRChart(data.base_irr, data.high_irr, data.low_irr);
-			buildValueDriversChart(data.mortgage_driver_irr, data.alternative_rent_driver_irr, data.tax_shield_driver_irr, data.appreciation_driver_irr);
+			buildValueDriversChart(data.mortgage_driver_irr, data.alternative_rent_driver_irr, data.tax_shield_driver_irr, data.appreciation_driver_irr, data.expenses_driver_irr);
 			buildPMTChart(cash_stream);
 			buildCashFlowChart(cash_stream);
 			if (Object.keys(irrChartObject).length>0) {
@@ -163,7 +163,7 @@ function convertNumberToString(number) {
 	}
 };
 
-function buildValueDriversChart(mortgage, rent, tax_shield, appreciation) {
+function buildValueDriversChart(mortgage, rent, tax_shield, appreciation, expenses) {
 
 	var labels = [];
 	for (var i = 1; i < mortgage.length; i++) {
@@ -172,13 +172,14 @@ function buildValueDriversChart(mortgage, rent, tax_shield, appreciation) {
 	
 	//Slice(1) needed as first value (i.e., slice (0)) is year 1 -- want 2->30
 	if (Object.keys(valueDriversChartObject).length==0) {
-		valueDriversChart(labels, mortgage.slice(1), rent.slice(1), tax_shield.slice(1), appreciation.slice(1));
+		valueDriversChart(labels, mortgage.slice(1), rent.slice(1), tax_shield.slice(1), appreciation.slice(1), expenses.slice(1));
 	} else {
 		valueDriversChartObject['data']['labels'] = labels;
 		valueDriversChartObject['data']['datasets'][0]['data'] = mortgage.slice(1);
 		valueDriversChartObject['data']['datasets'][1]['data'] = rent.slice(1);	
 		valueDriversChartObject['data']['datasets'][2]['data'] = tax_shield.slice(1);
 		valueDriversChartObject['data']['datasets'][3]['data'] = appreciation.slice(1);
+		valueDriversChartObject['data']['datasets'][4]['data'] = expenses.slice(1);
 	};
 
 };

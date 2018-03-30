@@ -61,6 +61,15 @@ class InvestmentView(View):
 		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
 		delta = self.getIRRDelta(comparison_irr, irr)
 		return delta
+	
+	def getExpensesValueDriver(self, comparison_irr):
+		house = House(self.price, self.yearly_appreciation_rate, 0, 0, 0)	
+		mortgage = Mortgage(house, self.yearly_interest_rate, self.TERM_IN_YEARS, self.down_payment_percent)	
+		investment = Investment(house, mortgage, 0, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)
+		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
+		
+		delta = self.getIRRDelta(comparison_irr, irr)
+		return delta	
 		
 	def getIRRDelta(self, base_irr, alternative_irr):
 		irr_delta = []
@@ -120,6 +129,7 @@ class InvestmentView(View):
 			context_dict['alternative_rent_driver_irr'] = self.getAlternativeRentValueDriver(irr)
 			context_dict['tax_shield_driver_irr'] = self.getTaxShieldValueDriver(irr)
 			context_dict['appreciation_driver_irr'] = self.getAppreciationValueDriver(irr)
+			context_dict['expenses_driver_irr'] = self.getExpensesValueDriver(irr)
 
 			return JsonResponse(context_dict)
 		else:
