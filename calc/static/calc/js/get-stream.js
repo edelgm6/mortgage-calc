@@ -80,9 +80,16 @@ function investmentFormSubmit() {
 			var $td_equity = $("<td>", {
 				'text': convertNumberToString(value.equity)
 			});
+			if (value.irr == null) {
+				var $td_irr = $("<td>", {
+					'text': 'N/A%'
+				});
+			} else {
+			console.log(value.irr);
 			var $td_irr = $("<td>", {
 				'text': value.irr + '%'
 			});
+			};
 
 			if (!first_year_ppmt_greater_than_ipmt && value.year != 'Purchase') {
 				var ppmt = value.principal_payment;

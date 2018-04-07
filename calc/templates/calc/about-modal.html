@@ -13,11 +13,11 @@
 				<p>The goal then is to help everyone from the prospective home buyer in making an informed purchase to the friends at a bar re-hasing the endless rent v. buy debate.</p>
 				<p>If you have any suggestions, comments, or questions, feel free to shoot me a note at <a href="mailto:garrett@mortgageroi.com">garrett@mortgageroi.com</a></p>
 				<p>Cheers,</p>
-				<p>Garrett</p>
+				<p>Garrett<br>
+				<a href="https://www.linkedin.com/in/garrettedel/" target="_blank">LinkedIn</a></p>
 				
 				<h4>Methodology</h4>
-				<p>Coming Soon</p>
-				<!--
+
 				<h5>Introduction</h5>
 				<p>Anyone who has bought and sold a house has two numbers ingrained in their mind: what they bought it for and what they sold it for. Those are important! But what about everything in between? The property taxes you pay, the tax breaks you get, the rent you don't have to pay, the interest you pay, the down payment, etc. all play an important role in understanding the returns. We'll walk through three components: </p>
 				<ul>
@@ -27,27 +27,12 @@
 				</ul>
 
 				<h4>Calculating Returns</h4>
-				<p>There are a few ways to think of the returns on buying and selling a house, in increasing sophistication. Each of these examples will use the following example: buy a house for $500,000, all cash, and sell 5 years later for $600,000 with no transaction costs (closing costs, relator fees, etc.)</p>
-				<ul>
-					<p><b>Arithmatic Return</b> (Total return divided by the invested about): If you buy for $500,000 and sell at $600,000, that's a clean $100,000 in profit. That represents a 20% return after 5 years of ownership.</p>
-					<p><b>Compounded Return</b> (Effective compounded return over the time period): Consider that the $100,000 in profit didn't happen all at once -- it took 5 years. To understand the <i>yearly return</i> we have to do some more complicated math -- 120%^(1/5)-1 (1 + total return^1/investment period - 1). Looking at it that way, our Compounded Return is only 3.7% -- if we had invested that $500,000 in a Certificate of Deposit that paid out an interest rate of 3.7%, we'd also end up with $600,000 after 5 years.</p>
-					<p><b>Internal Rate of Return</b> (Compounded Return with intermediate cash flows): Now consider that the $500,000 we paid up front and the $600,000 we sold it for is hardly the entire picture! In the mean time we had a mortgage payment, we saved money on rent, there were taxes to pay, tax breaks we got, and all of the rest. In reality, the cash outlay may look something like this:</p>
-					<ul>
-						<li>Purchase: -$500,000</li>
-						<li>Year 1: -$10,000</li>
-						<li>Year 2: -$4,000</li>
-						<li>Year 3: -$2,000</li>
-						<li>Year 4: $1,500</li>
-						<li>Year 5: $3,200</li>
-						<li>Sale: $600,000</li>
-					</ul>
-					<p>In other words, we have to consider what happened between buying and selling to really understand the return. The Mortgage ROI Calculator uses the Internal Rate of Return method to help us do that, which brings the actual return of this investment to 3.25% (if you really want to understand the nuts and bolts of it, check out the <a href="https://en.wikipedia.org/wiki/Internal_rate_of_return">Wikipedia page</a>).</p>
-				</ul>
+					<p>In calculating the return on investment from buying a house, you can't just consider what you bought and sold it for, you can to consider the cash flows in between as well. The Mortgage ROI Calculator uses the Internal Rate of Return method to help us do that(if you really want to understand the nuts and bolts of it, check out the <a href="https://en.wikipedia.org/wiki/Internal_rate_of_return">Wikipedia page</a>).</p>
 
 				<h4>Buying and Selling</h4>
 				<p><b>Buying:</b> The cash outlay in buying is made up of two components: the down payment and the closing costs.</p>
 				<ul>
-					<p><b>Down payment: </b> The down payment represents the portion of the purchase that is funded with the buyer's cash. This is typically 20% of the home purchase price. If lower than 20%, many banks require private mortgage insurance which we assume is 1% of the balance of the loan until the loan balance is less than 80% of the purchase price. If the <b>yearly appreciation</b> on the house is greater than the interest rate, then a lower down payment will increase the IRR as the difference between the return on the asset (i.e., the appreciation), and the cost of funding that asset (i.e., the interest rate) is captured by the owner. The opposite is true if the appreciation is <i>lower</i> than the interest rate</p>
+					<p><b>Down payment: </b> The down payment represents the portion of the purchase that is funded with the buyer's cash, typically 20% of the home price. If lower than 20%, many banks require private mortgage insurance which we assume is 1% of the balance of the loan until the loan balance is less than 80% of the purchase price.</p>
 					
 					<p><b>Closing costs: </b>There are a host of fees that are charged when buying a house -- mortgage origination fees, underwriting fees, title insurance, etc. <a href="https://www.zillow.com/mortgage-learning/closing-costs/">Zillow</a> estimates that this can be 2-5% of the cost of the home. The mortgage calculator takes the % entered in the 'Closing Costs' field and multiplies it by the price of the home to create an all-in cash outlay in year 0 (i.e., the down payment plus closing costs.</p>
 				</ul>
@@ -56,16 +41,16 @@
 				<h4>Owning</h4>
 				<p>Just as important as the purchase price and costs, down payment, and sale price and costs are the cash flows that take place during home ownership. This model takes into account the following costs: </p>
 				<ul>
-					<li>Mortgage payment</li>
-					<li>Property taxes</li>
-					<li>Homeowner's insurance</li>
-					<li>Maintenance</li>
-					<li>Private mortgage insurance</li>
-					<li>Mortgage interest tax deduction</li>
-					<li>State and local tax deduction</li>
-					<li>Rent avoidance</li>
+					<p><b>Mortgage payment:</b> Principal and interest paid to the bank</p>
+					<p><b>Property taxes:</b> Calculated on a yearly basis for simplicity</p>
+					<p><b>Homeowner's insurance:</b> Assumed to be a percent of the <i>average value of the home</i> (i.e., last year's ending value + this year's ending value divided by 2)</p>
+					<p><b>Maintenance:</b> Assumed to be a percent of the <i>average value of the home</i> (i.e., last year's ending value + this year's ending value divided by 2)</p>
+					<p><b>Private mortgage insurance:</b> Assessed as 1% of the outstanding debt while the outstanding debt is greater than 80% of the original purchase price.</p>
+					<p><b>Mortgage interest tax deduction:</b> Assumes you deduct the full amount of interest paid on both federal and state tax returns. With the latest tax laws, this is capped for mortgages that have greater than a $750,000 oustanding balance (i.e., if you have a $1M loan balance, you only deduct the interest paid on the first $750,000)</p>
+					<p><b>State and local tax deduction:</b> Assumes you can deduct the lesser of the full amount of the property taxes you pay or $10,000 on your federal tax returns.</p>
+					<p><b>Rent avoidance:</b> The rent you avoid paying by owning is assumed to grow at the same rate as the appreciation on your home.</p>
 				</ul>
--->
+
 			</div>
 
 			<div class="modal-footer">
