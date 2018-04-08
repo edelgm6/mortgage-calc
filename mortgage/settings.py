@@ -25,7 +25,9 @@ USE_THOUSAND_SEPARATOR = True
 SECRET_KEY = 'mfad==$p8_&1yjv0c^c#^37jb*092viuej_570f96&$vte3c!8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = []
 
