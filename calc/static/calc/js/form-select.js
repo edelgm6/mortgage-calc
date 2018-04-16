@@ -24,8 +24,7 @@ $(document).ready(function () {
 
 $("#investmentForm").validate({
 	submitHandler: function(form) {
-		console.log(form);
-		//investmentFormSubmit()
+		investmentFormSubmit()
 	},
 	ignore: false,
 	invalidHandler: function (e, validator) {
