@@ -5,6 +5,14 @@ from calc.forms import InvestmentForm
 from calc.house import House, Mortgage, Investment
 from decimal import Decimal
 
+class AboutView(View):
+	
+	template_name = 'calc/about.html'
+	
+	def get(self, request, *args, **kwargs):
+		return render(request, self.template_name)
+		
+
 class InvestmentView(View): 
 	
 	form_class = InvestmentForm
@@ -163,7 +171,5 @@ class IndexView(View):
 					context_dict[parameter] = int(request.GET[parameter])
 				except:
 					pass
-				
-		print(context_dict)
 		
 		return render(request, self.template_name, context_dict)

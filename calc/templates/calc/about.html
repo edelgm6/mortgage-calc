@@ -1,0 +1,100 @@
+
+{% load widget_tweaks %}
+{% load humanize %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+  
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116554275-1"></script>
+	<script>
+   	window.dataLayer = window.dataLayer || [];
+  	function gtag(){dataLayer.push(arguments);}
+  	gtag('js', new Date());
+
+  	gtag('config', 'UA-116554275-1');
+	</script>
+	  
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="google-site-verification" content="0HO83BcVFMICFl8D2LcGEyii_oXifx7sp0A_ln9f0XM" />
+	<meta name="description" content="About MortgageROI and Methodology">
+	  
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	  
+	<!-- Loader CSS -->  
+	<link rel="stylesheet" type="text/css" href="{% static "calc/css/loader.css" %}">
+
+    <title>About and Methodology</title>
+  </head>
+  <body>
+	<div class="p-3 mb-2 bg-light text-dark" style="overflow-x: hidden;">
+	<div class="container">
+		<div class="row">
+		<div class="col-md-8">
+
+			<h3><a href="/">Back to Calculator</a><br><br></h3>
+				<h3>About</h3>
+				<p>If you've ever gotten into a conversation about when it makes sense to buy a home, you'll often run across a few 'common sense' maxims -- 'when you have a mortage you're paying yourself instead of your landlord,' 'buying is cheaper than renting,' and 'a home is a great investment.' Certainly, there are conditions where all of these are true. But, just as certainly, <i>there are conditions where none of these are true!</i></p>
+				<p>The goal then is to help everyone from the prospective home buyer in making an informed purchase to the friends at a bar re-hasing the endless rent v. buy debate.</p>
+				<p>If you have any suggestions, comments, or questions, feel free to shoot me a note at <a href="mailto:garrett@mortgageroi.com">garrett@mortgageroi.com</a></p>
+				<p>Cheers,</p>
+				<p>Garrett<br>
+				<a href="https://www.linkedin.com/in/garrettedel/" target="_blank">LinkedIn</a></p>
+				
+				<h3>Methodology</h3>
+
+				<h4>Introduction</h4>
+				<p>Anyone who has bought and sold a house has two numbers ingrained in their mind: what they bought it for and what they sold it for. Those are important! But what about everything in between? The property taxes you pay, the tax breaks you get, the rent you don't have to pay, the interest you pay, the down payment, etc. all play an important role in understanding the returns. We'll walk through three components: </p>
+				<ul>
+					<li>Calculating Returns</li>
+					<li>Buying and Selling</li>
+					<li>Owning</li>
+				</ul>
+
+				<h4>Calculating Returns</h4>
+					<p>In calculating the return on investment from buying a house, you can't just consider what you bought and sold it for, you can to consider the cash flows in between as well. The Mortgage ROI Calculator uses the Internal Rate of Return method to help us do that(if you really want to understand the nuts and bolts of it, check out the <a href="https://en.wikipedia.org/wiki/Internal_rate_of_return">Wikipedia page</a>).</p>
+
+				<h4>Buying and Selling</h4>
+				<p><b>Buying:</b> The cash outlay in buying is made up of two components: the down payment and the closing costs.</p>
+				<ul>
+					<p><b>Down payment: </b> The down payment represents the portion of the purchase that is funded with the buyer's cash, typically 20% of the home price. If lower than 20%, many banks require private mortgage insurance which we assume is 1% of the balance of the loan until the loan balance is less than 80% of the purchase price.</p>
+					
+					<p><b>Closing costs: </b>There are a host of fees that are charged when buying a house -- mortgage origination fees, underwriting fees, title insurance, etc. <a href="https://www.zillow.com/mortgage-learning/closing-costs/">Zillow</a> estimates that this can be 2-5% of the cost of the home. The mortgage calculator takes the % entered in the 'Closing Costs' field and multiplies it by the price of the home to create an all-in cash outlay in year 0 (i.e., the down payment plus closing costs.</p>
+				</ul>
+				<p><b>Selling:</b> Upon sale of the house, the homeowner gets the value of the house less the outstanding debt on the house and realtors' fees. Typically, realtors charge 6% of the value of the listing to the seller.</p>
+
+				<h4>Owning</h4>
+				<p>Just as important as the purchase price and costs, down payment, and sale price and costs are the cash flows that take place during home ownership. This model takes into account the following costs: </p>
+				<ul>
+					<p><b>Mortgage payment:</b> Principal and interest paid to the bank</p>
+					<p><b>Property taxes:</b> Calculated on a yearly basis for simplicity</p>
+					<p><b>Homeowner's insurance:</b> Assumed to be a percent of the <i>average value of the home</i> (i.e., last year's ending value + this year's ending value divided by 2)</p>
+					<p><b>Maintenance:</b> Assumed to be a percent of the <i>average value of the home</i> (i.e., last year's ending value + this year's ending value divided by 2)</p>
+					<p><b>Private mortgage insurance:</b> Assessed as 1% of the outstanding debt while the outstanding debt is greater than 80% of the original purchase price.</p>
+					<p><b>Mortgage interest tax deduction:</b> Assumes you deduct the full amount of interest paid on both federal and state tax returns. With the latest tax laws, this is capped for mortgages that have greater than a $750,000 oustanding balance (i.e., if you have a $1M loan balance, you only deduct the interest paid on the first $750,000)</p>
+					<p><b>State and local tax deduction:</b> Assumes you can deduct the lesser of the full amount of the property taxes you pay or $10,000 on your federal tax returns.</p>
+					<p><b>Rent avoidance:</b> The rent you avoid paying by owning is assumed to grow at the same rate as the appreciation on your home.</p>
+				</ul>
+
+			</div>
+			</div>
+		</div>
+		</div>
+
+		
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	
+	
+	  
+  </body>
+</html>

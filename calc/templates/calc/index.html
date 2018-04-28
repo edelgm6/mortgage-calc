@@ -32,7 +32,6 @@
     <title>Mortgage ROI</title>
   </head>
   <body>
-	{% include "calc/about-modal.html" %}
 	<div class="col-x-12 overlay">
 		<div class="loader"></div>
 	</div>
@@ -48,7 +47,7 @@
 		{% include "calc/investment-form.html" %}
 		<div class="row">
 		<div class="col-md-12">
-		<button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#aboutModal">About/Methodology</button>
+			<a href="/about" class="btn btn-outline-info">About and Methodology</a>
 		</div>
 		</div>
 	  </div>
