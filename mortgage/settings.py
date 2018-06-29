@@ -133,4 +133,7 @@ STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
 
-from mortgage.local_settings import *
+try:
+    from mortgage.local_settings import *
+except ImportError:
+    pass
