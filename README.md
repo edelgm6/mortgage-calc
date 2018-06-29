@@ -15,8 +15,8 @@ Getting set up locally is simple.  Once you've cloned the project:
 1) Run `pip install requirements.txt`
 2) Set up a local_settings.py file and put drop it in the mortgage/ folder where the settings.py file lives
 
-```
-### local_settings.py
+```python
+### local_settings.py for local Postgres database
 
 SECRET_KEY = "[YOUR_SECURITY_KEY]"
 
@@ -34,6 +34,8 @@ DATABASES = {
     }
 }
 ```
+
+3) Run `python manage.py migrate`
 
 ## Running the tests
 
