@@ -234,7 +234,8 @@ class Investment:
 		
 		total_tax_rate = federal_tax_rate + state_tax_rate
 		
-		interest_writeoff = total_tax_rate * Decimal(interest_payment) * interest_multiplier
+		#interest_writeoff = total_tax_rate * Decimal(interest_payment) * interest_multiplier
+		interest_writeoff = total_tax_rate * interest_payment * interest_multiplier
 		
 		return interest_writeoff * -1
 
