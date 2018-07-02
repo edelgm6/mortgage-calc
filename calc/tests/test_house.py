@@ -4,7 +4,7 @@ from decimal import Decimal
 
 class HouseTestCase(TestCase):
 
-	price = 100000
+	price = 500000
 	yearly_property_tax_rate = .02 
 	yearly_appreciation_rate = .05
 	yearly_maintenance_as_percent_of_value = .01
