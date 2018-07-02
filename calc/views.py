@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse, JsonResponse
 from calc.forms import InvestmentForm
-from calc.house import House, Mortgage, Investment
+from calc.house import House
+from calc.mortgage import Mortgage
+from calc.investment import Investment
 from decimal import Decimal
 
 class AboutView(View):
