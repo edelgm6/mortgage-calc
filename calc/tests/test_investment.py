@@ -112,4 +112,45 @@ class InvestmentTestCase(TestCase):
 		
 		self.assertEqual(tax_benefit, multiplier * INTEREST_PAYMENT * tax_rate)
 		
+	def test_get_interest_tax_benefit_if_debt_under_debt_limit(self):
+		
+		investment = self._create_investment()
+		
+		DEBT_VALUE = -500000
+		DEBT_LIMIT = 750000
+		INTEREST_PAYMENT = 1000
+		
+		tax_benefit = investment.getInterestTaxBenefit(DEBT_VALUE, INTEREST_PAYMENT)
+		
+		multiplier = -1
+		tax_rate = investment.federal_tax_rate + investment.state_tax_rate
+		
+		self.assertEqual(tax_benefit, multiplier * INTEREST_PAYMENT * tax_rate)
+		
+	def test_get_property_tax_benefit_if_over_SALT_limit(self):
+		
+		investment = self._create_investment()
+		
+		PROPERTY_TAX_BILL = -20000
+		
+		self.assertEqual(investment.getPropertyTaxBenefit(PROPERTY_TAX_BILL), 10000 * self.federal_tax_rate)
+		
+	def test_get_property_tax_benefit_if_umder_SALT_limit(self):
+		
+		investment = self._create_investment()
+		
+		PROPERTY_TAX_BILL = -5000
+		
+		self.assertEqual(investment.getPropertyTaxBenefit(PROPERTY_TAX_BILL), PROPERTY_TAX_BILL * self.federal_tax_rate * -1)
+		
+	def test_get_alternative_rent_streams_returns_escalating_rent(self):
+		
+		investment = self._create_investment()
+		
+		stream = investment.getAlternativeRentStreams()
+		
+		self.assertEqual(stream[0], self.alternative_rent)
+		self.assertEqual(stream[1], self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 1)
+		self.assertEqual(stream[10], self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 10)
+		
 		

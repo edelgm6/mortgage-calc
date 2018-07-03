@@ -50,15 +50,26 @@ class Investment:
 		
 		return interest_writeoff * -1
 
-	def getPropertyTaxBenefit(self, federal_tax_rate, property_tax):
+	def getPropertyTaxBenefit(self, property_tax):
 		SALT_LIMIT = 10000
 		
 		if property_tax * -1 > SALT_LIMIT:
-			property_tax_writeoff = SALT_LIMIT * federal_tax_rate
+			property_tax_writeoff = SALT_LIMIT * self.federal_tax_rate
 		else:
-			property_tax_writeoff = property_tax * federal_tax_rate * -1
+			property_tax_writeoff = property_tax * self.federal_tax_rate * -1
 		
 		return property_tax_writeoff
+
+	
+	def getAlternativeRentStreams(self):
+		alternative_rent_stream = [self.alternative_rent]
+		growth_rate = self.house.yearly_appreciation_rate
+		
+		for year in range(1,31):
+			alternative_rent_stream.append(alternative_rent_stream[year-1] * (1 + growth_rate))
+			
+		return alternative_rent_stream
+	
 	
 	def getYearlyCashFlowsAndIRR(self, irr_only=False, tax_shield_included=True):
 		irr = []
@@ -181,13 +192,3 @@ class Investment:
 			return irr, equity
 		else:
 			return irr
-	
-	def getAlternativeRentStreams(self):
-		base_case = [self.alternative_rent]
-		BASE_GROWTH_RATE = self.house.yearly_appreciation_rate
-		
-		for year in range(1,31):
-			base_case.append(base_case[year-1] * (1+BASE_GROWTH_RATE))
-			
-		return base_case#, high_case, low_case
-		
