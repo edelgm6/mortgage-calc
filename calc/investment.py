@@ -72,13 +72,10 @@ class Investment:
 	
 	
 	def getYearlyCashFlowsAndIRR(self, irr_only=False, tax_shield_included=True):
-		irr = []
-		irr.append('NA')
-		
+		irr = ['NA']
 		if not irr_only:
-			cash_flows = []
 			cash_flow_dict = {
-				'total': self.__convertToReadableString(self.getYearZeroCashFlow()),
+				'total': convert_number_to_readable_string(self.getYearZeroCashFlow()),
 				'mortgage': 0,
 				'taxes': 0,
 				'maintenance': 0,
@@ -90,7 +87,7 @@ class Investment:
 				'year': 'Purchase',
 				'irr': 'N/A'
 			}
-			cash_flows.append(cash_flow_dict)
+			cash_flows = [cash_flow_dict]
 		
 		mortgage_payment = self.mortgage.getYearlyPayment()
 		current_value = self.house.price
@@ -106,7 +103,7 @@ class Investment:
 			interest_payment = self.mortgage.getInterestPayment(year)
 			principal_payment = self.mortgage.getPrincipalPayment(year)
 			debt = debt - principal_payment
-			interest_writeoff = self.getInterestTaxBenefit(self.federal_tax_rate, self.state_tax_rate, debt, interest_payment)
+			interest_writeoff = self.getInterestTaxBenefit(debt, interest_payment)
 			pmi = self.mortgage.getPMIPayment(debt)
 			
 			other_costs, rent_avoided = self.updateCashStream(base_cash_stream, base_value, base_rent, interest_writeoff, year, mortgage_payment, pmi, True, tax_shield_included)
@@ -149,7 +146,7 @@ class Investment:
 		insurance = self.house.yearly_insurance_as_percent_of_value * average_value * -1
 
 		# Calculates tax benefits
-		property_tax_writeoff = self.getPropertyTaxBenefit(self.federal_tax_rate, property_tax)
+		property_tax_writeoff = self.getPropertyTaxBenefit(property_tax)
 		if tax_shield_included:
 			tax_shield = interest_writeoff + property_tax_writeoff
 		else:

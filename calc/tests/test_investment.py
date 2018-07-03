@@ -153,4 +153,12 @@ class InvestmentTestCase(TestCase):
 		self.assertEqual(stream[1], self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 1)
 		self.assertEqual(stream[10], self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 10)
 		
+	def test_get_yearly_cash_flows_and_irr_returns_termainal_value(self):
+		
+		investment = self._create_investment()
+		
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+		
+		self.assertEqual(irr[30], .054)
+		
 		
