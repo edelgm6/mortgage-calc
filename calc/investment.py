@@ -1,6 +1,7 @@
 import numpy
 from decimal import Decimal
 import math
+from calc.utils import convert_number_to_readable_string
 	
 class Investment:
 	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost_as_percent_of_value, federal_tax_rate, state_tax_rate):
@@ -17,10 +18,6 @@ class Investment:
 	def getValue(self, years_since_purchase):
 		return self.house.price * (1+self.house.yearly_appreciation_rate)**years_since_purchase
 	
-	def __convertToReadableString(self, number):
-		string = int(round(number))
-		return string
-	
 	def getYearlyCashFlowsAndIRR(self, irr_only=False, tax_shield_included=True):
 		irr = []
 		irr.append('NA')
@@ -32,9 +29,9 @@ class Investment:
 				'mortgage': 0,
 				'taxes': 0,
 				'maintenance': 0,
-				'value': self.__convertToReadableString(self.house.price),
-				'equity': self.__convertToReadableString(self.mortgage.down_payment_amount),
-				'debt': self.__convertToReadableString(self.mortgage.mortgage_amount * -1),
+				'value': convert_number_to_readable_string(self.house.price),
+				'equity': convert_number_to_readable_string(self.mortgage.down_payment_amount),
+				'debt': convert_number_to_readable_string(self.mortgage.mortgage_amount * -1),
 				'closing_costs': 0,
 				'net_proceeds': 0,
 				'year': 'Purchase',
@@ -72,15 +69,15 @@ class Investment:
 			irr.append(cumulative_irr)
 			if not irr_only:
 				cash_flow_dict = {
-					'total': self.__convertToReadableString(base_cash_stream[year]),
-					'other_costs': self.__convertToReadableString(other_costs),
-					'value': self.__convertToReadableString(base_value[year]),
-					'equity': self.__convertToReadableString(equity),
-					'debt': self.__convertToReadableString(debt),
+					'total': convert_number_to_readable_string(base_cash_stream[year]),
+					'other_costs': convert_number_to_readable_string(other_costs),
+					'value': convert_number_to_readable_string(base_value[year]),
+					'equity': convert_number_to_readable_string(equity),
+					'debt': convert_number_to_readable_string(debt),
 					'year': year,
-					'principal_payment': self.__convertToReadableString(principal_payment),
-					'debt_payment': self.__convertToReadableString(interest_payment),
-					'saved_rent': self.__convertToReadableString(rent_avoided),
+					'principal_payment': convert_number_to_readable_string(principal_payment),
+					'debt_payment': convert_number_to_readable_string(interest_payment),
+					'saved_rent': convert_number_to_readable_string(rent_avoided),
 					'irr': cumulative_irr
 				}			
 				cash_flows.append(cash_flow_dict)
