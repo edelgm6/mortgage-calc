@@ -17,6 +17,48 @@ class Investment:
 	# Gets value of home given current year
 	def getValue(self, years_since_purchase):
 		return self.house.price * (1+self.house.yearly_appreciation_rate)**years_since_purchase
+
+	# Returns total cash costs for purchase	
+	def getYearZeroCashFlow(self):
+		equity_check = self.starting_equity * -1
+		closing_cost = self.house.price * self.closing_cost_as_percent_of_value * -1
+		return equity_check + closing_cost
+	
+	def getAverageValueInYear(self, current_value):
+		beginning_of_year_value = current_value
+		end_of_year_value = current_value * (1+self.house.yearly_appreciation_rate)
+		average_value_in_year = (beginning_of_year_value + end_of_year_value) / 2
+		return average_value_in_year
+	
+	def getSaleProceeds(self, current_value, current_equity):
+		realtor_cost = current_value * self.realtor_cost
+		net_sale_proceeds = current_equity - realtor_cost
+		return net_sale_proceeds
+
+	def getInterestTaxBenefit(self, debt_value, interest_payment):
+		DEBT_LIMIT = 750000
+		
+		if debt_value * -1 > DEBT_LIMIT:
+			interest_multiplier = (DEBT_LIMIT / debt_value) * -1
+		else:
+			interest_multiplier = 1
+		
+		total_tax_rate = self.federal_tax_rate + self.state_tax_rate
+		
+		#interest_writeoff = total_tax_rate * Decimal(interest_payment) * interest_multiplier
+		interest_writeoff = total_tax_rate * interest_payment * interest_multiplier
+		
+		return interest_writeoff * -1
+
+	def getPropertyTaxBenefit(self, federal_tax_rate, property_tax):
+		SALT_LIMIT = 10000
+		
+		if property_tax * -1 > SALT_LIMIT:
+			property_tax_writeoff = SALT_LIMIT * federal_tax_rate
+		else:
+			property_tax_writeoff = property_tax * federal_tax_rate * -1
+		
+		return property_tax_writeoff
 	
 	def getYearlyCashFlowsAndIRR(self, irr_only=False, tax_shield_included=True):
 		irr = []
@@ -148,47 +190,4 @@ class Investment:
 			base_case.append(base_case[year-1] * (1+BASE_GROWTH_RATE))
 			
 		return base_case#, high_case, low_case
-	
-	def getInterestTaxBenefit(self, federal_tax_rate, state_tax_rate, debt_value, interest_payment):
-		DEBT_LIMIT = 750000
-		
-		if debt_value * -1 > DEBT_LIMIT:
-			interest_multiplier = (DEBT_LIMIT / debt_value) * -1
-		else:
-			interest_multiplier = 1
-		
-		total_tax_rate = federal_tax_rate + state_tax_rate
-		
-		#interest_writeoff = total_tax_rate * Decimal(interest_payment) * interest_multiplier
-		interest_writeoff = total_tax_rate * interest_payment * interest_multiplier
-		
-		return interest_writeoff * -1
-
-	def getPropertyTaxBenefit(self, federal_tax_rate, property_tax):
-		SALT_LIMIT = 10000
-		
-		if property_tax * -1 > SALT_LIMIT:
-			property_tax_writeoff = SALT_LIMIT * federal_tax_rate
-		else:
-			property_tax_writeoff = property_tax * federal_tax_rate * -1
-		
-		return property_tax_writeoff
-		
-	
-	# Returns total cash costs for purchase	
-	def getYearZeroCashFlow(self):
-		equity_check = self.starting_equity * -1
-		closing_cost = self.house.price * self.closing_cost_as_percent_of_value * -1
-		return equity_check + closing_cost
-	
-	def getAverageValueInYear(self, current_value):
-		beginning_of_year_value = current_value
-		end_of_year_value = current_value * (1+self.house.yearly_appreciation_rate)
-		average_value_in_year = (beginning_of_year_value + end_of_year_value) / 2
-		return average_value_in_year
-	
-	def getSaleProceeds(self, current_value, current_equity):
-		realtor_cost = current_value * self.realtor_cost
-		net_sale_proceeds = current_equity - realtor_cost
-		return net_sale_proceeds
 		
