@@ -21,26 +21,14 @@ class Mortgage:
 		yearly_rate = self.yearly_interest_rate
 		years = self.term_in_years
 		mortgage_amount = self.mortgage_amount
-		return numpy.pmt(yearly_rate, years, mortgage_amount)
-		"""
-		if yearly_rate == 0:
-			return Decimal(-mortgage_amount / years)
-		else:
-			return numpy.pmt(yearly_rate, years, mortgage_amount)
-		"""
+		return Decimal(numpy.pmt(yearly_rate, years, mortgage_amount))
 	
 	def getPrincipalPayment(self, years_since_investment):
 		yearly_rate = self.yearly_interest_rate
 		years = self.term_in_years
 		year = years_since_investment
 		mortgage_amount = self.mortgage_amount
-		return numpy.ppmt(yearly_rate, year, years, mortgage_amount)
-		"""
-		if yearly_rate == 0:
-			return Decimal(-mortgage_amount / years)
-		else:
-			return numpy.ppmt(yearly_rate, year, years, mortgage_amount)
-		"""
+		return Decimal(numpy.ppmt(yearly_rate, year, years, mortgage_amount))
 	
 	def getInterestPayment(self, years_since_investment):
 		yearly_rate = self.yearly_interest_rate
@@ -48,18 +36,7 @@ class Mortgage:
 		year = years_since_investment
 		mortgage_amount = self.mortgage_amount
 		ipmt = numpy.ipmt(yearly_rate, year, years, mortgage_amount)
-		return numpy.asscalar(ipmt)
-		
-		"""
-		if yearly_rate == 0:
-			return 0
-		else:
-			years = self.term_in_years
-			year = years_since_investment
-			mortgage_amount = self.mortgage_amount
-			ipmt = numpy.ipmt(yearly_rate, year, years, mortgage_amount)
-			return numpy.asscalar(ipmt)
-		"""
+		return Decimal(numpy.asscalar(ipmt))
 	
 	def getPMIPayment(self, debt):
 		PMI_INSURANCE = Decimal(.01)

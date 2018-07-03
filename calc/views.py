@@ -66,7 +66,7 @@ class InvestmentView(View):
 	
 	def getAppreciationValueDriver(self, comparison_irr):
 		investment = self.buildInvestment()
-		investment.house.yearly_appreciation_rate = Decimal(0)
+		investment.house.yearly_appreciation_rate = 0.0
 		
 		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
 		delta = self.getIRRDelta(comparison_irr, irr)

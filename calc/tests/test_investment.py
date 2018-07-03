@@ -8,22 +8,22 @@ class InvestmentTestCase(TestCase):
 
 	# House variables
 	price = 500000
-	yearly_property_tax_rate = .02 
-	yearly_appreciation_rate = .05
-	yearly_maintenance_as_percent_of_value = .01
-	yearly_insurance_as_percent_of_value = .01
+	yearly_property_tax_rate = Decimal(.02)
+	yearly_appreciation_rate = Decimal(.05)
+	yearly_maintenance_as_percent_of_value = Decimal(.01)
+	yearly_insurance_as_percent_of_value = Decimal(.01)
 	
 	# Mortgage variables
-	yearly_interest_rate = .05
+	yearly_interest_rate = Decimal(.05)
 	term_in_years = 30
-	down_payment_percent = .2
+	down_payment_percent = Decimal(.2)
 	
 	# Investment variables
-	realtor_cost_as_percent_of_value = .06
-	federal_tax_rate = .32
-	state_tax_rate = .06
-	closing_cost_as_percent_of_value = .03
-	alternative_rent = 1500
+	realtor_cost_as_percent_of_value = Decimal(.06)
+	federal_tax_rate = Decimal(.32)
+	state_tax_rate = Decimal(.06)
+	closing_cost_as_percent_of_value = Decimal(.03)
+	alternative_rent = 1500 * 12
 	
 	# Output based on values generated from this Google Sheet
 	# https://docs.google.com/spreadsheets/d/1j4b3ZiP2LsMpawOkTHDcCzCRLOuV2KtaUuEGtLwS4E0/edit?usp=sharing
@@ -101,7 +101,7 @@ class InvestmentTestCase(TestCase):
 		
 		investment = self._create_investment()
 		
-		DEBT_VALUE = -1000000
+		DEBT_VALUE = Decimal(-1000000)
 		DEBT_LIMIT = 750000
 		INTEREST_PAYMENT = 1000
 		
@@ -151,14 +151,27 @@ class InvestmentTestCase(TestCase):
 		
 		self.assertEqual(stream[0], self.alternative_rent)
 		self.assertEqual(stream[1], self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 1)
-		self.assertEqual(stream[10], self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 10)
+		self.assertEqual(round(stream[10]), round(self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 10))
 		
-	def test_get_yearly_cash_flows_and_irr_returns_termainal_value(self):
+	def test_get_yearly_cash_flows_and_irr_returns_termainal_irr_value(self):
 		
 		investment = self._create_investment()
 		
 		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+		print(cash_flows)
+		self.assertEqual(irr[30], 5.37)
+		self.assertEqual(irr[0], 'NA')
+		self.assertEqual(cash_flows[30]['debt'], 0)
 		
-		self.assertEqual(irr[30], .054)
+	def test_get_yearly_cash_flows_and_irr_returns_right_cash_flow_values(self):
+		
+		investment = self._create_investment()
+		
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+
+		self.assertEqual(cash_flows[30]['debt'], 0)
+		self.assertEqual(cash_flows[0]['debt'], -round(self.price * (1 - self.down_payment_percent)))
+		self.assertEqual(cash_flows[30]['equity'], cash_flows[30]['value'])
+		self.assertEqual(cash_flows[30]['year'], 30)
 		
 		

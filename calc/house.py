@@ -11,10 +11,10 @@ class House:
 		self.yearly_insurance_as_percent_of_value = yearly_insurance_as_percent_of_value
 		
 	def getHomeValueStreams(self):
-		base_case = [self.price]
+		base_case = [Decimal(self.price)]
 		BASE_GROWTH_RATE = self.yearly_appreciation_rate
 		
 		for year in range(1,31):
-			base_case.append(base_case[year-1] * (1+BASE_GROWTH_RATE))
+			base_case.append(base_case[year-1] * Decimal((1+BASE_GROWTH_RATE)))
 			
 		return base_case

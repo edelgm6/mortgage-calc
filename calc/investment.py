@@ -42,7 +42,7 @@ class Investment:
 			interest_multiplier = (DEBT_LIMIT / debt_value) * -1
 		else:
 			interest_multiplier = 1
-		
+	
 		total_tax_rate = self.federal_tax_rate + self.state_tax_rate
 		
 		#interest_writeoff = total_tax_rate * Decimal(interest_payment) * interest_multiplier
@@ -66,7 +66,7 @@ class Investment:
 		growth_rate = self.house.yearly_appreciation_rate
 		
 		for year in range(1,31):
-			alternative_rent_stream.append(alternative_rent_stream[year-1] * (1 + growth_rate))
+			alternative_rent_stream.append(alternative_rent_stream[year-1] * Decimal((1 + growth_rate)))
 			
 		return alternative_rent_stream
 	
@@ -91,7 +91,7 @@ class Investment:
 		
 		mortgage_payment = self.mortgage.getYearlyPayment()
 		current_value = self.house.price
-		debt = self.mortgage.mortgage_amount * -1
+		debt = Decimal(self.mortgage.mortgage_amount * -1)
 		alternative_rent = self.alternative_rent
 		
 		base_rent = self.getAlternativeRentStreams()
@@ -142,7 +142,7 @@ class Investment:
 		average_value = (value_stream[year] + value_stream[year-1]) / 2
 		rent_avoided = (rent_stream[year] + rent_stream[year-1]) / 2
 		maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
-		property_tax = self.house.yearly_property_tax_rate * average_value * -1
+		property_tax = Decimal(self.house.yearly_property_tax_rate * average_value * -1)
 		insurance = self.house.yearly_insurance_as_percent_of_value * average_value * -1
 
 		# Calculates tax benefits
@@ -151,6 +151,7 @@ class Investment:
 			tax_shield = interest_writeoff + property_tax_writeoff
 		else:
 			tax_shield = 0
+		
 		cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
 		cash_stream.append(cash_flow)	
 		
@@ -177,6 +178,7 @@ class Investment:
 			
 		# Calculates balance sheet
 		current_value = value_stream[year]
+		
 		equity = current_value + debt
 
 		# Calculates IRR with separate cash flow array
