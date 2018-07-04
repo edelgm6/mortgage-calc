@@ -38,13 +38,14 @@ class InvestmentView(View):
 		investment = self.buildInvestment()
 		investment.house.yearly_appreciation_rate = appreciation_rate
 		
-		return investment.getYearlyCashFlowsAndIRR(irr_only=True)
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+		return irr
 	
 	def getMortgageValueDriver(self, comparison_irr):
 		house = House(self.price, self.yearly_appreciation_rate, self.yearly_property_tax_rate, self.yearly_maintenance_as_percent_of_value, self.insurance)	
 		mortgage = Mortgage(house, 0, self.TERM_IN_YEARS, 1)	
 		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)
-		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
 		
 		delta = self.getIRRDelta(comparison_irr, irr)
 		return delta
@@ -52,14 +53,14 @@ class InvestmentView(View):
 	def getAlternativeRentValueDriver(self, comparison_irr):
 		investment = self.buildInvestment()
 		investment.alternative_rent = 0
-		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
 		
 		delta = self.getIRRDelta(comparison_irr, irr)
 		return delta
 	
 	def getTaxShieldValueDriver(self, comparison_irr):
 		investment = self.buildInvestment()
-		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True, tax_shield_included=False)
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR(tax_shield_included=False)
 
 		delta = self.getIRRDelta(comparison_irr, irr)
 		return delta
@@ -68,7 +69,7 @@ class InvestmentView(View):
 		investment = self.buildInvestment()
 		investment.house.yearly_appreciation_rate = 0.0
 		
-		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
 		delta = self.getIRRDelta(comparison_irr, irr)
 		return delta
 	
@@ -76,7 +77,7 @@ class InvestmentView(View):
 		house = House(self.price, self.yearly_appreciation_rate, 0, 0, 0)	
 		mortgage = Mortgage(house, self.yearly_interest_rate, self.TERM_IN_YEARS, self.down_payment_percent)	
 		investment = Investment(house, mortgage, 0, self.alternative_rent, self.realtor_cost, self.federal_tax_rate, self.state_tax_rate)
-		irr = investment.getYearlyCashFlowsAndIRR(irr_only=True)
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
 		
 		delta = self.getIRRDelta(comparison_irr, irr)
 		return delta	

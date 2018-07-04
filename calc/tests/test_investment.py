@@ -43,9 +43,8 @@ class InvestmentTestCase(TestCase):
 
 	def _create_investment(self):
 		
-		house = self._create_house()
-		mortgage = Mortgage(house, self.yearly_interest_rate, self.term_in_years, self.down_payment_percent)
-		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost_as_percent_of_value, self.federal_tax_rate, self.state_tax_rate)
+		mortgage = self._create_mortgage()
+		investment = Investment(mortgage.house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost_as_percent_of_value, self.federal_tax_rate, self.state_tax_rate)
 		
 		return investment
 	
@@ -90,12 +89,13 @@ class InvestmentTestCase(TestCase):
 		
 		investment = self._create_investment()
 		
-		CURRENT_VALUE = 100000
+		CURRENT_DEBT = -50000
 		CURRENT_EQUITY = 50000
+		current_value = CURRENT_EQUITY - CURRENT_DEBT
 		
-		realtor_cost = CURRENT_VALUE * self.realtor_cost_as_percent_of_value
+		realtor_cost = current_value * self.realtor_cost_as_percent_of_value
 		
-		self.assertEqual(investment.getSaleProceeds(CURRENT_VALUE, CURRENT_EQUITY), CURRENT_EQUITY - realtor_cost)
+		self.assertEqual(investment.getSaleProceeds(CURRENT_DEBT, CURRENT_EQUITY), CURRENT_EQUITY - realtor_cost)
 		
 	def test_get_interest_tax_benefit_if_debt_over_debt_limit(self):
 		
@@ -158,9 +158,9 @@ class InvestmentTestCase(TestCase):
 		investment = self._create_investment()
 		
 		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
-		print(cash_flows)
 		self.assertEqual(irr[30], 5.37)
 		self.assertEqual(irr[0], 'NA')
+		self.assertEqual(irr[2], -8.09)
 		self.assertEqual(cash_flows[30]['debt'], 0)
 		
 	def test_get_yearly_cash_flows_and_irr_returns_right_cash_flow_values(self):
@@ -174,4 +174,21 @@ class InvestmentTestCase(TestCase):
 		self.assertEqual(cash_flows[30]['equity'], cash_flows[30]['value'])
 		self.assertEqual(cash_flows[30]['year'], 30)
 		
+	def test_get_yearly_cash_flows_and_irr_returns_NA_IRRs(self):
+		
+		house = self._create_house()
+		mortgage = Mortgage(house, self.yearly_interest_rate, self.term_in_years, Decimal(.01))
+		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost_as_percent_of_value, self.federal_tax_rate, self.state_tax_rate)
+		
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+
+		self.assertEqual(irr[1], None)
+		
+	def test_get_yearly_cash_flows_with_no_tax_shield(self):
+		
+		investment = self._create_investment()
+		
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR(tax_shield_included=False)
+
+		self.assertEqual(round(irr[30],2), round(5.37 - 1.43,2))
 		
