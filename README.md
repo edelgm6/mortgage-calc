@@ -42,6 +42,7 @@ DATABASES = {
 My goal with this project is to have 100% test coverage server-side.
 
 `coverage run --source='.' manage.py test` runs tests
+
 `coverage html` generates the coverage files
 
 ## Built With
