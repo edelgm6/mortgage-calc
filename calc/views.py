@@ -13,7 +13,37 @@ class AboutView(View):
 	
 	def get(self, request, *args, **kwargs):
 		return render(request, self.template_name)
+
+	
+class IndexView(View): 
+
+	template_name = 'calc/index.html'
+	form_class = InvestmentForm
+	
+	def get(self, request, *args, **kwargs):
 		
+		float_parameters = ['closing_cost', 'maintenance_cost', 'property_tax', 'down_payment', 'interest_rate', 'yearly_appreciation', 'realtor_cost', 'federal_tax_bracket', 'state_tax_bracket', 'insurance']
+		
+		context_dict = {}
+		
+		for parameter in float_parameters:
+			if parameter in request.GET:
+				try:
+					context_dict[parameter] = float(request.GET[parameter])
+				except:
+					pass
+				
+		int_parameters = ['price', 'alternative_rent']
+		
+		for parameter in int_parameters:
+			if parameter in request.GET:
+				try:
+					context_dict[parameter] = int(request.GET[parameter])
+				except:
+					pass
+		
+		return render(request, self.template_name, context_dict)
+	
 
 class InvestmentView(View): 
 	
@@ -149,32 +179,3 @@ class InvestmentView(View):
 			print(form.errors)
 		
 		return JsonResponse(form.errors)
-
-class IndexView(View): 
-
-	template_name = 'calc/index.html'
-	form_class = InvestmentForm
-	
-	def get(self, request, *args, **kwargs):
-		
-		float_parameters = ['closing_cost', 'maintenance_cost', 'property_tax', 'down_payment', 'interest_rate', 'yearly_appreciation', 'realtor_cost', 'federal_tax_bracket', 'state_tax_bracket', 'insurance']
-		
-		context_dict = {}
-		
-		for parameter in float_parameters:
-			if parameter in request.GET:
-				try:
-					context_dict[parameter] = float(request.GET[parameter])
-				except:
-					pass
-				
-		int_parameters = ['price', 'alternative_rent']
-		
-		for parameter in int_parameters:
-			if parameter in request.GET:
-				try:
-					context_dict[parameter] = int(request.GET[parameter])
-				except:
-					pass
-		
-		return render(request, self.template_name, context_dict)
