@@ -60,7 +60,9 @@ class InvestmentView(View):
 	
 	def getTaxShieldValueDriver(self, comparison_irr):
 		investment = self.buildInvestment()
-		irr, cash_flows = investment.getYearlyCashFlowsAndIRR(tax_shield_included=False)
+		investment.state_tax_rate = 0
+		investment.federal_tax_rate = 0
+		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
 
 		delta = self.getIRRDelta(comparison_irr, irr)
 		return delta

@@ -72,7 +72,7 @@ class Investment:
 		return alternative_rent_stream
 	
 	
-	def getYearlyCashFlowsAndIRR(self, tax_shield_included=True):
+	def getYearlyCashFlowsAndIRR(self):
 		
 		# Calculate Year 0 conditions
 		irr = ['NA']
@@ -121,10 +121,7 @@ class Investment:
 			interest_payment = self.mortgage.getInterestPayment(year)
 			interest_writeoff = self.getInterestTaxBenefit(debt, interest_payment)
 			property_tax_writeoff = self.getPropertyTaxBenefit(property_tax)
-			if tax_shield_included:
-				tax_shield = interest_writeoff + property_tax_writeoff
-			else:
-				tax_shield = 0
+			tax_shield = interest_writeoff + property_tax_writeoff
 			
 			# Calculate cash stream
 			cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi

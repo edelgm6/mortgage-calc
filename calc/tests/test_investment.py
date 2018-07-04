@@ -184,11 +184,3 @@ class InvestmentTestCase(TestCase):
 
 		self.assertEqual(irr[1], None)
 		
-	def test_get_yearly_cash_flows_with_no_tax_shield(self):
-		
-		investment = self._create_investment()
-		
-		irr, cash_flows = investment.getYearlyCashFlowsAndIRR(tax_shield_included=False)
-
-		self.assertEqual(round(irr[30],2), round(5.37 - 1.43,2))
-		
