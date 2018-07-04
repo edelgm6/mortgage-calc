@@ -39,7 +39,10 @@ DATABASES = {
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+My goal with this project is to have 100% test coverage server-side.
+
+`coverage run --source='.' manage.py test` runs tests
+`coverage html` generates the coverage files
 
 ## Built With
 
