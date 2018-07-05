@@ -41,6 +41,8 @@ DATABASES = {
 
 My goal with this project is to have 100% test coverage server-side.
 
+You may notice hard-coded values throughout the tests, e.g., `self.assertEqual(response_dict['base_irr'][30], 5.37)` -- since the final outcomes are reliant on so many calculations that would be tedious to recreate in tests, I've created a separate [Google Sheet](https://drive.google.com/open?id=1j4b3ZiP2LsMpawOkTHDcCzCRLOuV2KtaUuEGtLwS4E0) as a testing reference that contains the target outputs.
+
 `coverage run --source='.' manage.py test` runs tests
 
 `coverage html` generates the coverage files
