@@ -48,9 +48,6 @@ class IndexView(View):
 
 class InvestmentView(View): 
 	
-	form_class = InvestmentForm
-	TERM_IN_YEARS = 30
-	
 	no_leverage = {
 		'yearly_interest_rate': 0,
 		'down_payment_percent': 1,
@@ -89,45 +86,50 @@ class InvestmentView(View):
 		no_expenses
 	]
 	
-	def buildInvestment(self, standard_scenario, modified_scenario=False):
-		
-		unified_scenario = copy.deepcopy(standard_scenario)
-		
-		if modified_scenario:
-			for var, value in modified_scenario.items():
-				unified_scenario[var] = value
+	@staticmethod
+	def buildInvestment(scenario):
+		TERM_IN_YEARS = 30
 		
 		house = House(
-			unified_scenario['price'], 
-			unified_scenario['yearly_appreciation_rate'], 
-			unified_scenario['yearly_property_tax_rate'], 
-			unified_scenario['yearly_maintenance_as_percent_of_value'], 
-			unified_scenario['insurance']
+			scenario['price'], 
+			scenario['yearly_appreciation_rate'], 
+			scenario['yearly_property_tax_rate'], 
+			scenario['yearly_maintenance_as_percent_of_value'], 
+			scenario['insurance']
 		)
 		
 		mortgage = Mortgage(
 			house, 
-			unified_scenario['yearly_interest_rate'], 
-			self.TERM_IN_YEARS, 
-			unified_scenario['down_payment_percent']
+			scenario['yearly_interest_rate'], 
+			TERM_IN_YEARS, 
+			scenario['down_payment_percent']
 		)	
 		
 		investment = Investment(
 			house, 
 			mortgage, 
-			unified_scenario['closing_cost_as_percent_of_value'], 
-			unified_scenario['alternative_rent'], 
-			unified_scenario['realtor_cost'], 
-			unified_scenario['federal_tax_rate'], 
-			unified_scenario['state_tax_rate']
+			scenario['closing_cost_as_percent_of_value'], 
+			scenario['alternative_rent'], 
+			scenario['realtor_cost'], 
+			scenario['federal_tax_rate'], 
+			scenario['state_tax_rate']
 		)
 		
 		return investment
-		
 	
-	def getIRRDelta(self, base_irr, alternative_irr):
+	@staticmethod
+	def get_unified_scenario(comprehensive_scenario, modified_scenario):
+		unified_scenario = copy.deepcopy(comprehensive_scenario)
+		
+		for var, value in modified_scenario.items():
+			unified_scenario[var] = value
+			
+		return unified_scenario
+
+	@staticmethod
+	def getIRRDelta(base_irr, alternative_irr):
 		irr_delta = []
-		for year in range(1,31):
+		for year in range(1, len(base_irr)):
 			# Handles case where one of the IRRs is null due to no positive cash flows
 			try:
 				delta =  base_irr[year] - alternative_irr[year]
@@ -139,27 +141,9 @@ class InvestmentView(View):
 		
 	
 	def get(self, request, *args, **kwargs):
-		
-		form = self.form_class(request.GET)
-		if form.is_valid():	
-			
-			# House object fields
-			self.price = form.cleaned_data['price']
-			self.yearly_appreciation_rate = form.cleaned_data['yearly_appreciation']
-			self.yearly_property_tax_rate = form.cleaned_data['property_tax']
-			self.yearly_maintenance_as_percent_of_value = form.cleaned_data['maintenance_cost']
-			self.insurance = form.cleaned_data['insurance']
 
-			# Mortgage objects fields
-			self.yearly_interest_rate = form.cleaned_data['interest_rate']
-			self.down_payment_percent = form.cleaned_data['down_payment']
-			
-			# Investment object fields
-			self.closing_cost_as_percent_of_value = form.cleaned_data['closing_cost']
-			self.alternative_rent = form.cleaned_data['alternative_rent'] * 12
-			self.realtor_cost = form.cleaned_data['realtor_cost']
-			self.federal_tax_rate = form.cleaned_data['federal_tax_bracket']
-			self.state_tax_rate = form.cleaned_data['state_tax_bracket']			
+		form = InvestmentForm(request.GET)
+		if form.is_valid():				
 			
 			standard_investment = {
 				'price': form.cleaned_data['price'],
@@ -194,16 +178,19 @@ class InvestmentView(View):
 				'yearly_appreciation_rate': standard_investment['yearly_appreciation_rate'] - Decimal(.01),
 			}
 			
-			investment = self.buildInvestment(standard_investment, high_appreciation)
+			scenario = self.get_unified_scenario(standard_investment, high_appreciation)
+			investment = self.buildInvestment(scenario)
 			high_irr, cash_stream = investment.getYearlyCashFlowsAndIRR()
 			context_dict['high_irr'] = high_irr
 			
-			investment = self.buildInvestment(standard_investment, low_appreciation)
+			scenario = self.get_unified_scenario(standard_investment, low_appreciation)
+			investment = self.buildInvestment(scenario)
 			low_irr, cash_stream = investment.getYearlyCashFlowsAndIRR()
 			context_dict['low_irr'] = low_irr
 			
 			for scenario in self.other_scenarios:
-				investment = self.buildInvestment(standard_investment, scenario)
+				unified_scenario = self.get_unified_scenario(standard_investment, scenario)
+				investment = self.buildInvestment(unified_scenario)
 				scenario_irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
 				irr_delta = self.getIRRDelta(base_irr, scenario_irr)
 				context_dict[scenario['name']] = irr_delta

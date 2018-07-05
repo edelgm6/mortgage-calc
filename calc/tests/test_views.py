@@ -88,14 +88,12 @@ class InvestmentViewTest(TestCase):
 		response_dict = json.loads(response.content)
 		self.assertEqual(response_dict['base_irr'][30], 5.37)
 		self.assertEqual(response_dict['base_irr'][2], -8.09)
-		print(response_dict['high_irr'])
 		self.assertEqual(response_dict['high_irr'][30], 6.71)
 		self.assertEqual(response_dict['high_irr'][2], -3.86)
 		self.assertEqual(response_dict['low_irr'][30], 3.96)
 		self.assertEqual(response_dict['low_irr'][2], -12.46)
 		
 		# Comparison IRRs don't have the year 0 IRR of NA, so have to use 1/29 instead of 2/30
-		print(response_dict['mortgage_driver_irr'])
 		self.assertEqual(response_dict['mortgage_driver_irr'][29], 0.76)
 		self.assertEqual(response_dict['mortgage_driver_irr'][1], -8.61)
 		self.assertEqual(response_dict['alternative_rent_driver_irr'][29], 5.31)
@@ -106,3 +104,76 @@ class InvestmentViewTest(TestCase):
 		self.assertEqual(response_dict['appreciation_driver_irr'][1], 23.84)
 		self.assertEqual(response_dict['expenses_driver_irr'][29], -8.15)
 		self.assertEqual(response_dict['expenses_driver_irr'][1], -22.71)
+		
+	def test_get_IRR_delta_returns_difference_and_skips_first_entry(self):
+		
+		BASE_IRR = [1, 2, 3, 4, 5]
+		ALTERNATIVE_IRR = [2, 3, 4, 5, 6]
+		
+		delta = InvestmentView.getIRRDelta(BASE_IRR, ALTERNATIVE_IRR)
+		
+		self.assertEqual(delta, [-1, -1, -1, -1])
+		
+	def test_get_IRR_delta_returns_difference_and_skips_first_entry_with_nulls(self):
+		
+		BASE_IRR = [1, 'cake', 3, 4, 5]
+		ALTERNATIVE_IRR = [2, 'frosting', 4, 5, 6]
+		
+		delta = InvestmentView.getIRRDelta(BASE_IRR, ALTERNATIVE_IRR)
+		
+		self.assertEqual(delta, [None, -1, -1, -1])
+		
+	def test_get_unified_scenario_returns_combined_dictionary(self):
+		
+		comprehensive_dict = {
+			'one': 1,
+			'three': 3
+		}
+		
+		other_dict = {'two': 2}
+		
+		unified_dict = InvestmentView.get_unified_scenario(comprehensive_dict, other_dict)
+		
+		self.assertEqual(unified_dict['one'], 1)
+		self.assertEqual(unified_dict['two'], 2)
+		self.assertEqual(unified_dict['three'], 3)
+		
+	def test_build_investment_creates_house_mortgage_and_investment(self):
+		
+		scenario = {
+			'price': 500000,
+			'yearly_appreciation_rate': .05,
+			'yearly_property_tax_rate': .01,
+			'yearly_maintenance_as_percent_of_value': .01,
+			'insurance': .02,
+			'yearly_interest_rate': .05,
+			'down_payment_percent': .2,
+			'closing_cost_as_percent_of_value': .03,
+			'alternative_rent': 1500,
+			'realtor_cost': .06,
+			'federal_tax_rate': .32,
+			'state_tax_rate': .06		
+		}
+		
+		investment = InvestmentView.buildInvestment(scenario)
+		house = investment.house
+		mortgage = investment.mortgage
+		
+		self.assertEqual(house.price, 500000)
+		self.assertEqual(house.yearly_appreciation_rate, .05)
+		self.assertEqual(house.yearly_property_tax_rate, .01)
+		self.assertEqual(house.yearly_maintenance_as_percent_of_value, .01)
+		self.assertEqual(house.yearly_insurance_as_percent_of_value, .02)
+		
+		self.assertEqual(mortgage.yearly_interest_rate, .05)
+		self.assertEqual(mortgage.down_payment_amount, .2 * 500000)
+		
+		self.assertEqual(investment.closing_cost_as_percent_of_value, .03)
+		self.assertEqual(investment.alternative_rent, 1500)
+		self.assertEqual(investment.realtor_cost, .06)
+		self.assertEqual(investment.federal_tax_rate, .32)
+		self.assertEqual(investment.state_tax_rate, .06)
+		
+		
+
+		
