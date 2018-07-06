@@ -57,45 +57,45 @@ class MortgageTestCase(TestCase):
 	
 		mortgage = self._create_mortgage()
 		
-		self.assertEqual(round(mortgage.getYearlyPayment()), -26021)
+		self.assertEqual(round(mortgage._get_yearly_payment()), -26021)
 		
 	def test_get_principal_payment_returns_correct_amounts(self):
 		
 		mortgage = self._create_mortgage()
 		
-		self.assertEqual(round(mortgage.getPrincipalPayment(1)), -6021)
-		self.assertEqual(round(mortgage.getPrincipalPayment(30)), -24781)
-		self.assertEqual(round(mortgage.getPrincipalPayment(15)), -11920)
+		self.assertEqual(round(mortgage.get_principal_payment(1)), -6021)
+		self.assertEqual(round(mortgage.get_principal_payment(30)), -24781)
+		self.assertEqual(round(mortgage.get_principal_payment(15)), -11920)
 		
 	def test_get_interest_payment_returns_correct_amounts(self):
 		
 		mortgage = self._create_mortgage()
 		
-		self.assertEqual(round(mortgage.getInterestPayment(1)), -20000)
-		self.assertEqual(round(mortgage.getInterestPayment(30)), -1239)
-		self.assertEqual(round(mortgage.getInterestPayment(15)), -14100)
+		self.assertEqual(round(mortgage.get_interest_payment(1)), -20000)
+		self.assertEqual(round(mortgage.get_interest_payment(30)), -1239)
+		self.assertEqual(round(mortgage.get_interest_payment(15)), -14100)
 		
 	def test_get_interest_payment_returns_0_if_rate_is_0(self):
 		
 		mortgage = self._create_mortgage()
 		mortgage.yearly_interest_rate = 0
 		
-		self.assertEqual(round(mortgage.getInterestPayment(1)), 0)
-		self.assertEqual(round(mortgage.getInterestPayment(30)), 0)
-		self.assertEqual(round(mortgage.getInterestPayment(15)), 0)
+		self.assertEqual(round(mortgage.get_interest_payment(1)), 0)
+		self.assertEqual(round(mortgage.get_interest_payment(30)), 0)
+		self.assertEqual(round(mortgage.get_interest_payment(15)), 0)
 		
 	def test_get_pmi_insurance_returns_0_if_debt_less_than_80pct_of_purchase(self):
 		
 		mortgage = self._create_mortgage()
 		debt = -.5 * self.price
 		
-		self.assertEqual(mortgage.getPMIPayment(debt), 0)
+		self.assertEqual(mortgage.get_pmi_payment(debt), 0)
 		
 	def test_get_pmi_insurance_returns_1pct_of_debt_if_debt_more_than_80pct_of_purchase(self):
 		
 		mortgage = self._create_mortgage()
 		debt = -.9 * self.price
 		
-		self.assertEqual(round(mortgage.getPMIPayment(Decimal(debt))), round(.01 * debt))
+		self.assertEqual(round(mortgage.get_pmi_payment(Decimal(debt))), round(.01 * debt))
 		
 		

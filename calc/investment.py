@@ -98,7 +98,7 @@ class Investment:
 		
 		for year in range(1,31):
 			# Balance sheet calculation
-			principal_payment = self.mortgage.getPrincipalPayment(year)
+			principal_payment = self.mortgage.get_principal_payment(year)
 			debt = debt - principal_payment
 			current_value = self.house.get_future_value(year)
 			equity = current_value + debt
@@ -134,12 +134,12 @@ class Investment:
 		rent_avoided = (self.get_future_rent(year) + self.get_future_rent(year-1)) / 2
 
 		# Calculates tax benefits
-		interest_payment = self.mortgage.getInterestPayment(year)
+		interest_payment = self.mortgage.get_interest_payment(year)
 		interest_writeoff = self.getInterestTaxBenefit(debt, interest_payment)
 		property_tax_writeoff = self.getPropertyTaxBenefit(property_tax)
 		tax_shield = interest_writeoff + property_tax_writeoff
 
-		pmi = self.mortgage.getPMIPayment(debt)
+		pmi = self.mortgage.get_pmi_payment(debt)
 		
 		# Calculate cash stream
 		cash_flow = self.mortgage.yearly_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi

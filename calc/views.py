@@ -162,7 +162,7 @@ class InvestmentView(View):
 			# Base stream
 			investment = self.buildInvestment(standard_investment)
 			base_irr, cash_stream = investment.getYearlyCashFlowsAndIRR()
-			mortgage_payment = int(round(investment.mortgage.getMonthlyPayment()))
+			mortgage_payment = int(round(investment.mortgage.monthly_payment))
 			context_dict = {
 				'base_irr': base_irr,
 				'cash_stream': cash_stream,
