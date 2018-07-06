@@ -147,11 +147,13 @@ class InvestmentTestCase(TestCase):
 		
 		investment = self._create_investment()
 		
-		stream = investment.getAlternativeRentStreams()
+		year_zero_rent = investment.get_future_rent(0)
+		year_one_rent = investment.get_future_rent(1)
+		year_ten_rent = investment.get_future_rent(10)
 		
-		self.assertEqual(stream[0], self.alternative_rent)
-		self.assertEqual(stream[1], self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 1)
-		self.assertEqual(round(stream[10]), round(self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 10))
+		self.assertEqual(year_zero_rent, self.alternative_rent)
+		self.assertEqual(year_one_rent, self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 1)
+		self.assertEqual(round(year_ten_rent), round(self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 10))
 		
 	def test_get_yearly_cash_flows_and_irr_returns_termainal_irr_value(self):
 		

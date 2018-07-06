@@ -12,8 +12,6 @@ class Investment:
 		self.realtor_cost = realtor_cost_as_percent_of_value
 		self.federal_tax_rate = federal_tax_rate
 		self.state_tax_rate = state_tax_rate
-		self.rent_stream = self.getAlternativeRentStreams()
-		self.value_stream = self.house.getHomeValueStreams()
 	
 	# Gets value of home given current year
 	def getValue(self, years_since_purchase):
@@ -62,14 +60,10 @@ class Investment:
 		return property_tax_writeoff
 
 	
-	def getAlternativeRentStreams(self):
-		alternative_rent_stream = [self.alternative_rent]
+	def get_future_rent(self, year):
 		growth_rate = self.house.yearly_appreciation_rate
-		
-		for year in range(1,31):
-			alternative_rent_stream.append(alternative_rent_stream[year-1] * Decimal((1 + growth_rate)))
 			
-		return alternative_rent_stream
+		return Decimal(self.alternative_rent * ((1 + growth_rate) ** year))
 	
 	@staticmethod
 	def _convert_to_round_integer(number):
@@ -106,7 +100,7 @@ class Investment:
 			# Balance sheet calculation
 			principal_payment = self.mortgage.getPrincipalPayment(year)
 			debt = debt - principal_payment
-			current_value = self.value_stream[year]
+			current_value = self.house.get_future_value(year)
 			equity = current_value + debt
 			
 			# Start cash flow dict with known balance sheet data
@@ -132,14 +126,12 @@ class Investment:
 
 	def get_calculated_values(self, year, debt):
 
-		pmi = self.mortgage.getPMIPayment(debt)
-
 		# Calculates in-year costs based on average value throughout year
-		average_value = (self.value_stream[year] + self.value_stream[year-1]) / 2
+		average_value = (self.house.get_future_value(year) + self.house.get_future_value(year-1)) / 2
 		maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
 		property_tax = Decimal(self.house.yearly_property_tax_rate * average_value * -1)
 		insurance = self.house.yearly_insurance_as_percent_of_value * average_value * -1
-		rent_avoided = (self.rent_stream[year] + self.rent_stream[year-1]) / 2
+		rent_avoided = (self.get_future_rent(year) + self.get_future_rent(year-1)) / 2
 
 		# Calculates tax benefits
 		interest_payment = self.mortgage.getInterestPayment(year)
@@ -147,6 +139,8 @@ class Investment:
 		property_tax_writeoff = self.getPropertyTaxBenefit(property_tax)
 		tax_shield = interest_writeoff + property_tax_writeoff
 
+		pmi = self.mortgage.getPMIPayment(debt)
+		
 		# Calculate cash stream
 		cash_flow = self.mortgage.yearly_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
 

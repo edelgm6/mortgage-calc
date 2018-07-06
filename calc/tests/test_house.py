@@ -25,20 +25,15 @@ class HouseTestCase(TestCase):
 		self.assertEqual(house.yearly_maintenance_as_percent_of_value, self.yearly_maintenance_as_percent_of_value)
 		self.assertEqual(house.yearly_insurance_as_percent_of_value, self.yearly_insurance_as_percent_of_value)
 		
-	def test_get_home_value_streams_returns_31_values(self):
-		
-		house = self._create_house()
-		values = house.getHomeValueStreams()
-
-		self.assertEqual(len(values), 31)
-		
 	def test_get_home_value_streams_returns_start_and_end_values(self):
 		
 		house = self._create_house()
-		values = house.getHomeValueStreams()
+		year_zero_value = house.get_future_value(0)
 		
-		self.assertEqual(values[0], self.price)
+		self.assertEqual(year_zero_value, self.price)
+		
+		year_thirty_value = house.get_future_value(30)
 		
 		last_value = self.price * (1+self.yearly_appreciation_rate)**30
-		self.assertEqual(round(last_value), round(values[-1]))
+		self.assertEqual(round(last_value), round(year_thirty_value))
 		
