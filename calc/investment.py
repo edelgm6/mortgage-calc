@@ -1,6 +1,7 @@
 import numpy
 from decimal import Decimal
 import math
+from django.conf import settings
 	
 class Investment:
 	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost_as_percent_of_value, federal_tax_rate, state_tax_rate):
@@ -30,10 +31,10 @@ class Investment:
 		return net_sale_proceeds
 
 	def _get_interest_tax_benefit(self, debt_value, interest_payment):
-		DEBT_LIMIT = 750000
+		debt_limit = settings.MORTGAGE_INTEREST_DEDUCTION_DEBT_LIMIT
 		
-		if debt_value * -1 > DEBT_LIMIT:
-			interest_multiplier = (DEBT_LIMIT / debt_value) * -1
+		if debt_value * -1 > debt_limit:
+			interest_multiplier = (debt_limit / debt_value) * -1
 		else:
 			interest_multiplier = 1
 	
@@ -44,10 +45,10 @@ class Investment:
 		return interest_writeoff * -1
 
 	def _get_property_tax_benefit(self, property_tax):
-		SALT_LIMIT = 10000
+		salt_limit = settings.SALT_LIMIT
 		
-		if property_tax * -1 > SALT_LIMIT:
-			property_tax_writeoff = SALT_LIMIT * self.federal_tax_rate
+		if property_tax * -1 > salt_limit:
+			property_tax_writeoff = salt_limit * self.federal_tax_rate
 		else:
 			property_tax_writeoff = property_tax * self.federal_tax_rate * -1
 		

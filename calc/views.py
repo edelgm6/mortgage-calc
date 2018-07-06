@@ -7,6 +7,7 @@ from calc.mortgage import Mortgage
 from calc.investment import Investment
 from decimal import Decimal
 import copy
+from django.conf import settings
 
 class AboutView(View):
 	
@@ -88,7 +89,6 @@ class InvestmentView(View):
 	
 	@staticmethod
 	def _build_investment(scenario):
-		TERM_IN_YEARS = 30
 		
 		house = House(
 			scenario['price'], 
@@ -101,7 +101,7 @@ class InvestmentView(View):
 		mortgage = Mortgage(
 			house, 
 			scenario['yearly_interest_rate'], 
-			TERM_IN_YEARS, 
+			settings.TERM_IN_YEARS, 
 			scenario['down_payment_percent']
 		)	
 		

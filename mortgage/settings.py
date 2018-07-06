@@ -32,6 +32,13 @@ ALLOWED_HOSTS = []
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+
+# mortgage-calc settings
+
+MORTGAGE_INTEREST_DEDUCTION_DEBT_LIMIT = 750000
+SALT_LIMIT = 10000
+TERM_IN_YEARS = 30
+
 # Application definition
 
 INSTALLED_APPS = [
