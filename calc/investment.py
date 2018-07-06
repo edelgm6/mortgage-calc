@@ -78,7 +78,7 @@ class Investment:
 			'debt': self._convert_to_round_integer(self.mortgage.mortgage_amount * -1),
 			'value': self._convert_to_round_integer(self.house.price),
 			'principal_payment': 0,
-			'total': cash_stream[0],
+			'total': self._convert_to_round_integer(cash_stream[0]),
 			'other_costs': 0,
 			'debt_payment': 0,
 			'saved_rent': 0,
