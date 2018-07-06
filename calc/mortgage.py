@@ -10,6 +10,7 @@ class Mortgage:
 		self.down_payment_amount = self.house.price * down_payment_percent
 		self.mortgage_amount = self.house.price - self.down_payment_amount
 		self.monthly_payment = self.getMonthlyPayment()
+		self.yearly_payment = self.getYearlyPayment()
 	
 	def getMonthlyPayment(self):
 		monthly_rate = self.yearly_interest_rate / 12

@@ -12,6 +12,8 @@ class Investment:
 		self.realtor_cost = realtor_cost_as_percent_of_value
 		self.federal_tax_rate = federal_tax_rate
 		self.state_tax_rate = state_tax_rate
+		self.rent_stream = self.getAlternativeRentStreams()
+		self.value_stream = self.house.getHomeValueStreams()
 	
 	# Gets value of home given current year
 	def getValue(self, years_since_purchase):
@@ -76,79 +78,88 @@ class Investment:
 	
 	def getYearlyCashFlowsAndIRR(self):
 		
-		# Calculate Year 0 conditions
 		irr = ['NA']
+		cash_flows = []
+		
+		# Calculate Year 0 conditions
 		cash_flow_dict = {
-			'total': self._convert_to_round_integer(self.getYearZeroCashFlow()),
-			'mortgage': 0,
-			'taxes': 0,
-			'maintenance': 0,
-			'value': self._convert_to_round_integer(self.house.price),
+			'year': 'Purchase',
 			'equity': self._convert_to_round_integer(self.mortgage.down_payment_amount),
 			'debt': self._convert_to_round_integer(self.mortgage.mortgage_amount * -1),
-			'closing_costs': 0,
-			'net_proceeds': 0,
-			'year': 'Purchase',
-			'irr': 'N/A'
+			'value': self._convert_to_round_integer(self.house.price),
+			'principal_payment': 0,
+			'total': self._convert_to_round_integer(self.getYearZeroCashFlow()),
+			'other_costs': 0,
+			'debt_payment': 0,
+			'saved_rent': 0,
+			'irr': irr[0]
 		}
-		cash_flows = [cash_flow_dict]
+		
+		cash_flows.append(cash_flow_dict)
 		
 		current_value = self.house.price
 		debt = Decimal(self.mortgage.mortgage_amount * -1)
-		mortgage_payment = self.mortgage.getYearlyPayment()
 		alternative_rent = self.alternative_rent
 		cash_stream = [self.getYearZeroCashFlow()]
 		
-		# Calculate Years 0-30 rent and home values
-		rent_stream = self.getAlternativeRentStreams()
-		value_stream = self.house.getHomeValueStreams()
-		
-		
 		for year in range(1,31):
+			# Balance sheet calculation
 			principal_payment = self.mortgage.getPrincipalPayment(year)
 			debt = debt - principal_payment
-			current_value = value_stream[year]
+			current_value = self.value_stream[year]
 			equity = current_value + debt
-		
-			pmi = self.mortgage.getPMIPayment(debt)
-
-			# Calculates in-year costs based on average value throughout year
-			average_value = (value_stream[year] + value_stream[year-1]) / 2
-			maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
-			property_tax = Decimal(self.house.yearly_property_tax_rate * average_value * -1)
-			insurance = self.house.yearly_insurance_as_percent_of_value * average_value * -1
-			rent_avoided = (rent_stream[year] + rent_stream[year-1]) / 2
 			
-			# Calculates tax benefits
-			interest_payment = self.mortgage.getInterestPayment(year)
-			interest_writeoff = self.getInterestTaxBenefit(debt, interest_payment)
-			property_tax_writeoff = self.getPropertyTaxBenefit(property_tax)
-			tax_shield = interest_writeoff + property_tax_writeoff
-			
-			# Calculate cash stream
-			cash_flow = mortgage_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
-			cash_stream.append(cash_flow)	
-			
-			sell_in_this_year_irr = self.getIRR(cash_stream, equity, debt, year)
-			irr.append(sell_in_this_year_irr)
-			
-			other_costs = cash_flow - rent_avoided - mortgage_payment
+			# Start cash flow dict with known balance sheet data
 			cash_flow_dict = {
-				'total': self._convert_to_round_integer(cash_stream[year]),
-				'other_costs': self._convert_to_round_integer(other_costs),
-				'value': self._convert_to_round_integer(current_value),
+				'year': year,
 				'equity': self._convert_to_round_integer(equity),
 				'debt': self._convert_to_round_integer(debt),
-				'year': year,
-				'principal_payment': self._convert_to_round_integer(principal_payment),
-				'debt_payment': self._convert_to_round_integer(interest_payment),
-				'saved_rent': self._convert_to_round_integer(rent_avoided),
-				'irr': sell_in_this_year_irr
-			}			
+				'value': self._convert_to_round_integer(current_value),
+				'principal_payment': self._convert_to_round_integer(principal_payment)
+			}
+			
+			# Update cash_flow_dict with calculated values 
+			cash_flow_dict.update(self.get_calculated_values(year, debt))
+			
+			cash_stream.append(cash_flow_dict['total'])	
+			sell_in_this_year_irr = self.getIRR(cash_stream, equity, debt, year)
+			cash_flow_dict['irr'] = sell_in_this_year_irr
+			
+			irr.append(sell_in_this_year_irr)
 			cash_flows.append(cash_flow_dict)
 		
 		return irr, cash_flows
 
+	def get_calculated_values(self, year, debt):
+
+		pmi = self.mortgage.getPMIPayment(debt)
+
+		# Calculates in-year costs based on average value throughout year
+		average_value = (self.value_stream[year] + self.value_stream[year-1]) / 2
+		maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
+		property_tax = Decimal(self.house.yearly_property_tax_rate * average_value * -1)
+		insurance = self.house.yearly_insurance_as_percent_of_value * average_value * -1
+		rent_avoided = (self.rent_stream[year] + self.rent_stream[year-1]) / 2
+
+		# Calculates tax benefits
+		interest_payment = self.mortgage.getInterestPayment(year)
+		interest_writeoff = self.getInterestTaxBenefit(debt, interest_payment)
+		property_tax_writeoff = self.getPropertyTaxBenefit(property_tax)
+		tax_shield = interest_writeoff + property_tax_writeoff
+
+		# Calculate cash stream
+		cash_flow = self.mortgage.yearly_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
+
+		other_costs = cash_flow - rent_avoided - self.mortgage.yearly_payment
+		cash_flow_dict = {
+			'total': self._convert_to_round_integer(cash_flow),
+			'other_costs': self._convert_to_round_integer(other_costs),
+			'debt_payment': self._convert_to_round_integer(interest_payment),
+			'saved_rent': self._convert_to_round_integer(rent_avoided),
+		}			
+		
+		return cash_flow_dict
+	
 	def getIRR(self, cash_stream, equity, debt, year):
 
 		# Calculates IRR with separate cash flow array
