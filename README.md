@@ -1,6 +1,6 @@
-# MortgageROI
+# mortgage-calc
 
-This Django project is for [MortgageROI.com](https://www.mortgageroi.com), a calculator to help potential home buyers understand whether it makes sense to buy a house.
+**mortgage-calc** is a Django + vanilla async Javascript calculator to help potential home buyers understand whether it makes sense to buy a house and is hosted at [MortgageROI.com](https://www.mortgageroi.com), 
 
 Many mortgage calculators are overly simplistic, returning to the user a simple 'buy or rent' determination without any context (e.g., *why* is my return higher if I keep my home for 10 years v. 2 years? *why* does a higher down payment help in some cases and hurt in others? what is more important for my return, home appreciation or the rent I save?).
 
