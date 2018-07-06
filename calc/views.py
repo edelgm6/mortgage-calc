@@ -87,7 +87,7 @@ class InvestmentView(View):
 	]
 	
 	@staticmethod
-	def buildInvestment(scenario):
+	def _build_investment(scenario):
 		TERM_IN_YEARS = 30
 		
 		house = House(
@@ -118,7 +118,7 @@ class InvestmentView(View):
 		return investment
 	
 	@staticmethod
-	def get_unified_scenario(comprehensive_scenario, modified_scenario):
+	def _get_unified_scenario(comprehensive_scenario, modified_scenario):
 		unified_scenario = copy.deepcopy(comprehensive_scenario)
 		
 		unified_scenario.update(modified_scenario)
@@ -126,7 +126,7 @@ class InvestmentView(View):
 		return unified_scenario
 
 	@staticmethod
-	def getIRRDelta(base_irr, alternative_irr):
+	def _get_irr_delta(base_irr, alternative_irr):
 		irr_delta = []
 		for year in range(1, len(base_irr)):
 			# Handles case where one of the IRRs is null due to no positive cash flows
@@ -160,8 +160,8 @@ class InvestmentView(View):
 			}
 
 			# Base stream
-			investment = self.buildInvestment(standard_investment)
-			base_irr, cash_stream = investment.getYearlyCashFlowsAndIRR()
+			investment = self._build_investment(standard_investment)
+			base_irr, cash_stream = investment.get_yearly_cash_flows_and_irr()
 			mortgage_payment = int(round(investment.mortgage.monthly_payment))
 			context_dict = {
 				'base_irr': base_irr,
@@ -177,21 +177,21 @@ class InvestmentView(View):
 				'yearly_appreciation_rate': standard_investment['yearly_appreciation_rate'] - Decimal(.01),
 			}
 			
-			scenario = self.get_unified_scenario(standard_investment, high_appreciation)
-			investment = self.buildInvestment(scenario)
-			high_irr, _ = investment.getYearlyCashFlowsAndIRR()
+			scenario = self._get_unified_scenario(standard_investment, high_appreciation)
+			investment = self._build_investment(scenario)
+			high_irr, _ = investment.get_yearly_cash_flows_and_irr()
 			context_dict['high_irr'] = high_irr
 			
-			scenario = self.get_unified_scenario(standard_investment, low_appreciation)
-			investment = self.buildInvestment(scenario)
-			low_irr, _ = investment.getYearlyCashFlowsAndIRR()
+			scenario = self._get_unified_scenario(standard_investment, low_appreciation)
+			investment = self._build_investment(scenario)
+			low_irr, _ = investment.get_yearly_cash_flows_and_irr()
 			context_dict['low_irr'] = low_irr
 			
 			for scenario in self.other_scenarios:
-				unified_scenario = self.get_unified_scenario(standard_investment, scenario)
-				investment = self.buildInvestment(unified_scenario)
-				scenario_irr, _ = investment.getYearlyCashFlowsAndIRR()
-				irr_delta = self.getIRRDelta(base_irr, scenario_irr)
+				unified_scenario = self._get_unified_scenario(standard_investment, scenario)
+				investment = self._build_investment(unified_scenario)
+				scenario_irr, _ = investment.get_yearly_cash_flows_and_irr()
+				irr_delta = self._get_irr_delta(base_irr, scenario_irr)
 				context_dict[scenario['name']] = irr_delta
 			
 			return JsonResponse(context_dict)

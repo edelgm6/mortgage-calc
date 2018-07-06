@@ -149,7 +149,7 @@ class InvestmentTestCase(TestCase):
 		
 		investment = self._create_investment()
 		
-		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+		irr, cash_flows = investment.get_yearly_cash_flows_and_irr()
 		self.assertEqual(irr[30], 5.37)
 		self.assertEqual(irr[0], 'NA')
 		self.assertEqual(irr[2], -8.09)
@@ -159,7 +159,7 @@ class InvestmentTestCase(TestCase):
 		
 		investment = self._create_investment()
 		
-		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+		_, cash_flows = investment.get_yearly_cash_flows_and_irr()
 
 		self.assertEqual(cash_flows[30]['debt'], 0)
 		self.assertEqual(cash_flows[0]['debt'], -round(self.price * (1 - self.down_payment_percent)))
@@ -172,7 +172,7 @@ class InvestmentTestCase(TestCase):
 		mortgage = Mortgage(house, self.yearly_interest_rate, self.term_in_years, Decimal(.01))
 		investment = Investment(house, mortgage, self.closing_cost_as_percent_of_value, self.alternative_rent, self.realtor_cost_as_percent_of_value, self.federal_tax_rate, self.state_tax_rate)
 		
-		irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+		irr, _ = investment.get_yearly_cash_flows_and_irr()
 
 		self.assertEqual(irr[1], None)
 		

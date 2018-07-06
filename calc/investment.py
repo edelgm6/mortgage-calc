@@ -64,7 +64,7 @@ class Investment:
 		round_integer = int(round(number))
 		return round_integer
 	
-	def getYearlyCashFlowsAndIRR(self):
+	def get_yearly_cash_flows_and_irr(self):
 		
 		irr = ['NA']
 		cash_flows = []

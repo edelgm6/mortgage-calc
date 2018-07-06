@@ -110,7 +110,7 @@ class InvestmentViewTest(TestCase):
 		BASE_IRR = [1, 2, 3, 4, 5]
 		ALTERNATIVE_IRR = [2, 3, 4, 5, 6]
 		
-		delta = InvestmentView.getIRRDelta(BASE_IRR, ALTERNATIVE_IRR)
+		delta = InvestmentView._get_irr_delta(BASE_IRR, ALTERNATIVE_IRR)
 		
 		self.assertEqual(delta, [-1, -1, -1, -1])
 		
@@ -119,7 +119,7 @@ class InvestmentViewTest(TestCase):
 		BASE_IRR = [1, 'cake', 3, 4, 5]
 		ALTERNATIVE_IRR = [2, 'frosting', 4, 5, 6]
 		
-		delta = InvestmentView.getIRRDelta(BASE_IRR, ALTERNATIVE_IRR)
+		delta = InvestmentView._get_irr_delta(BASE_IRR, ALTERNATIVE_IRR)
 		
 		self.assertEqual(delta, [None, -1, -1, -1])
 		
@@ -132,7 +132,7 @@ class InvestmentViewTest(TestCase):
 		
 		other_dict = {'two': 2}
 		
-		unified_dict = InvestmentView.get_unified_scenario(comprehensive_dict, other_dict)
+		unified_dict = InvestmentView._get_unified_scenario(comprehensive_dict, other_dict)
 		
 		self.assertEqual(unified_dict['one'], 1)
 		self.assertEqual(unified_dict['two'], 2)
@@ -155,7 +155,7 @@ class InvestmentViewTest(TestCase):
 			'state_tax_rate': .06		
 		}
 		
-		investment = InvestmentView.buildInvestment(scenario)
+		investment = InvestmentView._build_investment(scenario)
 		house = investment.house
 		mortgage = investment.mortgage
 		
