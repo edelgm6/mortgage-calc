@@ -121,8 +121,7 @@ class InvestmentView(View):
 	def get_unified_scenario(comprehensive_scenario, modified_scenario):
 		unified_scenario = copy.deepcopy(comprehensive_scenario)
 		
-		for var, value in modified_scenario.items():
-			unified_scenario[var] = value
+		unified_scenario.update(modified_scenario)
 			
 		return unified_scenario
 
