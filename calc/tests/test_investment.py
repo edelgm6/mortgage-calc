@@ -62,28 +62,18 @@ class InvestmentTestCase(TestCase):
 		
 		investment = self._create_investment()
 		
-		self.assertEqual(investment.getValue(0), self.price)
-		self.assertEqual(investment.getValue(1), self.price * (1+self.yearly_appreciation_rate))
-		self.assertEqual(investment.getValue(15), self.price * (1+self.yearly_appreciation_rate)**15)
+		self.assertEqual(investment._get_value(0), self.price)
+		self.assertEqual(investment._get_value(1), self.price * (1+self.yearly_appreciation_rate))
+		self.assertEqual(investment._get_value(15), self.price * (1+self.yearly_appreciation_rate)**15)
 	
 	def test_get_year_zero_cash_flow_returns_cost_of_equity_plus_closing_costs(self):
 		
 		investment = self._create_investment()
 		
-		year_zero_cash_flow = investment.getYearZeroCashFlow()
+		year_zero_cash_flow = investment._get_year_zero_cash_flow()
 		equity_check = investment.starting_equity * -1
 		closing_costs = investment.house.price * investment.closing_cost_as_percent_of_value * -1
 		self.assertEqual(year_zero_cash_flow, equity_check + closing_costs)
-		
-	def test_get_average_value_in_year_returns_current_plus_next_divided_by_two(self):
-		
-		investment = self._create_investment()
-		
-		CURRENT_VALUE = 100000
-		
-		next_year_value = CURRENT_VALUE * (1 + self.yearly_appreciation_rate)
-		
-		self.assertEqual(investment.getAverageValueInYear(CURRENT_VALUE), (CURRENT_VALUE + next_year_value) / 2)
 		
 	def test_get_sale_proceeds_returns_equity_less_realtor_costs(self):
 		
@@ -95,7 +85,7 @@ class InvestmentTestCase(TestCase):
 		
 		realtor_cost = current_value * self.realtor_cost_as_percent_of_value
 		
-		self.assertEqual(investment.getSaleProceeds(CURRENT_DEBT, CURRENT_EQUITY), CURRENT_EQUITY - realtor_cost)
+		self.assertEqual(investment._get_sale_proceeds(CURRENT_DEBT, CURRENT_EQUITY), CURRENT_EQUITY - realtor_cost)
 		
 	def test_get_interest_tax_benefit_if_debt_over_debt_limit(self):
 		
@@ -105,7 +95,7 @@ class InvestmentTestCase(TestCase):
 		DEBT_LIMIT = 750000
 		INTEREST_PAYMENT = 1000
 		
-		tax_benefit = investment.getInterestTaxBenefit(DEBT_VALUE, INTEREST_PAYMENT)
+		tax_benefit = investment._get_interest_tax_benefit(DEBT_VALUE, INTEREST_PAYMENT)
 		
 		multiplier = DEBT_LIMIT / DEBT_VALUE
 		tax_rate = investment.federal_tax_rate + investment.state_tax_rate
@@ -120,7 +110,7 @@ class InvestmentTestCase(TestCase):
 		DEBT_LIMIT = 750000
 		INTEREST_PAYMENT = 1000
 		
-		tax_benefit = investment.getInterestTaxBenefit(DEBT_VALUE, INTEREST_PAYMENT)
+		tax_benefit = investment._get_interest_tax_benefit(DEBT_VALUE, INTEREST_PAYMENT)
 		
 		multiplier = -1
 		tax_rate = investment.federal_tax_rate + investment.state_tax_rate
@@ -133,7 +123,7 @@ class InvestmentTestCase(TestCase):
 		
 		PROPERTY_TAX_BILL = -20000
 		
-		self.assertEqual(investment.getPropertyTaxBenefit(PROPERTY_TAX_BILL), 10000 * self.federal_tax_rate)
+		self.assertEqual(investment._get_property_tax_benefit(PROPERTY_TAX_BILL), 10000 * self.federal_tax_rate)
 		
 	def test_get_property_tax_benefit_if_umder_SALT_limit(self):
 		
@@ -141,15 +131,15 @@ class InvestmentTestCase(TestCase):
 		
 		PROPERTY_TAX_BILL = -5000
 		
-		self.assertEqual(investment.getPropertyTaxBenefit(PROPERTY_TAX_BILL), PROPERTY_TAX_BILL * self.federal_tax_rate * -1)
+		self.assertEqual(investment._get_property_tax_benefit(PROPERTY_TAX_BILL), PROPERTY_TAX_BILL * self.federal_tax_rate * -1)
 		
 	def test_get_alternative_rent_streams_returns_escalating_rent(self):
 		
 		investment = self._create_investment()
 		
-		year_zero_rent = investment.get_future_rent(0)
-		year_one_rent = investment.get_future_rent(1)
-		year_ten_rent = investment.get_future_rent(10)
+		year_zero_rent = investment._get_future_rent(0)
+		year_one_rent = investment._get_future_rent(1)
+		year_ten_rent = investment._get_future_rent(10)
 		
 		self.assertEqual(year_zero_rent, self.alternative_rent)
 		self.assertEqual(year_one_rent, self.alternative_rent * (1 + self.yearly_appreciation_rate) ** 1)
