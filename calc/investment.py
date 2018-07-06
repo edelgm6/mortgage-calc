@@ -1,7 +1,6 @@
 import numpy
 from decimal import Decimal
 import math
-from calc.utils import convert_number_to_readable_string
 	
 class Investment:
 	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost_as_percent_of_value, federal_tax_rate, state_tax_rate):
@@ -46,7 +45,6 @@ class Investment:
 	
 		total_tax_rate = self.federal_tax_rate + self.state_tax_rate
 		
-		#interest_writeoff = total_tax_rate * Decimal(interest_payment) * interest_multiplier
 		interest_writeoff = total_tax_rate * interest_payment * interest_multiplier
 		
 		return interest_writeoff * -1
@@ -71,19 +69,23 @@ class Investment:
 			
 		return alternative_rent_stream
 	
+	@staticmethod
+	def _convert_to_round_integer(number):
+		round_integer = int(round(number))
+		return round_integer
 	
 	def getYearlyCashFlowsAndIRR(self):
 		
 		# Calculate Year 0 conditions
 		irr = ['NA']
 		cash_flow_dict = {
-			'total': convert_number_to_readable_string(self.getYearZeroCashFlow()),
+			'total': self._convert_to_round_integer(self.getYearZeroCashFlow()),
 			'mortgage': 0,
 			'taxes': 0,
 			'maintenance': 0,
-			'value': convert_number_to_readable_string(self.house.price),
-			'equity': convert_number_to_readable_string(self.mortgage.down_payment_amount),
-			'debt': convert_number_to_readable_string(self.mortgage.mortgage_amount * -1),
+			'value': self._convert_to_round_integer(self.house.price),
+			'equity': self._convert_to_round_integer(self.mortgage.down_payment_amount),
+			'debt': self._convert_to_round_integer(self.mortgage.mortgage_amount * -1),
 			'closing_costs': 0,
 			'net_proceeds': 0,
 			'year': 'Purchase',
@@ -132,15 +134,15 @@ class Investment:
 			
 			other_costs = cash_flow - rent_avoided - mortgage_payment
 			cash_flow_dict = {
-				'total': convert_number_to_readable_string(cash_stream[year]),
-				'other_costs': convert_number_to_readable_string(other_costs),
-				'value': convert_number_to_readable_string(current_value),
-				'equity': convert_number_to_readable_string(equity),
-				'debt': convert_number_to_readable_string(debt),
+				'total': self._convert_to_round_integer(cash_stream[year]),
+				'other_costs': self._convert_to_round_integer(other_costs),
+				'value': self._convert_to_round_integer(current_value),
+				'equity': self._convert_to_round_integer(equity),
+				'debt': self._convert_to_round_integer(debt),
 				'year': year,
-				'principal_payment': convert_number_to_readable_string(principal_payment),
-				'debt_payment': convert_number_to_readable_string(interest_payment),
-				'saved_rent': convert_number_to_readable_string(rent_avoided),
+				'principal_payment': self._convert_to_round_integer(principal_payment),
+				'debt_payment': self._convert_to_round_integer(interest_payment),
+				'saved_rent': self._convert_to_round_integer(rent_avoided),
 				'irr': sell_in_this_year_irr
 			}			
 			cash_flows.append(cash_flow_dict)

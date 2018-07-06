@@ -184,3 +184,11 @@ class InvestmentTestCase(TestCase):
 
 		self.assertEqual(irr[1], None)
 		
+	def test_convert_to_readable_string_returns_string(self):
+		
+		NUMBER = 2156.76
+		
+		round_integer = Investment._convert_to_round_integer(NUMBER)
+
+		self.assertEqual(round_integer, 2157)
+		

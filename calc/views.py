@@ -180,18 +180,18 @@ class InvestmentView(View):
 			
 			scenario = self.get_unified_scenario(standard_investment, high_appreciation)
 			investment = self.buildInvestment(scenario)
-			high_irr, cash_stream = investment.getYearlyCashFlowsAndIRR()
+			high_irr, _ = investment.getYearlyCashFlowsAndIRR()
 			context_dict['high_irr'] = high_irr
 			
 			scenario = self.get_unified_scenario(standard_investment, low_appreciation)
 			investment = self.buildInvestment(scenario)
-			low_irr, cash_stream = investment.getYearlyCashFlowsAndIRR()
+			low_irr, _ = investment.getYearlyCashFlowsAndIRR()
 			context_dict['low_irr'] = low_irr
 			
 			for scenario in self.other_scenarios:
 				unified_scenario = self.get_unified_scenario(standard_investment, scenario)
 				investment = self.buildInvestment(unified_scenario)
-				scenario_irr, cash_flows = investment.getYearlyCashFlowsAndIRR()
+				scenario_irr, _ = investment.getYearlyCashFlowsAndIRR()
 				irr_delta = self.getIRRDelta(base_irr, scenario_irr)
 				context_dict[scenario['name']] = irr_delta
 			
