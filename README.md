@@ -10,6 +10,8 @@ Would love any feedback, pull requests, etc.
 
 ## Getting Started
 
+*Requirements: Python 3*
+
 Getting set up locally is simple.  Once you've cloned the project: 
 
 1) Run `pip install requirements.txt`
@@ -61,4 +63,8 @@ You may notice hard-coded values throughout the tests, e.g., `self.assertEqual(r
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details
+MIT License
+
+Copyright (c) 2018 Garrett Edel
+
+See [LICENSE.txt](LICENSE.txt) file for details
