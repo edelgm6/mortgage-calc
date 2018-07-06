@@ -30,8 +30,6 @@ SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = []
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
 
 # mortgage-calc settings
 
@@ -50,8 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'django.contrib.humanize',
 	'calc',
-	'crispy_forms',
-	'widget_tweaks',
 ]
 
 MIDDLEWARE = [

@@ -5,7 +5,6 @@ dj-database-url==0.5.0
 Django==2.0.2
 django-crispy-forms==1.7.0
 django-heroku==0.3.1
-django-widget-tweaks==1.4.1
 gunicorn==19.7.1
 idna==2.6
 numpy==1.14.0
