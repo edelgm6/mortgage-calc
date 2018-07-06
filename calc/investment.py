@@ -1,6 +1,6 @@
 import numpy
-from decimal import Decimal
 import math
+from decimal import Decimal
 from django.conf import settings
 	
 class Investment:
