@@ -10,6 +10,7 @@ import copy
 from django.conf import settings
 
 class AboutView(View):
+	"""Return About and Methodology page."""
 	
 	template_name = 'calc/about.html'
 	
@@ -18,12 +19,23 @@ class AboutView(View):
 
 	
 class IndexView(View): 
-
+	"""Return home page."""
+	
 	template_name = 'calc/index.html'
 	form_class = InvestmentForm
 	
 	def get(self, request, *args, **kwargs):
+		"""Return rendered page with form pre-filled if params provided.
 		
+		Args:
+			request (HttpRequest): Django request object including GET params 
+				which, if provided, are used to pre-fill the form.
+			
+		Returns:
+			HttpResponse: Rendered page.
+		
+		"""
+			
 		float_parameters = ['closing_cost', 'maintenance_cost', 'property_tax', 'down_payment', 'interest_rate', 'yearly_appreciation', 'realtor_cost', 'federal_tax_bracket', 'state_tax_bracket', 'insurance']
 		
 		context_dict = {}
@@ -48,6 +60,7 @@ class IndexView(View):
 	
 
 class InvestmentView(View): 
+	"""Endpoint returning dict of cash flows and IRRs."""
 	
 	no_leverage = {
 		'yearly_interest_rate': 0,
@@ -140,7 +153,18 @@ class InvestmentView(View):
 		
 	
 	def get(self, request, *args, **kwargs):
-
+		"""Return JSON object of base case cash flows and alternate case IRRs.
+		
+		Args:
+			request (HttpRequest): Django request object including GET params 
+				which are used to calculate return.
+			
+		Returns:
+			JsonResponse: Dict containing IRRs, cash stream, and base yearly 
+				mortgage payment
+		
+		"""
+		
 		form = InvestmentForm(request.GET)
 		if form.is_valid():				
 			

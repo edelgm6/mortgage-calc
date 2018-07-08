@@ -14,6 +14,7 @@ class House:
 			as a % of the asset value.
 		yearly_insurance_rate (Decimal): Yearly cost of insurance as 
 			a % of the asset value.
+	
 	"""
 	
 	def __init__(self, price, yearly_appreciation_rate, yearly_property_tax_rate, yearly_maintenance_as_percent_of_value, yearly_insurance_as_percent_of_value):

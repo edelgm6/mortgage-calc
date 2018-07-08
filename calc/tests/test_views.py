@@ -168,9 +168,9 @@ class InvestmentViewTest(TestCase):
 		self.assertEqual(mortgage.yearly_interest_rate, .05)
 		self.assertEqual(mortgage.down_payment_amount, .2 * 500000)
 		
-		self.assertEqual(investment.closing_cost_as_percent_of_value, .03)
+		self.assertEqual(investment.closing_cost_rate, .03)
 		self.assertEqual(investment.alternative_rent, 1500)
-		self.assertEqual(investment.realtor_cost, .06)
+		self.assertEqual(investment.realtor_cost_rate, .06)
 		self.assertEqual(investment.federal_tax_rate, .32)
 		self.assertEqual(investment.state_tax_rate, .06)
 		

@@ -10,6 +10,7 @@ class Mortgage:
 		yearly_interest_rate (Decimal): Yearly mortgage interest rate.
 		term_in_years (int): Years for mortgage amortization.
 		down_payment_percent (Decimal): Down payment as a % of the house price.
+	
 	"""
 	
 	def __init__(self, house, yearly_interest_rate, term_in_years, down_payment_percent):

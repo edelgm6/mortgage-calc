@@ -52,10 +52,10 @@ class InvestmentTestCase(TestCase):
 		
 		investment = self._create_investment()
 		
-		self.assertEqual(investment.realtor_cost, self.realtor_cost_as_percent_of_value)
+		self.assertEqual(investment.realtor_cost_rate, self.realtor_cost_as_percent_of_value)
 		self.assertEqual(investment.federal_tax_rate, self.federal_tax_rate)
 		self.assertEqual(investment.state_tax_rate, self.state_tax_rate)
-		self.assertEqual(investment.closing_cost_as_percent_of_value, self.closing_cost_as_percent_of_value)
+		self.assertEqual(investment.closing_cost_rate, self.closing_cost_as_percent_of_value)
 		self.assertEqual(investment.alternative_rent, self.alternative_rent)
 	
 	def test_get_year_zero_cash_flow_returns_cost_of_equity_plus_closing_costs(self):
@@ -64,7 +64,7 @@ class InvestmentTestCase(TestCase):
 		
 		year_zero_cash_flow = investment._get_year_zero_cash_flow()
 		equity_check = investment.starting_equity * -1
-		closing_costs = investment.house.price * investment.closing_cost_as_percent_of_value * -1
+		closing_costs = investment.house.price * investment.closing_cost_rate * -1
 		self.assertEqual(year_zero_cash_flow, equity_check + closing_costs)
 		
 	def test_get_sale_proceeds_returns_equity_less_realtor_costs(self):

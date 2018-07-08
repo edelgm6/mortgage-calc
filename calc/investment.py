@@ -16,27 +16,28 @@ class Investment:
 			agents as a % of the house price.
 		federal_tax_rate (Decimal): Top marginal federal tax rate paid by the buyer.
 		state_tax_rate (Decimal): Top marginal state tax rate paid by the buyer.
+	
 	"""
 	
 	def __init__(self, house, mortgage, closing_cost_rate, alternative_rent, realtor_cost_rate, federal_tax_rate, state_tax_rate):
 		self.house = house
 		self.mortgage = mortgage
-		self.closing_cost_rate = closing_cost_as_percent_of_value
+		self.closing_cost_rate = closing_cost_rate
 		self.starting_equity = self.mortgage.down_payment_amount
 		self.alternative_rent = alternative_rent
-		self.realtor_cost_rate = realtor_cost_as_percent_of_value
+		self.realtor_cost_rate = realtor_cost_rate
 		self.federal_tax_rate = federal_tax_rate
 		self.state_tax_rate = state_tax_rate
 
 	# Returns total cash costs for purchase	
 	def _get_year_zero_cash_flow(self):
 		equity_check = self.starting_equity * -1
-		closing_cost = self.house.price * self.closing_cost_as_percent_of_value * -1
+		closing_cost = self.house.price * self.closing_cost_rate * -1
 		return equity_check + closing_cost
 	
 	def _get_sale_proceeds(self, current_debt, current_equity):
 		current_value = current_equity - current_debt
-		realtor_cost = current_value * self.realtor_cost
+		realtor_cost = current_value * self.realtor_cost_rate
 		net_sale_proceeds = current_equity - realtor_cost
 		return net_sale_proceeds
 
@@ -79,20 +80,25 @@ class Investment:
 		"""Return array of cash flow dicts and IRRs.
 			
 		Returns:
-			dict: Dictionary representing each year of the investment 
+			dict (string:any): Dictionary representing each year of the investment 
 				year (string/int): 'Purchase' for year 0 and 
-					int for each of years 1-30.
+					int of years since investment for each of years 1-30.
 				equity (int): Equity value of investment.
 				debt (int): Mortgage debt balance.
 				value (int): Value of the asset.
 				principal_payment (int): Principal payment.
+				interest_payment (int): Interest payment.
 				total (int): Net cash flow.
 				other_costs (int): Cost of maintenance, insurance, and pmi, 
 					net of the tax shield
+				saved_rent (int): Rent not paid in year.
+				irr (string/Decimal): 'NA' for year 0- and IRR as Decimal 
+					for each of years 1-30
+			array (string/Decimal): 'NA' for year 0 and IRR as Decimal for each of 
+				years 1-30
 					
 		
 		"""
-
 		
 		irr = ['NA']
 		cash_flows = []
@@ -148,7 +154,18 @@ class Investment:
 		return irr, cash_flows
 
 	def get_calculated_values(self, year, debt):
-
+		"""Return single year dict of additional calculated values.
+			
+		Returns:
+			dict (string:int): Dictionary representing a given year of the investment 
+				total (int): Net cash flow.
+				other_costs (int): Cost of maintenance, insurance, and pmi, 
+					net of the tax shield
+				interest_payment (int): Interest payment.
+				saved_rent (int): Rent not paid in year.			
+		
+		"""
+		
 		# Calculates in-year costs based on average value throughout year
 		average_value = (self.house.get_future_value(year) + self.house.get_future_value(year-1)) / 2
 		maintenance = self.house.yearly_maintenance_rate * average_value * -1
@@ -168,14 +185,14 @@ class Investment:
 		cash_flow = self.mortgage.yearly_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
 
 		other_costs = cash_flow - rent_avoided - self.mortgage.yearly_payment
-		cash_flow_dict = {
+		other_values_dict = {
 			'total': self._convert_to_round_integer(cash_flow),
 			'other_costs': self._convert_to_round_integer(other_costs),
 			'interest_payment': self._convert_to_round_integer(interest_payment),
 			'saved_rent': self._convert_to_round_integer(rent_avoided),
 		}			
 		
-		return cash_flow_dict
+		return other_values_dict
 	
 	def _get_irr(self, cash_stream, equity, debt, year):
 
