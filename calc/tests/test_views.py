@@ -162,8 +162,8 @@ class InvestmentViewTest(TestCase):
 		self.assertEqual(house.price, 500000)
 		self.assertEqual(house.yearly_appreciation_rate, .05)
 		self.assertEqual(house.yearly_property_tax_rate, .01)
-		self.assertEqual(house.yearly_maintenance_as_percent_of_value, .01)
-		self.assertEqual(house.yearly_insurance_as_percent_of_value, .02)
+		self.assertEqual(house.yearly_maintenance_rate, .01)
+		self.assertEqual(house.yearly_insurance_rate, .02)
 		
 		self.assertEqual(mortgage.yearly_interest_rate, .05)
 		self.assertEqual(mortgage.down_payment_amount, .2 * 500000)

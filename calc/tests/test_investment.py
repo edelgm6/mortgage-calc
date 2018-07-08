@@ -57,14 +57,6 @@ class InvestmentTestCase(TestCase):
 		self.assertEqual(investment.state_tax_rate, self.state_tax_rate)
 		self.assertEqual(investment.closing_cost_as_percent_of_value, self.closing_cost_as_percent_of_value)
 		self.assertEqual(investment.alternative_rent, self.alternative_rent)
-		
-	def test_get_value(self):
-		
-		investment = self._create_investment()
-		
-		self.assertEqual(investment._get_value(0), self.price)
-		self.assertEqual(investment._get_value(1), self.price * (1+self.yearly_appreciation_rate))
-		self.assertEqual(investment._get_value(15), self.price * (1+self.yearly_appreciation_rate)**15)
 	
 	def test_get_year_zero_cash_flow_returns_cost_of_equity_plus_closing_costs(self):
 		

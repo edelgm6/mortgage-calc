@@ -4,19 +4,29 @@ from decimal import Decimal
 from django.conf import settings
 	
 class Investment:
-	def __init__(self, house, mortgage, closing_cost_as_percent_of_value, alternative_rent, realtor_cost_as_percent_of_value, federal_tax_rate, state_tax_rate):
+	"""Respresentation of the Investment.
+	
+	Attributes:
+		house (House): House object for the investment.
+		mortgage (Mortgage): Mortgage object for the investment.
+		closing_cost_rate (Decimal): Buyer's closing costs as a % of the house price.
+		alternative_rent (int): Alternative rent buyer would be paying if they did 
+			not buy the house.
+		realtor_cost_rate (Decimal): Seller's costs of paying the buyer and seller 
+			agents as a % of the house price.
+		federal_tax_rate (Decimal): Top marginal federal tax rate paid by the buyer.
+		state_tax_rate (Decimal): Top marginal state tax rate paid by the buyer.
+	"""
+	
+	def __init__(self, house, mortgage, closing_cost_rate, alternative_rent, realtor_cost_rate, federal_tax_rate, state_tax_rate):
 		self.house = house
 		self.mortgage = mortgage
-		self.closing_cost_as_percent_of_value = closing_cost_as_percent_of_value
+		self.closing_cost_rate = closing_cost_as_percent_of_value
 		self.starting_equity = self.mortgage.down_payment_amount
 		self.alternative_rent = alternative_rent
-		self.realtor_cost = realtor_cost_as_percent_of_value
+		self.realtor_cost_rate = realtor_cost_as_percent_of_value
 		self.federal_tax_rate = federal_tax_rate
 		self.state_tax_rate = state_tax_rate
-	
-	# Gets value of home given current year
-	def _get_value(self, years_since_purchase):
-		return self.house.price * (1+self.house.yearly_appreciation_rate)**years_since_purchase
 
 	# Returns total cash costs for purchase	
 	def _get_year_zero_cash_flow(self):
@@ -66,6 +76,23 @@ class Investment:
 		return round_integer
 	
 	def get_yearly_cash_flows_and_irr(self):
+		"""Return array of cash flow dicts and IRRs.
+			
+		Returns:
+			dict: Dictionary representing each year of the investment 
+				year (string/int): 'Purchase' for year 0 and 
+					int for each of years 1-30.
+				equity (int): Equity value of investment.
+				debt (int): Mortgage debt balance.
+				value (int): Value of the asset.
+				principal_payment (int): Principal payment.
+				total (int): Net cash flow.
+				other_costs (int): Cost of maintenance, insurance, and pmi, 
+					net of the tax shield
+					
+		
+		"""
+
 		
 		irr = ['NA']
 		cash_flows = []
@@ -78,9 +105,9 @@ class Investment:
 			'debt': self._convert_to_round_integer(self.mortgage.mortgage_amount * -1),
 			'value': self._convert_to_round_integer(self.house.price),
 			'principal_payment': 0,
+			'interest_payment': 0,
 			'total': self._convert_to_round_integer(cash_stream[0]),
 			'other_costs': 0,
-			'debt_payment': 0,
 			'saved_rent': 0,
 			'irr': irr[0]
 		}
@@ -124,9 +151,9 @@ class Investment:
 
 		# Calculates in-year costs based on average value throughout year
 		average_value = (self.house.get_future_value(year) + self.house.get_future_value(year-1)) / 2
-		maintenance = self.house.yearly_maintenance_as_percent_of_value * average_value * -1
+		maintenance = self.house.yearly_maintenance_rate * average_value * -1
 		property_tax = Decimal(self.house.yearly_property_tax_rate * average_value * -1)
-		insurance = self.house.yearly_insurance_as_percent_of_value * average_value * -1
+		insurance = self.house.yearly_insurance_rate * average_value * -1
 		rent_avoided = (self._get_future_rent(year) + self._get_future_rent(year-1)) / 2
 
 		# Calculates tax benefits
@@ -144,7 +171,7 @@ class Investment:
 		cash_flow_dict = {
 			'total': self._convert_to_round_integer(cash_flow),
 			'other_costs': self._convert_to_round_integer(other_costs),
-			'debt_payment': self._convert_to_round_integer(interest_payment),
+			'interest_payment': self._convert_to_round_integer(interest_payment),
 			'saved_rent': self._convert_to_round_integer(rent_avoided),
 		}			
 		

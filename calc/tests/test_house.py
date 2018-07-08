@@ -22,8 +22,8 @@ class HouseTestCase(TestCase):
 		self.assertEqual(house.price, self.price)
 		self.assertEqual(house.yearly_property_tax_rate, self.yearly_property_tax_rate)
 		self.assertEqual(house.yearly_appreciation_rate, self.yearly_appreciation_rate)
-		self.assertEqual(house.yearly_maintenance_as_percent_of_value, self.yearly_maintenance_as_percent_of_value)
-		self.assertEqual(house.yearly_insurance_as_percent_of_value, self.yearly_insurance_as_percent_of_value)
+		self.assertEqual(house.yearly_maintenance_rate, self.yearly_maintenance_as_percent_of_value)
+		self.assertEqual(house.yearly_insurance_rate, self.yearly_insurance_as_percent_of_value)
 		
 	def test_get_home_value_streams_returns_start_and_end_values(self):
 		

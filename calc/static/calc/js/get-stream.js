@@ -59,8 +59,8 @@ function investmentFormSubmit() {
 			var $td_principal_payment = $("<td>", {
 				'text': convertNumberToString(value.principal_payment)
 			});
-			var $td_debt_payment = $("<td>", {
-				'text': convertNumberToString(value.debt_payment)
+			var $td_interest_payment = $("<td>", {
+				'text': convertNumberToString(value.interest_payment)
 			});
 			var $td_other_costs = $("<td>", {
 				'text': convertNumberToString(value.other_costs)
@@ -93,7 +93,7 @@ function investmentFormSubmit() {
 
 			if (!first_year_ppmt_greater_than_ipmt && value.year != 'Purchase') {
 				var ppmt = value.principal_payment;
-				var ipmt = value.debt_payment;
+				var ipmt = value.interest_payment;
 
 				if (ppmt < ipmt) {
 					first_year_ppmt_greater_than_ipmt = true;
@@ -111,7 +111,7 @@ function investmentFormSubmit() {
 			$(table_body).append(($tr)
 				.append(($td_year))
 				.append(($td_principal_payment))
-				.append(($td_debt_payment))
+				.append(($td_interest_payment))
 				.append(($td_other_costs))
 				.append(($td_saved_rent))
 				.append(($td_total))
@@ -255,7 +255,7 @@ function buildPMTChart(streams) {
 
 	for (var i = 1; i < streams.length; i++) {
 		labels.push(streams[i].year);
-		ipmt.push((streams[i].debt_payment * -1/1000).toFixed(2));
+		ipmt.push((streams[i].interest_payment * -1/1000).toFixed(2));
 		ppmt.push((streams[i].principal_payment * -1/1000).toFixed(2));
 	};
 	if (Object.keys(cashFlowChartObject).length==0) {
