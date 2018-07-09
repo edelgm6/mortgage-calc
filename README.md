@@ -15,7 +15,7 @@ Would love any feedback, pull requests, etc.
 Getting set up locally is simple. Once you've cloned the project: 
 
 1) Run `pip install requirements.txt`
-2) Set up a local_settings.py file and put drop it in the mortgage/ folder where the settings.py file lives
+2) Set up a local_settings.py file and drop it in the mortgage/ folder where the settings.py file lives
 
 ```python
 # local_settings.py
