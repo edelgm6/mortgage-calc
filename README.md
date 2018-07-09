@@ -18,21 +18,24 @@ Getting set up locally is simple. Once you've cloned the project:
 2) Set up a local_settings.py file and put drop it in the mortgage/ folder where the settings.py file lives
 
 ```python
-### local_settings.py
+# local_settings.py
 
-SECRET_KEY = "[YOUR_SECRET_KEY]"
+import os
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '[YOUR_SECRET_KEY]'
+
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 SECURE_SSL_REDIRECT = False
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "[YOUR_NAME]",
-        "USER": "[YOUR_USER]",
-        "PASSWORD": "[YOUR_PASSWORD]",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 ```
