@@ -44,6 +44,8 @@ class Investment:
 	def _get_interest_tax_benefit(self, debt_value, interest_payment):
 		debt_limit = settings.MORTGAGE_INTEREST_DEDUCTION_DEBT_LIMIT
 		
+		# Mortgage tax deduction only applies to first $750K of the 
+		# loan balance
 		if debt_value * -1 > debt_limit:
 			interest_multiplier = (debt_limit / debt_value) * -1
 		else:
@@ -58,6 +60,7 @@ class Investment:
 	def _get_property_tax_benefit(self, property_tax):
 		salt_limit = settings.SALT_LIMIT
 		
+		# SALT maxes out at $10K
 		if property_tax * -1 > salt_limit:
 			property_tax_writeoff = salt_limit * self.federal_tax_rate
 		else:
@@ -104,7 +107,7 @@ class Investment:
 		cash_flows = []
 		cash_stream = [self._get_year_zero_cash_flow()]
 		
-		# Calculate Year 0 conditions
+		# Append year 0 values
 		cash_flow_dict = {
 			'year': 'Purchase',
 			'equity': self._convert_to_round_integer(self.mortgage.down_payment_amount),
@@ -117,13 +120,12 @@ class Investment:
 			'saved_rent': 0,
 			'irr': irr[0]
 		}
-		
 		cash_flows.append(cash_flow_dict)
 		
+		# Append year 1-30 values
 		current_value = self.house.price
 		debt = Decimal(self.mortgage.mortgage_amount * -1)
 		alternative_rent = self.alternative_rent
-		
 		
 		for year in range(1,31):
 			# Balance sheet calculation
@@ -144,10 +146,14 @@ class Investment:
 			# Update cash_flow_dict with calculated values 
 			cash_flow_dict.update(self.get_calculated_values(year, debt))
 			
+			# Calculate IRRs, which is based on yearly cash flows to date plus the 
+			# cash generated if you were to sell
 			cash_stream.append(cash_flow_dict['total'])	
 			sell_in_this_year_irr = self._get_irr(cash_stream, equity, debt, year)
 			cash_flow_dict['irr'] = sell_in_this_year_irr
 			
+			# IRR values held in the cash_flows dict and as a separate array to 
+			# simplify front-end parsing
 			irr.append(sell_in_this_year_irr)
 			cash_flows.append(cash_flow_dict)
 		
@@ -167,7 +173,8 @@ class Investment:
 		"""
 		
 		# Calculates in-year costs based on average value throughout year
-		average_value = (self.house.get_future_value(year) + self.house.get_future_value(year-1)) / 2
+		average_value = (self.house.get_future_value(year) + 
+			self.house.get_future_value(year-1)) / 2
 		maintenance = self.house.yearly_maintenance_rate * average_value * -1
 		property_tax = Decimal(self.house.yearly_property_tax_rate * average_value * -1)
 		insurance = self.house.yearly_insurance_rate * average_value * -1
@@ -182,7 +189,8 @@ class Investment:
 		pmi = self.mortgage.get_pmi_payment(debt)
 		
 		# Calculate cash stream
-		cash_flow = self.mortgage.yearly_payment + maintenance + property_tax + rent_avoided + tax_shield + insurance + pmi
+		cash_flow = self.mortgage.yearly_payment + maintenance + property_tax + \
+			rent_avoided + tax_shield + insurance + pmi
 
 		other_costs = cash_flow - rent_avoided - self.mortgage.yearly_payment
 		other_values_dict = {
@@ -196,13 +204,15 @@ class Investment:
 	
 	def _get_irr(self, cash_stream, equity, debt, year):
 
-		# Calculates IRR with separate cash flow array
+		# Copy cumulative cash_stream
 		cash_stream_with_sale = cash_stream[:]
+		
+		# Add in incremental cash flow from a sale
 		net_sale_proceeds = self._get_sale_proceeds(debt, equity)
 		cash_stream_with_sale[year] = cash_stream[year] + net_sale_proceeds
-		irr = numpy.irr(cash_stream_with_sale)
 		
 		# Sets cumulative to None for when cash flows are always negative
+		irr = numpy.irr(cash_stream_with_sale)
 		if math.isnan(irr):
 			irr = None
 		else:

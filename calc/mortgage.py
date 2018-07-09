@@ -64,6 +64,8 @@ class Mortgage:
 		years = self.term_in_years
 		mortgage_amount = self.mortgage_amount
 		ipmt = numpy.ipmt(yearly_rate, year, years, mortgage_amount)
+		
+		# asscalar needed to enable conversion of the ndarray to Decimal values
 		return Decimal(numpy.asscalar(ipmt))
 	
 	def get_pmi_payment(self, debt):
@@ -79,6 +81,8 @@ class Mortgage:
 		
 		PMI_INSURANCE = Decimal(.01)
 		pmi = 0
+		
+		# Debt is a negative value, hence the < -.8
 		if debt / self.house.price < -.8:
 			pmi = debt * PMI_INSURANCE
 		

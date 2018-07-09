@@ -40,6 +40,7 @@ class IndexView(View):
 		
 		context_dict = {}
 		
+		# Collects GET parameters from URL to add to pre-fill form fields
 		for parameter in float_parameters:
 			if parameter in request.GET:
 				try:
@@ -62,6 +63,7 @@ class IndexView(View):
 class InvestmentView(View): 
 	"""Endpoint returning dict of cash flows and IRRs."""
 	
+	# Dicts for modified values of each scenario
 	no_leverage = {
 		'yearly_interest_rate': 0,
 		'down_payment_percent': 1,
@@ -133,7 +135,6 @@ class InvestmentView(View):
 	@staticmethod
 	def _get_unified_scenario(comprehensive_scenario, modified_scenario):
 		unified_scenario = copy.deepcopy(comprehensive_scenario)
-		
 		unified_scenario.update(modified_scenario)
 			
 		return unified_scenario
