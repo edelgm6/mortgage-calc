@@ -20,7 +20,7 @@ Getting set up locally is simple. Once you've cloned the project:
 ```python
 ### local_settings.py
 
-SECRET_KEY = "[YOUR_SECURITY_KEY]"
+SECRET_KEY = "[YOUR_SECRET_KEY]"
 
 DEBUG = True
 SECURE_SSL_REDIRECT = False
