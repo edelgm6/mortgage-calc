@@ -1,6 +1,6 @@
 # mortgage-calc
 
-**mortgage-calc** is a Django + vanilla async Javascript calculator to help potential home buyers understand whether it makes sense to buy a house and is hosted at [MortgageROI.com](https://www.mortgageroi.com). 
+**mortgage-calc** is a Django + vanilla async Javascript calculator to help potential home buyers understand whether it makes sense to buy a house. It is hosted at [MortgageROI.com](https://www.mortgageroi.com). 
 
 Many mortgage calculators are overly simplistic, returning to the user a simple 'buy or rent' determination without any context (e.g., *why* is my return higher if I keep my home for 10 years v. 2 years? *why* does a higher down payment help in some cases and hurt in others? what is more important for my return, home appreciation or the rent I save?).
 
@@ -12,13 +12,13 @@ Would love any feedback, pull requests, etc.
 
 *Requirements: Python 3*
 
-Getting set up locally is simple.  Once you've cloned the project: 
+Getting set up locally is simple. Once you've cloned the project: 
 
 1) Run `pip install requirements.txt`
 2) Set up a local_settings.py file and put drop it in the mortgage/ folder where the settings.py file lives
 
 ```python
-### local_settings.py for local Postgres database
+### local_settings.py
 
 SECRET_KEY = "[YOUR_SECURITY_KEY]"
 
@@ -37,7 +37,7 @@ DATABASES = {
 }
 ```
 
-3) Run `python manage.py migrate`
+3) Run `python3 manage.py migrate`
 
 ## Running the tests
 
