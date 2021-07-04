@@ -13,7 +13,7 @@ pandas==1.2.4
 psycopg2==2.8.6
 python-dateutil==2.7.3
 pytz==2018.3
-requests==2.18.4
+requests==2.20.0
 six==1.11.0
 urllib3==1.22
 whitenoise==3.3.1
