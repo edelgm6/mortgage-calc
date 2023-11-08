@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATE_DIR = os.path.join(BASE_DIR,'calc/templates')
 
 USE_THOUSAND_SEPARATOR = True
 
@@ -28,7 +29,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = False
 SECURE_SSL_REDIRECT = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://*.fly.dev']
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/calc/static/'
+STATICFILES_DIRS = (
+   os.path.join(BASE_DIR, 'calc/static'),
+)
 
 # mortgage-calc settings
 
@@ -57,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'mortgage.urls'
@@ -64,7 +73,7 @@ ROOT_URLCONF = 'mortgage.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,6 +90,14 @@ WSGI_APPLICATION = 'mortgage.wsgi.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
+
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+DATABASES = {'default': dj_database_url.config(conn_max_age=600)}
+DATABASES["default"].update({
+    "ENGINE": "django.db.backends.postgresql_psycopg2",
+    "OPTIONS": {"connect_timeout": 5}
+})
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -114,10 +131,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
-STATIC_URL = '/static/'
-
-django_heroku.settings(locals())
 
 try:
     from mortgage.local_settings import *
